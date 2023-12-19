@@ -1,83 +1,72 @@
 'use client'
 import { useState } from 'react'
 import { z } from 'zod'
-import Link from 'next/link'
 import Image from 'next/image'
-import { signIn } from 'next-auth/react'
+import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Input } from '@/components'
-import { toast } from 'sonner'
 
-const RegisterSchema = z
+interface ResetPasswordFormProps {
+  email: string
+  token: string
+}
+
+const ResetPasswordSchema = z
   .object({
-    email: z.string().email({ message: 'E-mail inválido' }),
     password: z.string(),
     confirmPassword: z.string(),
-    acceptTerms: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'As senhas não coincidem',
     path: ['confirmPassword'],
   })
 
-export function RegisterForm() {
+export function ResetPasswordForm({ email, token }: ResetPasswordFormProps) {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
 
   const router = useRouter()
 
   const { handleSubmit, register, formState } = useForm<
-    z.infer<typeof RegisterSchema>
+    z.infer<typeof ResetPasswordSchema>
   >({
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(ResetPasswordSchema),
   })
 
   const handlePasswordVisibilityChange = () => {
     setPasswordIsVisible((visibility) => !visibility)
   }
 
-  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ResetPasswordSchema>) => {
     try {
-      if (!data.acceptTerms) {
-        toast.warning(
-          'Para prosseguir é necessário que você concorde com os nossos termos e condições',
-        )
-        return
-      }
-
       const payload = {
-        name: data.email.split('@')[0],
-        email: data.email,
-        password: data.password,
+        email,
+        token,
+        password: data.confirmPassword,
       }
 
-      const user = await fetch('/api/users', {
+      const response = await fetch('/api/users/reset-password', {
         method: 'POST',
         body: JSON.stringify(payload),
       })
 
-      if (!user.ok) {
-        const message = await user.json()
+      if (!response.ok) {
+        const message = await response.json()
         toast.error(message)
         return
       }
 
-      const response = await signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      })
+      toast.success(
+        'Senha alterada com sucesso! Você será redirecionado daqui 5 segundos',
+      )
 
-      if (!response?.ok || response?.error) {
-        toast.error('Verifique as suas credenciais e tente novamente')
-        return
-      }
-
-      router.push('/dashboard')
+      setTimeout(() => {
+        router.push('/accounts/login')
+      }, 5 * 1000) // 5 seconds
     } catch (error) {
-      toast.error('Verifique as suas credenciais e tente novamente')
+      toast.error('Algo deu errado! Tente novamente mais tarde')
     }
   }
 
@@ -93,39 +82,7 @@ export function RegisterForm() {
       <strong className="mt-6 text-xl font-medium text-white">Bem-vindo</strong>
       <span className="mt-2 text-sm text-[#8b8d97]">Crie sua conta</span>
 
-      <div className="mt-10 flex w-full flex-col gap-6">
-        <Input
-          type="email"
-          placeholder="E-mail"
-          leftElement={
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.9026 8.85115L13.4593 12.4642C12.6198 13.1302 11.4387 13.1302 10.5992 12.4642L6.11841 8.85115"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M16.9089 21C19.9502 21.0084 22 18.5095 22 15.4384V8.57001C22 5.49883 19.9502 3 16.9089 3H7.09114C4.04979 3 2 5.49883 2 8.57001V15.4384C2 18.5095 4.04979 21.0084 7.09114 21H16.9089Z"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          }
-          error={formState.errors.email?.message}
-          {...register('email')}
-        />
+      <div className="mb-8 mt-10 flex w-full flex-col gap-6">
         <Input
           type={passwordIsVisible ? 'text' : 'password'}
           placeholder="Senha"
@@ -278,37 +235,13 @@ export function RegisterForm() {
           error={formState.errors.password?.message}
           {...register('confirmPassword')}
         />
-
-        <div className="relative flex items-center gap-3 px-2">
-          <div className="flex h-6 items-center">
-            <input
-              id="terms"
-              type="checkbox"
-              className="h-4 w-4 rounded border-[#8E8E8E] bg-[#27282D] text-[#e51e3e] focus:ring-[#e51e3e]"
-              {...register('acceptTerms')}
-            />
-          </div>
-          <label htmlFor="terms" className="text-sm font-medium text-[#abafb1]">
-            Li e concordo com os termos e condições.
-          </label>
-        </div>
       </div>
-
-      <span className="my-8 text-center text-sm text-[#abafb1]">
-        Já tem uma conta?{' '}
-        <Link
-          href="/accounts/login"
-          className="text-[#e51e3e] transition-all hover:opacity-75"
-        >
-          Entre aqui
-        </Link>
-      </span>
 
       <button
         type="submit"
         className="flex h-[50px] w-full items-center justify-center rounded-md bg-[#e51e3e] text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90"
       >
-        Cadastrar-se
+        Enviar
       </button>
     </form>
   )

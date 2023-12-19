@@ -171,7 +171,7 @@ export function LoginForm() {
         />
 
         <Link
-          href="#"
+          href="/accounts/forgot-password"
           className="text-end text-sm text-[#e51e3e] transition-all hover:opacity-75"
         >
           Esqueci a senha
