@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const result = await resend.emails.send({
       from: 'dev@kepler-digital.dev',
       to: email,
-      subject: 'Hello world',
+      subject: 'Redefinir senha',
       react: ForgotPasswordTemplate({ link }),
     })
 
