@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/constants'
 import { ForgotPasswordForm } from '@/components/pages/accounts/forgot-password'
 
-export default async function Login() {
+export default async function ForgotPassword() {
   const session = await getServerSession(authOptions)
 
   if (session) redirect('/dashboard')
