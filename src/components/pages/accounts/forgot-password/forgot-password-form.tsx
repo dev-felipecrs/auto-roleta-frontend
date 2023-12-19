@@ -8,7 +8,7 @@ import { Button, Input } from '@/components/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 const ForgotPasswordSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({ message: 'E-mail inválido' }),
 })
 
 export function ForgotPasswordForm() {
@@ -92,7 +92,9 @@ export function ForgotPasswordForm() {
         />
       </div>
 
-      <Button type="submit">Enviar</Button>
+      <Button type="submit" disabled={formState.isSubmitting}>
+        {formState.isSubmitting ? 'Enviando...' : 'Enviar'}
+      </Button>
     </form>
   )
 }

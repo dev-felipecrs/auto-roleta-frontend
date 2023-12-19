@@ -308,7 +308,9 @@ export function RegisterForm() {
         </Link>
       </span>
 
-      <Button type="submit">Cadastrar-se</Button>
+      <Button type="submit" disabled={formState.isSubmitting}>
+        {formState.isSubmitting ? 'Cadastrando...' : 'Cadastrar-se'}
+      </Button>
     </form>
   )
 }

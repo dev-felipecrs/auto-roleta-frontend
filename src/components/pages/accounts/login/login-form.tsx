@@ -190,7 +190,9 @@ export function LoginForm() {
         </Link>
       </span>
 
-      <Button type="submit">Entrar</Button>
+      <Button type="submit" disabled={formState.isSubmitting}>
+        {formState.isSubmitting ? 'Entrando...' : 'Entrar'}
+      </Button>
     </form>
   )
 }

@@ -241,7 +241,9 @@ export function ResetPasswordForm({ email, token }: ResetPasswordFormProps) {
         />
       </div>
 
-      <Button type="submit">Enviar</Button>
+      <Button type="submit" disabled={formState.isSubmitting}>
+        {formState.isSubmitting ? 'Enviando...' : 'Enviar'}
+      </Button>
     </form>
   )
 }
