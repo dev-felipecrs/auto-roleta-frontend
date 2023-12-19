@@ -79,10 +79,12 @@ export function ResetPasswordForm({ email, token }: ResetPasswordFormProps) {
         <Image src="/images/shared/logo-simple.svg" alt="Logo" fill />
       </div>
 
-      <strong className="mt-6 text-xl font-medium text-white">
+      <strong className="mt-6 text-center text-xl font-medium text-white">
         Recuperação de senha
       </strong>
-      <span className="mt-2 text-sm text-[#8b8d97]">Redefinir senha</span>
+      <span className="mt-2 text-center text-sm text-[#8b8d97]">
+        Redefinir senha
+      </span>
 
       <div className="mb-8 mt-10 flex w-full flex-col gap-6">
         <Input

@@ -50,10 +50,10 @@ export function ForgotPasswordForm() {
         <Image src="/images/shared/logo-simple.svg" alt="Logo" fill />
       </div>
 
-      <strong className="mt-6 text-xl font-medium text-white">
+      <strong className="mt-6 text-center text-xl font-medium text-white">
         Esqueceu sua senha?
       </strong>
-      <span className="mt-2 text-sm text-[#8b8d97]">
+      <span className="mt-2 text-center text-sm text-[#8b8d97]">
         Insira o seu e-mail abaixo e receberá um link para redefini-lá
       </span>
 
