@@ -1,1 +1,1 @@
-export * from './ForgotPasswordTemplate'
+export * from './forgot-password-template'
