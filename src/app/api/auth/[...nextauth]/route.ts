@@ -8,10 +8,13 @@ export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
-      credentials: {},
+      credentials: {
+        email: { type: 'text' },
+        password: { type: 'text' },
+      },
 
       async authorize(credentials) {
-        const { email, password } = credentials as Record<string, string>
+        const { email, password } = credentials!
 
         try {
           const user = await prisma.user.findUnique({
@@ -20,11 +23,15 @@ export const authOptions = {
             },
           })
 
+          console.log({ user })
+
           if (!user) {
             return null
           }
 
           const passwordsMatch = await compare(password, user.password)
+
+          console.log({ passwordsMatch })
 
           if (!passwordsMatch) {
             return null
@@ -46,9 +53,8 @@ export const authOptions = {
     strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
-
   pages: {
-    signIn: '/login',
+    signIn: '/accounts/login',
   },
 } satisfies AuthOptions
 
