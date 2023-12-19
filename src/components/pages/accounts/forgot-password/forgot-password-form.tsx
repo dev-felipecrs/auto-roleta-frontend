@@ -51,9 +51,11 @@ export function ForgotPasswordForm() {
       </div>
 
       <strong className="mt-6 text-xl font-medium text-white">
-        Bem-vindo de volta!
+        Esqueceu sua senha?
       </strong>
-      <span className="mt-2 text-sm text-[#8b8d97]">Entre com sua conta</span>
+      <span className="mt-2 text-sm text-[#8b8d97]">
+        Insira o seu e-mail abaixo e receberá um link para redefini-lá
+      </span>
 
       <div className="mb-8 mt-10 flex w-full flex-col gap-6">
         <Input

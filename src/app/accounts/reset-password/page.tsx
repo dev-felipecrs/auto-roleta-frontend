@@ -24,8 +24,6 @@ export default async function ResetPassword({
     },
   })
 
-  console.log({ user })
-
   if (!user) {
     notFound()
   }
