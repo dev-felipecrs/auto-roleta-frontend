@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { z } from 'zod'
 import Link from 'next/link'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { Input } from '@/components'
-import { toast } from 'sonner'
+import { Input } from '@/components/shared'
 
 const RegisterSchema = z
   .object({
