@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { Input } from '@/components/shared'
+import { Button, Input } from '@/components/shared'
 
 const LoginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -188,12 +188,7 @@ export function LoginForm() {
         </Link>
       </span>
 
-      <button
-        type="submit"
-        className="flex h-[50px] w-full items-center justify-center rounded-md bg-[#e51e3e] text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90"
-      >
-        Entrar
-      </button>
+      <Button type="submit">Entrar</Button>
     </form>
   )
 }

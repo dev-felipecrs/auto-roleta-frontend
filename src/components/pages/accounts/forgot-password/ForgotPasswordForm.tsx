@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 
-import { Input } from '@/components/shared'
+import { Button, Input } from '@/components/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 const ForgotPasswordSchema = z.object({
@@ -90,12 +90,7 @@ export function ForgotPasswordForm() {
         />
       </div>
 
-      <button
-        type="submit"
-        className="flex h-[50px] w-full items-center justify-center rounded-md bg-[#e51e3e] text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90"
-      >
-        Enviar
-      </button>
+      <Button type="submit">Enviar</Button>
     </form>
   )
 }
