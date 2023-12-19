@@ -9,9 +9,11 @@ export default async function AccountsLayout({
 }: AccountsLayoutProps) {
   return (
     <>
-      <Header />
-      <main className="flex flex-col items-center justify-center bg-[#1c1d21]">
-        <div className="flex-grow overflow-y-auto p-8">{children}</div>
+      <main className="h-screen bg-[#1c1d21]">
+        <Header />
+        <div className="absolute left-1/2 top-1/2 flex flex-grow -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center overflow-y-auto p-8">
+          {children}
+        </div>
       </main>
     </>
   )
