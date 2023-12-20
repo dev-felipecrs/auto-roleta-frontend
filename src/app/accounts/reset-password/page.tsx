@@ -1,5 +1,5 @@
-import { notFound, redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
+import { notFound, redirect } from 'next/navigation'
 
 import { prisma } from '@/prisma'
 import { authOptions } from '@/constants'

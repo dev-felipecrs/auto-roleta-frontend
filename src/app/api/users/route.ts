@@ -1,4 +1,5 @@
 import { hash } from 'bcrypt'
+
 import { prisma } from '@/prisma'
 
 export async function POST(request: Request) {

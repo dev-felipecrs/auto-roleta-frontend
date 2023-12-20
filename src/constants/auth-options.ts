@@ -1,6 +1,6 @@
-import { compare } from 'bcrypt'
-import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { AuthOptions } from 'next-auth'
+import { compare } from 'bcrypt'
 
 import { prisma } from '@/prisma'
 

@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 import { authOptions } from '@/constants'
 import { ForgotPasswordForm } from '@/components/pages/accounts/forgot-password'

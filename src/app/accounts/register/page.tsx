@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 import { authOptions } from '@/constants'
 import { RegisterForm } from '@/components/pages/accounts/register'

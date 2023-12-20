@@ -1,5 +1,5 @@
-import { Toaster } from 'sonner'
 import { twMerge } from 'tailwind-merge'
+import { Toaster } from 'sonner'
 import { Poppins } from 'next/font/google'
 
 import './globals.css'
