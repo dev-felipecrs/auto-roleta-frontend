@@ -280,7 +280,7 @@ export function RegisterForm() {
               </svg>
             </button>
           }
-          error={formState.errors.password?.message}
+          error={formState.errors.confirmPassword?.message}
           {...register('confirmPassword')}
         />
 
