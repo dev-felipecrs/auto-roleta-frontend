@@ -29,6 +29,7 @@ export function Sidebar() {
         <ActiveLink
           href="/dashboard/analysis"
           className="flex h-[52px] items-center gap-4 pl-[26px]"
+          disabled
         >
           <Chart set="bold" primaryColor="#383c48" />
           <span className="text-sm font-medium text-[#c6c6c7]">Análises</span>

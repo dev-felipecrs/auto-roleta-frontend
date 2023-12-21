@@ -4,15 +4,18 @@ import { useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { usePathname } from 'next/navigation'
 import Link, { LinkProps } from 'next/link'
+import cn from 'classnames'
 
 interface ActiveLinkProps extends LinkProps {
   href: string
+  disabled?: boolean
   className?: string
   children: React.ReactNode
 }
 
 export function ActiveLink({
   href,
+  disabled = false,
   children,
   className = '',
   ...rest
@@ -26,6 +29,8 @@ export function ActiveLink({
     return pathname + '/' === newHref
   }, [href, pathname])
 
+  console.log({ disabled })
+
   return (
     <Link
       href={href}
@@ -33,9 +38,9 @@ export function ActiveLink({
         isActive
           ? twMerge(
               className,
-              'relative bg-[#1c1d21] after:absolute after:right-0 after:top-0 after:h-full after:w-[3px] after:rounded-sm after:bg-[#e51e3e]',
+              'relative bg-[#1c1d21] after:absolute after:right-0 after:top-0 after:h-full after:w-[3px] after:rounded-sm after:bg-[#e51e3e] disabled:cursor-not-allowed disabled:opacity-50',
             )
-          : className
+          : cn(className, { 'cursor-not-allowed opacity-50': disabled })
       }
       {...rest}
     >
