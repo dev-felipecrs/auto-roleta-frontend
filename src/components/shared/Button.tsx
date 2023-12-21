@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({
   children,
-  isLoading = true,
+  isLoading = false,
   type = 'button',
   ...rest
 }: ButtonProps) {
