@@ -14,7 +14,7 @@ import { Button, Input } from '@/components/shared'
 
 const LoginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
-  password: z.string(),
+  password: z.string().min(6, 'A senha precisa ter, no mínimo, 6 caracteres'),
 })
 
 export function LoginForm() {

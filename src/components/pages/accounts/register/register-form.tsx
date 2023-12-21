@@ -15,8 +15,8 @@ import { Button, Input } from '@/components/shared'
 const RegisterSchema = z
   .object({
     email: z.string().email({ message: 'E-mail inválido' }),
-    password: z.string(),
-    confirmPassword: z.string(),
+    password: z.string().min(6, 'A senha precisa ter, no mínimo, 6 caracteres'),
+    confirmPassword: z.string().min(6, 'A senha precisa ter, no mínimo, 6 caracteres'),
     acceptTerms: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
