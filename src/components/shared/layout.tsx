@@ -15,21 +15,17 @@ export function Layout({ children }: LayoutProps) {
   }
 
   return (
-    <>
-      <main className="flex h-full min-h-screen w-full flex-col">
-        <Header
-          sidebarIsVisible={sidebarIsVisible}
-          handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
-        />
-        <div className="grid h-full w-full grid-cols-[auto_1fr]">
-          <div className="top-0 hidden h-full sm:block">
-            <Sidebar />
-          </div>
-          <div className="max-h-device-height-without-header overflow-y-auto">
-            {children}
-          </div>
+    <main className="flex h-screen flex-col overflow-hidden">
+      <Header
+        sidebarIsVisible={sidebarIsVisible}
+        handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
+      />
+      <div className="flex flex-1 overflow-hidden">
+        <div className="hidden overflow-y-auto sm:block">
+          <Sidebar />
         </div>
-      </main>
-    </>
+        <div className="flex-1 overflow-y-auto">{children}</div>
+      </div>
+    </main>
   )
 }
