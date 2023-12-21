@@ -225,7 +225,7 @@ export function RegisterForm() {
         Já tem uma conta?{' '}
         <Link
           href="/accounts/login"
-          className="text-[#e51e3e] transition-all hover:opacity-75"
+          className="text-[#e51e3e] transition-all hover:underline hover:opacity-75"
         >
           Entre aqui
         </Link>
