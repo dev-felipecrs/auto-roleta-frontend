@@ -38,8 +38,9 @@ export function Plan({
         <strong className="mt-1 block text-center text-[1.75rem] font-medium text-white">
           {name}
         </strong>
-        <strong className="mt-2 block text-center text-[1.75rem] font-medium text-white">
-          R$ {formatNumber(price)}/{period}
+        <strong className="mt-2 block text-center text-lg font-medium text-white">
+          R$ <span className="text-[1.75rem]">{formatNumber(price)}</span>/
+          {period}
         </strong>
       </header>
 
