@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </div>
           <input
             type={type}
-            className="h-[3.25rem] w-full rounded-lg border-0 bg-[#1e1e1e] py-2 pl-14 pr-12 text-white transition-all placeholder:text-[#abafB1] hover:opacity-75 focus:ring-[#e51e3e]"
+            className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] py-2 pl-14 pr-12 text-white transition-opacity placeholder:text-[#abafB1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0"
             ref={ref}
             {...rest}
           />
