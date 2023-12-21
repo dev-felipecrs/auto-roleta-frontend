@@ -208,7 +208,15 @@ export function RegisterForm() {
             />
           </div>
           <label htmlFor="terms" className="text-sm font-medium text-[#abafb1]">
-            Li e concordo com os termos e condições.
+            Li e concordo com os{' '}
+            <a
+              href="/docs/termos-e-condicoes-auto-roleta.pdf"
+              download
+              className="text-[#e51e3e] transition-all hover:underline hover:opacity-75"
+            >
+              termos e condições
+            </a>
+            .
           </label>
         </div>
       </div>
