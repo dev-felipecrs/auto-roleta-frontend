@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Image from 'next/image'
 
 import { Hamburguer } from './hamburguer'
@@ -19,9 +20,12 @@ export function Header({
           handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
         />
 
-        <div className="relative h-6 w-32 lg:h-12 lg:w-40">
+        <Link
+          href="/dashboard"
+          className="relative block h-6 w-32 lg:h-12 lg:w-40"
+        >
           <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
-        </div>
+        </Link>
       </div>
     </header>
   )
