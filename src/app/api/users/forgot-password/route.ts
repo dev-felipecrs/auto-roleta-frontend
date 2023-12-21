@@ -42,8 +42,6 @@ export async function POST(request: Request) {
       react: ForgotPasswordTemplate({ link }),
     })
 
-    console.log({ result })
-
     if (result.error) {
       throw new Error(result.error.message)
     }

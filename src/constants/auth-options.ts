@@ -23,15 +23,11 @@ export const authOptions = {
             },
           })
 
-          console.log({ user })
-
           if (!user) {
             return null
           }
 
           const passwordsMatch = await compare(password, user.password)
-
-          console.log({ passwordsMatch })
 
           if (!passwordsMatch) {
             return null
@@ -43,7 +39,6 @@ export const authOptions = {
             email: user.email,
           }
         } catch (error) {
-          console.log('Error: ', error)
           return null
         }
       },
