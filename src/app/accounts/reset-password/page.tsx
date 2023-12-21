@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth'
 import { notFound, redirect } from 'next/navigation'
 
-import { prisma } from '@/prisma'
 import { authOptions } from '@/constants'
+import { prisma } from '@/config/prisma'
 import { ResetPasswordForm } from '@/components/pages/accounts/reset-password'
 
 interface ResetPasswordProps {

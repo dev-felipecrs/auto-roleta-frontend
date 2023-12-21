@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 import crypto from 'node:crypto'
 
-import { prisma } from '@/prisma'
+import { prisma } from '@/config/prisma'
 import { ForgotPasswordTemplate } from '@/components/templates'
 
 const resend = new Resend(process.env.RESEND_API_KEY)

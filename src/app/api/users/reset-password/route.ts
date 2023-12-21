@@ -1,6 +1,6 @@
 import { hash } from 'bcrypt'
 
-import { prisma } from '@/prisma'
+import { prisma } from '@/config/prisma'
 
 export async function POST(request: Request) {
   const { email, token, password } = await request.json()
