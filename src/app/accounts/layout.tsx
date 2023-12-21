@@ -9,7 +9,7 @@ export default async function AccountsLayout({
 }: AccountsLayoutProps) {
   return (
     <main className="flex h-full min-h-screen w-full flex-col items-center">
-      <Header />
+      <Header hasHamburguer={false} />
       <div className="flex w-full flex-grow items-center justify-center px-8 py-4">
         {children}
       </div>
