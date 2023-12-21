@@ -8,13 +8,11 @@ export default async function AccountsLayout({
   children,
 }: AccountsLayoutProps) {
   return (
-    <>
-      <main className="h-screen">
-        <Header />
-        <div className="flex flex-col items-center justify-center overflow-y-auto p-8">
-          {children}
-        </div>
-      </main>
-    </>
+    <main className="flex h-full min-h-screen w-full flex-col items-center">
+      <Header />
+      <div className="flex w-full flex-grow items-center justify-center px-8">
+        {children}
+      </div>
+    </main>
   )
 }

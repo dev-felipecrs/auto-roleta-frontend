@@ -50,7 +50,7 @@ export function LoginForm() {
 
   return (
     <form
-      className="flex w-[317px] flex-col items-center rounded-xl bg-[#27282d] px-5 py-11 sm:w-[443px] sm:px-8"
+      className="flex flex-col items-center rounded-xl bg-[#27282d] px-5 py-11 sm:px-8"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="relative h-[3.125rem] w-[3.125rem]">
