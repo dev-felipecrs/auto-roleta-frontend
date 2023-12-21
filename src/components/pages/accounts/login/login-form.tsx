@@ -117,12 +117,14 @@ export function LoginForm() {
           {...register('password')}
         />
 
-        <Link
-          href="/accounts/forgot-password"
-          className="text-end text-sm text-[#e51e3e] transition-all hover:underline hover:opacity-75"
-        >
-          Esqueci a senha
-        </Link>
+        <div className="flex items-center justify-end">
+          <Link
+            href="/accounts/forgot-password"
+            className="text-sm text-[#e51e3e] transition-all hover:underline hover:opacity-75"
+          >
+            Esqueci a senha
+          </Link>
+        </div>
       </div>
 
       <span className="my-8 text-center text-sm text-[#abafb1]">
