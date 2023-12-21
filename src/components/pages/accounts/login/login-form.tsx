@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { z } from 'zod'
 import { toast } from 'sonner'
+import { Lock, Message } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -67,71 +68,14 @@ export function LoginForm() {
         <Input
           type="email"
           placeholder="E-mail"
-          leftElement={
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.9026 8.85115L13.4593 12.4642C12.6198 13.1302 11.4387 13.1302 10.5992 12.4642L6.11841 8.85115"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M16.9089 21C19.9502 21.0084 22 18.5095 22 15.4384V8.57001C22 5.49883 19.9502 3 16.9089 3H7.09114C4.04979 3 2 5.49883 2 8.57001V15.4384C2 18.5095 4.04979 21.0084 7.09114 21H16.9089Z"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          }
+          leftElement={<Message set="light" primaryColor="#6E7079" size={24} />}
           error={formState.errors.email?.message}
           {...register('email')}
         />
         <Input
           type={passwordIsVisible ? 'text' : 'password'}
           placeholder="Senha"
-          leftElement={
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.4235 9.4478V7.3008C16.4235 4.7878 14.3855 2.7498 11.8725 2.7498C9.35949 2.7388 7.31349 4.7668 7.30249 7.2808V7.3008V9.4478"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M15.6832 21.2496H8.04224C5.94824 21.2496 4.25024 19.5526 4.25024 17.4576V13.1686C4.25024 11.0736 5.94824 9.37659 8.04224 9.37659H15.6832C17.7772 9.37659 19.4752 11.0736 19.4752 13.1686V17.4576C19.4752 19.5526 17.7772 21.2496 15.6832 21.2496Z"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M11.8629 14.2027V16.4237"
-                stroke="#6E7079"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          }
+          leftElement={<Lock set="light" primaryColor="#6E7079" size={24} />}
           rightElement={
             <button
               type="button"
