@@ -1,11 +1,11 @@
 'use client'
 import { z } from 'zod'
-import { toast } from 'sonner'
 import { Message } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
 
 const ForgotPasswordSchema = z.object({

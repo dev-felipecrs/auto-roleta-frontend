@@ -2,7 +2,6 @@
 import { useState } from 'react'
 
 import { z } from 'zod'
-import { toast } from 'sonner'
 import { Lock, Message } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
@@ -11,6 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
 
 const LoginSchema = z.object({

@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={twMerge('bg-[#1c1d21]', poppins.className)}>
         {children}
-        <Toaster position="bottom-center" richColors />
+        <Toaster position="bottom-center" richColors duration={1000000000} />
       </body>
     </html>
   )

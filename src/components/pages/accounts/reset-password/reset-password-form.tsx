@@ -2,13 +2,13 @@
 import { useState } from 'react'
 
 import { z } from 'zod'
-import { toast } from 'sonner'
 import { Lock } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
 
 interface ResetPasswordFormProps {
