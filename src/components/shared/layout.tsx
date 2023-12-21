@@ -11,20 +11,24 @@ export function Layout({ children }: LayoutProps) {
   const [sidebarIsVisible, setSidebarIsVisible] = useState(false)
 
   const handleSidebarVisibilityToggle = () => {
-    setSidebarIsVisible((visibility) => !visibility)
+    setSidebarIsVisible(!sidebarIsVisible)
   }
 
   return (
     <>
-      <Header
-        sidebarIsVisible={sidebarIsVisible}
-        handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
-      />
-      <main className="grid grid-cols-[auto,1fr]">
-        <div className="hidden lg:block">
-          <Sidebar />
+      <main className="flex h-full min-h-screen w-full flex-col">
+        <Header
+          sidebarIsVisible={sidebarIsVisible}
+          handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
+        />
+        <div className="grid h-full w-full grid-cols-[auto_1fr]">
+          <div className="top-0 hidden h-full lg:block">
+            <Sidebar />
+          </div>
+          <div className="max-h-device-height-without-header overflow-y-auto">
+            {children}
+          </div>
         </div>
-        <div className="h-screen">{children}</div>
       </main>
     </>
   )

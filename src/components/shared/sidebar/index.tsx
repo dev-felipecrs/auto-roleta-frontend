@@ -51,7 +51,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
         </ActiveLink>
 
         <ActiveLink
-          href="/dashboard/analysis"
+          href="/analysis"
           className="flex h-[52px] items-center gap-4 pl-[26px]"
           disabled
         >
@@ -60,7 +60,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
         </ActiveLink>
 
         <ActiveLink
-          href="/dashboard/plans"
+          href="/plans"
           className="flex h-[52px] items-center gap-4 pl-[26px]"
         >
           <Discount set="bold" primaryColor="#383c48" />
