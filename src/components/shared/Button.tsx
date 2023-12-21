@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({
   children,
-  isLoading = false,
+  isLoading = true,
   type = 'button',
   ...rest
 }: ButtonProps) {
@@ -25,7 +25,7 @@ export function Button({
     >
       {isLoading && (
         <svg
-          className="h-5 w-5 animate-spin text-white"
+          className="h-5 w-5 animate-[spin_500ms_linear_infinite] text-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
