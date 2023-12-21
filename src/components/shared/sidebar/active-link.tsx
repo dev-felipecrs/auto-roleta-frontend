@@ -29,8 +29,6 @@ export function ActiveLink({
     return pathname + '/' === newHref
   }, [href, pathname])
 
-  console.log({ disabled })
-
   return (
     <Link
       href={href}

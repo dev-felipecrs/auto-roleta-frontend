@@ -1,21 +1,45 @@
 'use client'
 import { Category, Chart, Discount, Logout } from 'react-iconly'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 
 import { Button } from '@/components/shared'
 
 import { ActiveLink } from './active-link'
 
-export function Sidebar() {
+interface SidebarProps {
+  handleSidebarVisibilityToggle?(): void
+}
+
+export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
   const handleLogout = async () => {
     await signOut()
   }
 
   return (
     <aside className="grid h-full w-56 grid-rows-[auto_1fr_auto] border-r-[1px] border-r-[#ffffff26] bg-[#17181d] pt-6">
-      <header className="mb-[38px] px-8">
-        <Button className="text-xs">Contatar Suporte</Button>
+      <header className="mx-auto mb-12 flex items-center gap-4 lg:hidden">
+        <button
+          type="button"
+          className="flex items-center justify-center transition-all hover:opacity-75"
+          onClick={handleSidebarVisibilityToggle}
+        >
+          <Image
+            src="/icons/list.svg"
+            alt="Abrir sidebar"
+            width={24}
+            height={24}
+          />
+        </button>
+
+        <div className="relative h-6 w-32">
+          <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
+        </div>
       </header>
+
+      <div className="mb-[38px] px-8">
+        <Button className="text-xs">Contatar Suporte</Button>
+      </div>
 
       <nav className="h-full">
         <ActiveLink
