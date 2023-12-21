@@ -203,7 +203,7 @@ export function RegisterForm() {
             <input
               id="terms"
               type="checkbox"
-              className="h-4 w-4 rounded border-[#8E8E8E] bg-[#27282D] text-[#e51e3e] focus:ring-[#e51e3e]"
+              className="h-4 w-4 rounded border-[#8E8E8E] bg-[#27282D] text-[#e51e3e] focus:ring-[#e51e3e] focus:ring-offset-0"
               {...register('acceptTerms')}
             />
           </div>
