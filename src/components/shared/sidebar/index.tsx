@@ -18,7 +18,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
 
   return (
     <aside className="grid h-full w-56 grid-rows-[auto_1fr_auto] border-r-[1px] border-r-[#ffffff26] bg-[#17181d] pt-6">
-      <header className="mx-auto mb-12 flex items-center gap-4 lg:hidden">
+      <header className="mx-auto mb-12 flex items-center gap-4 sm:hidden">
         <button
           type="button"
           className="flex items-center justify-center transition-all hover:opacity-75"

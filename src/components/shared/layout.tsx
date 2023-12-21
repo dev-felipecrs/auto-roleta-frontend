@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps) {
           handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
         />
         <div className="grid h-full w-full grid-cols-[auto_1fr]">
-          <div className="top-0 hidden h-full lg:block">
+          <div className="top-0 hidden h-full sm:block">
             <Sidebar />
           </div>
           <div className="max-h-device-height-without-header overflow-y-auto">

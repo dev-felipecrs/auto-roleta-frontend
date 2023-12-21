@@ -16,7 +16,7 @@ export function Hamburguer({
     <>
       <button
         type="button"
-        className="flex items-center justify-center transition-all hover:opacity-75 lg:hidden"
+        className="flex items-center justify-center transition-all hover:opacity-75 sm:hidden"
         onClick={handleSidebarVisibilityToggle}
       >
         <Image
@@ -29,7 +29,7 @@ export function Hamburguer({
 
       {sidebarIsVisible && (
         <div
-          className="fixed left-0 top-0 z-20 h-screen w-screen bg-black bg-opacity-70 lg:hidden"
+          className="fixed left-0 top-0 z-20 h-screen w-screen bg-black bg-opacity-70 sm:hidden"
           onClick={handleSidebarVisibilityToggle}
         >
           <Sidebar

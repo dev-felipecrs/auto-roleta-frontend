@@ -14,7 +14,7 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="flex h-20 w-full items-center border-b-[1px] border-[#ffffff26] bg-[#1c1d21] px-8 py-4">
-      <div className="flex items-center gap-4 lg:gap-0">
+      <div className="flex items-center gap-4 sm:gap-0">
         <Hamburguer
           sidebarIsVisible={sidebarIsVisible}
           handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
@@ -22,7 +22,7 @@ export function Header({
 
         <Link
           href="/dashboard"
-          className="relative block h-6 w-32 lg:h-12 lg:w-40"
+          className="relative block h-6 w-32 sm:h-12 sm:w-40"
         >
           <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
         </Link>
