@@ -119,7 +119,7 @@ export function LoginForm() {
 
         <Link
           href="/accounts/forgot-password"
-          className="text-end text-sm text-[#e51e3e] transition-all hover:opacity-75"
+          className="text-end text-sm text-[#e51e3e] transition-all hover:underline hover:opacity-75"
         >
           Esqueci a senha
         </Link>
@@ -129,7 +129,7 @@ export function LoginForm() {
         Ainda não tem uma conta?{' '}
         <Link
           href="/accounts/register"
-          className="text-[#e51e3e] transition-all hover:opacity-75"
+          className="text-[#e51e3e] transition-all hover:underline hover:opacity-75"
         >
           Criar conta
         </Link>
