@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
 
@@ -18,7 +19,11 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="flex h-20 w-full items-center border-b-[1px] border-[#ffffff26] bg-[#1c1d21] px-8 py-4">
-      <div className="flex items-center gap-[4.25rem]">
+      <div
+        className={cn('flex items-center gap-[4.25rem]', {
+          'flex-1 justify-center sm:flex-none sm:justify-normal': simpleVersion,
+        })}
+      >
         <div className="flex items-center gap-4 sm:gap-0">
           {!simpleVersion && (
             <Hamburguer
