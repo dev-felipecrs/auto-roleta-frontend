@@ -37,7 +37,7 @@ export function Plan({ plan }: PlanProps) {
   if (!userPlan) return <></>
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="hidden items-center gap-1 sm:flex">
       <div className="relative h-4 w-7">
         <Image src={userPlan.image} alt={userPlan.text} fill />
       </div>
