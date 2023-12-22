@@ -17,7 +17,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
   }
 
   return (
-    <aside className="grid h-full w-56 grid-rows-[5rem_auto_1fr_auto] border-r-[1px] border-r-[#ffffff26] bg-[#17181d] pt-6 sm:grid-rows-[auto_1fr_auto]">
+    <aside className="animate-fade-in-left grid h-full w-56 grid-rows-[5rem_auto_1fr_auto] border-r-[1px] border-r-[#ffffff26] bg-[#17181d] pt-6 sm:animate-none sm:grid-rows-[auto_1fr_auto]">
       <header className="mb-12 flex items-center gap-4 pl-8 sm:hidden">
         <button
           type="button"

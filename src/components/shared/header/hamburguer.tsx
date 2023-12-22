@@ -29,7 +29,7 @@ export function Hamburguer({
 
       {sidebarIsVisible && (
         <div
-          className="fixed left-0 top-0 z-20 h-screen w-screen bg-black bg-opacity-70 sm:hidden"
+          className=" fixed left-0 top-0 z-20 h-screen w-screen bg-black bg-opacity-70 sm:hidden"
           onClick={handleSidebarVisibilityToggle}
         >
           <Sidebar
