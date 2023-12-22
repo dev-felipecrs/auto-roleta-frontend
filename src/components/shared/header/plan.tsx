@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import cn from 'classnames'
 
 import { mockUser } from '@/app/user-mock'
 
@@ -11,23 +12,19 @@ const PLANS: Record<
   {
     image: string
     text: string
-    color: string
   }
 > = {
   trial: {
     image: '/icons/plans/trial.svg',
     text: 'Trial',
-    color: '#848484',
   },
   basic: {
     image: '/icons/plans/basic.svg',
     text: 'Basic',
-    color: '#FFCE50',
   },
   premium: {
     image: '/icons/plans/premium.svg',
     text: 'Premium',
-    color: '#0775C7',
   },
 }
 
@@ -41,7 +38,13 @@ export function Plan({ plan }: PlanProps) {
       <div className="relative h-4 w-7">
         <Image src={userPlan.image} alt={userPlan.text} fill />
       </div>
-      <span className={`text-xs font-medium text-[${userPlan.color}]`}>
+      <span
+        className={cn('text-xs font-medium', {
+          'text-[#848484]': plan === 'trial',
+          'text-[#FFCE50]': plan === 'basic',
+          'text-[#0775C7]': plan === 'premium',
+        })}
+      >
         {userPlan.text}
       </span>
     </div>
