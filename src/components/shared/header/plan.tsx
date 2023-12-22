@@ -38,7 +38,9 @@ export function Plan({ plan }: PlanProps) {
 
   return (
     <div className="flex items-center gap-1">
-      <Image src={userPlan.image} alt={userPlan.text} width={26} height={14} />
+      <div className="relative h-4 w-7">
+        <Image src={userPlan.image} alt={userPlan.text} fill />
+      </div>
       <span className={`text-xs font-medium text-[${userPlan.color}]`}>
         {userPlan.text}
       </span>

@@ -10,6 +10,9 @@ const config: Config = {
     extend: {
       animation: {
         'fade-in-left': 'fadeInLeft 200ms ease-in-out',
+        show: 'show 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'show-with-moviment':
+          'showWithMoviment 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         fadeInLeft: {
@@ -18,6 +21,24 @@ const config: Config = {
           },
           '100%': {
             transform: 'translateX(0)',
+          },
+        },
+        show: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
+        showWithMoviment: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate(-50%, -48%) scale(0.96)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate(-50%, -50%) scale(1)',
           },
         },
       },

@@ -7,6 +7,7 @@ import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
+import { ConnectWithBroker } from './connect-with-broker'
 
 interface HeaderProps {
   simpleVersion?: boolean
@@ -57,8 +58,9 @@ export function Header({
         )}
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-7">
         <Plan plan={mockUser.plan} />
+        <ConnectWithBroker />
       </div>
     </header>
   )
