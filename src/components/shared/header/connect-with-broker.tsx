@@ -41,9 +41,9 @@ export function ConnectWithBroker() {
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="animate-show fixed inset-0 bg-black bg-opacity-50" />
+        <Dialog.Overlay className="fixed inset-0 animate-show bg-black bg-opacity-50" />
 
-        <Dialog.Content className="animate-show-with-moviment fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
+        <Dialog.Content className="fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 animate-show-with-moviment flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
           <header className="flex flex-col items-center">
             <Image
               src="/images/shared/logo-simple.svg"
