@@ -6,13 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      maxHeight: {
-        'device-height-without-header': 'calc(100dvh - 5rem)',
-      },
-    },
-  },
+  theme: {},
   plugins: [require('@tailwindcss/forms')],
 }
 export default config
