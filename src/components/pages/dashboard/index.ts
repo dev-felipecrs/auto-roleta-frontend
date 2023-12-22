@@ -1,3 +1,4 @@
+export * from './bets'
 export * from './bot'
 export * from './card'
 export * from './current-balance'

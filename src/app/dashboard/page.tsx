@@ -1,5 +1,11 @@
 import { Layout } from '@/components/shared'
-import { Bot, Card, CurrentBalance, Score } from '@/components/pages/dashboard'
+import {
+  Bets,
+  Bot,
+  Card,
+  CurrentBalance,
+  Score,
+} from '@/components/pages/dashboard'
 
 export default function Dashboard() {
   return (
@@ -29,7 +35,31 @@ export default function Dashboard() {
 
         <div className="flex flex-col-reverse gap-4">
           <Card title="Apostas">
-            <div></div>
+            <Bets
+              bets={[
+                {
+                  color: 'red',
+                  entry: 100,
+                  gains: 100,
+                  result: false,
+                  time: new Date(),
+                },
+                {
+                  color: 'red',
+                  entry: 100,
+                  gains: 100,
+                  result: false,
+                  time: new Date(),
+                },
+                {
+                  color: 'black',
+                  entry: 100,
+                  gains: 80,
+                  result: true,
+                  time: new Date(),
+                },
+              ]}
+            />
           </Card>
 
           <Card title="Configurações">
