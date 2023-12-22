@@ -1,9 +1,9 @@
 type User = {
-  balance: 1000
+  balance: number
   plan: 'trial' | 'basic' | 'premium'
 }
 
-export const MockUser: User = {
+export const mockUser: User = {
   balance: 1000,
   plan: 'trial',
 }

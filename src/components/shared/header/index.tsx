@@ -3,7 +3,9 @@ import Image from 'next/image'
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
+import { mockUser } from '@/app/user-mock'
 
+import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
 
 interface HeaderProps {
@@ -18,7 +20,7 @@ export function Header({
   handleSidebarVisibilityToggle,
 }: HeaderProps) {
   return (
-    <header className="flex h-20 w-full items-center border-b-[1px] border-[#ffffff26] bg-[#1c1d21] px-8 py-4">
+    <header className="flex h-20 w-full items-center justify-between border-b-[1px] border-[#ffffff26] bg-[#1c1d21] px-8 py-4">
       <div
         className={cn('flex items-center gap-[4.25rem]', {
           'flex-1 justify-center sm:flex-none sm:justify-normal': simpleVersion,
@@ -53,6 +55,10 @@ export function Header({
             </span>
           </div>
         )}
+      </div>
+
+      <div className="flex items-center">
+        <Plan plan={mockUser.plan} />
       </div>
     </header>
   )
