@@ -8,12 +8,12 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <Card title="Placar">
-              <Score />
+              <Score wins={14} losses={14} assertiveness={50} />
             </Card>
 
             <div className="flex gap-4">
               <Card title="Saldo atual">
-                <CurrentBalance />
+                <CurrentBalance balance={1234.24} />
               </Card>
 
               <Card title="BOT">
