@@ -1,5 +1,5 @@
 import { Layout } from '@/components/shared'
-import { Card, Score } from '@/components/pages/dashboard'
+import { Card, CurrentBalance, Score } from '@/components/pages/dashboard'
 
 export default function Dashboard() {
   return (
@@ -13,7 +13,7 @@ export default function Dashboard() {
 
             <div className="flex gap-4">
               <Card title="Saldo atual">
-                <div></div>
+                <CurrentBalance />
               </Card>
 
               <Card title="BOT">
