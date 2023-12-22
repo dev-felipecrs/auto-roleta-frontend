@@ -43,7 +43,7 @@ export function ConnectWithBroker() {
       <Dialog.Portal>
         <Dialog.Overlay className="animate-show fixed inset-0 bg-black bg-opacity-50" />
 
-        <Dialog.Content className="animate-show-with-moviment fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-[#27282D] px-8 py-11">
+        <Dialog.Content className="animate-show-with-moviment fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
           <header className="flex flex-col items-center">
             <Image
               src="/images/shared/logo-simple.svg"
@@ -62,7 +62,7 @@ export function ConnectWithBroker() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-10 flex flex-col gap-6"
+            className="mt-10 flex flex-1 flex-col gap-6 sm:w-96"
           >
             <Input
               type="email"
@@ -97,7 +97,7 @@ export function ConnectWithBroker() {
               {...register('password')}
             />
 
-            <Button type="submit" className="mt-6 w-96">
+            <Button type="submit" className="mt-6">
               Conectar
             </Button>
           </form>
