@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
@@ -77,7 +78,9 @@ export function Plan({
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        <Button className="w-56">Assinar</Button>
+        <Link href="#">
+          <Button className="w-56">Assinar</Button>
+        </Link>
         <span className="max-w-[11.25rem] text-center text-xs font-medium text-[#777a85]">
           Utilize o mesmo email da sua conta durante o checkout.
         </span>
