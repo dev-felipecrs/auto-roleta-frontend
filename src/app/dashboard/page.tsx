@@ -1,5 +1,5 @@
 import { Layout } from '@/components/shared'
-import { Card, CurrentBalance, Score } from '@/components/pages/dashboard'
+import { Bot, Card, CurrentBalance, Score } from '@/components/pages/dashboard'
 
 export default function Dashboard() {
   return (
@@ -17,7 +17,7 @@ export default function Dashboard() {
               </Card>
 
               <Card title="BOT">
-                <div></div>
+                <Bot status="offline" />
               </Card>
             </div>
           </div>
