@@ -11,7 +11,7 @@ import {
 export default function Dashboard() {
   return (
     <Layout>
-      <div className="flex flex-col gap-4 px-8 pb-10 pt-6">
+      <div className="grid grid-cols-1 gap-4 px-8 pb-10 pt-6 lg:grid-cols-[1fr_20.5rem]">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             <Card title="Placar">
@@ -34,7 +34,7 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        <div className="flex flex-col-reverse gap-4">
+        <div className="flex flex-col gap-4 lg:flex-col-reverse">
           <Card title="Apostas">
             <Bets
               bets={[
