@@ -36,7 +36,7 @@ export function ConnectWithBroker() {
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <Button type="button" className="w-[102px] text-xs">
-          Conectar-se
+          Conectar
         </Button>
       </Dialog.Trigger>
 
