@@ -12,7 +12,7 @@ import { Button, Input } from '@/components/shared'
 
 const ConnectWithBrokerSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
-  password: z.string().min(6, 'A senha precisa ter, no mínimo, 6 caracteres'),
+  password: z.string().min(1, 'Campo obrigatório'),
 })
 
 export function ConnectWithBroker() {
