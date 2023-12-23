@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { CurrencyInput, Switch } from '@/components/shared'
+import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
 
 const ConfigurationsSchema = z.object({
@@ -69,13 +69,18 @@ export function Configurations() {
         <Controller
           control={control}
           name="strategy"
-          render={({ field: { ref, ...rest }, formState }) => (
-            <CurrencyInput
+          render={({ field, formState }) => (
+            <Select
               label="Estratégia"
+              placeholder="Escolher"
+              items={[
+                { label: 'Item 1', value: 'item-1' },
+                { label: 'Item 2', value: 'item-2' },
+              ]}
               containerClassname="col-span-2"
-              getInputRef={ref}
               error={formState.errors.strategy?.message}
-              {...rest}
+              onValueChange={field.onChange}
+              {...field}
             />
           )}
         />
@@ -96,12 +101,17 @@ export function Configurations() {
         <Controller
           control={control}
           name="gales"
-          render={({ field: { ref, ...rest }, formState }) => (
-            <CurrencyInput
+          render={({ field, formState }) => (
+            <Select
               label="Gales"
-              getInputRef={ref}
+              placeholder="Escolher"
+              items={[
+                { label: 'Item 1', value: 'item-1' },
+                { label: 'Item 2', value: 'item-2' },
+              ]}
               error={formState.errors.gales?.message}
-              {...rest}
+              onValueChange={field.onChange}
+              {...field}
             />
           )}
         />
