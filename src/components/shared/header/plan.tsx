@@ -35,9 +35,8 @@ export function Plan({ plan }: PlanProps) {
 
   return (
     <div className="hidden items-center gap-1 sm:flex">
-      <div className="relative h-4 w-7">
-        <Image src={userPlan.image} alt={userPlan.text} fill />
-      </div>
+      <Image src={userPlan.image} alt={userPlan.text} width={28} height={16} />
+
       <span
         className={cn('text-xs font-medium', {
           'text-[#848484]': plan === 'trial',
