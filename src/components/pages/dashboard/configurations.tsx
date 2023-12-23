@@ -1,148 +1,137 @@
 'use client'
+import { ChangeEvent, useRef, useState } from 'react'
+
 import { z } from 'zod'
-import { NumericFormat } from 'react-number-format'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { Switch } from '@/components/shared'
+import { CurrencyInput, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
 
 const ConfigurationsSchema = z.object({
-  strategy: z.string(),
+  strategy: z.string({ required_error: 'Campo obrigatório' }),
   entry: z
-    .string()
+    .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
     ),
-  gales: z.string(),
+  gales: z.string({ required_error: 'Campo obrigatório' }),
   stopWin: z
     .string()
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
     ),
   stopLoss: z
-    .string()
+    .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
     ),
 })
 
 export function Configurations() {
+  const [botIsActivated, setBotIsActivated] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+
   const { control, handleSubmit } = useForm<
     z.infer<typeof ConfigurationsSchema>
   >({
     resolver: zodResolver(ConfigurationsSchema),
+    disabled: botIsActivated,
   })
 
+  const handleBotActivation = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked
+
+    if (isChecked) return formRef.current?.requestSubmit()
+
+    setBotIsActivated(false)
+  }
+
   const onSubmit = (data: z.infer<typeof ConfigurationsSchema>) => {
+    setBotIsActivated(true)
     console.log({ data })
   }
 
   return (
-    <Card title="Configurações" headerLeftElement={<Switch>Ativar BOT</Switch>}>
-      <div className="grid grid-cols-2 gap-4">
-        <label className="col-span-2 flex flex-col gap-2">
-          <span className="text-[10px] font-medium text-white">Estratégia</span>
-          <Controller
-            control={control}
-            name="strategy"
-            render={({ field: { ref, ...rest } }) => (
-              <NumericFormat
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="R$ "
-                decimalScale={2}
-                getInputRef={ref}
-                placeholder="R$ 00,00"
-                className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] p-4 text-xs text-white transition-opacity placeholder:text-[#abafb1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0 sm:text-sm"
-                {...rest}
-              />
-            )}
-          />
-        </label>
+    <Card
+      title="Configurações"
+      headerLeftElement={
+        <Switch checked={botIsActivated} onChange={handleBotActivation}>
+          Ativar BOT
+        </Switch>
+      }
+    >
+      <form
+        className="grid grid-cols-2 gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        ref={formRef}
+      >
+        <Controller
+          control={control}
+          name="strategy"
+          render={({ field: { ref, ...rest }, formState }) => (
+            <CurrencyInput
+              label="Estratégia"
+              containerClassname="col-span-2"
+              getInputRef={ref}
+              error={formState.errors.strategy?.message}
+              {...rest}
+            />
+          )}
+        />
 
-        <label className="flex flex-col gap-2">
-          <span className="text-[10px] font-medium text-white">
-            Valor de entrada
-          </span>
-          <Controller
-            control={control}
-            name="entry"
-            render={({ field: { ref, ...rest } }) => (
-              <NumericFormat
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="R$ "
-                decimalScale={2}
-                getInputRef={ref}
-                placeholder="R$ 00,00"
-                className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] p-4 text-xs text-white transition-opacity placeholder:text-[#abafb1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0 sm:text-sm"
-                {...rest}
-              />
-            )}
-          />
-        </label>
+        <Controller
+          control={control}
+          name="entry"
+          render={({ field: { ref, ...rest }, formState }) => (
+            <CurrencyInput
+              label="Valor de entrada"
+              getInputRef={ref}
+              error={formState.errors.entry?.message}
+              {...rest}
+            />
+          )}
+        />
 
-        <label className="flex flex-col gap-2">
-          <span className="text-[10px] font-medium text-white">Gales</span>
-          <Controller
-            control={control}
-            name="gales"
-            render={({ field: { ref, ...rest } }) => (
-              <NumericFormat
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="R$ "
-                decimalScale={2}
-                getInputRef={ref}
-                placeholder="R$ 00,00"
-                className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] p-4 text-xs text-white transition-opacity placeholder:text-[#abafb1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0 sm:text-sm"
-                {...rest}
-              />
-            )}
-          />
-        </label>
+        <Controller
+          control={control}
+          name="gales"
+          render={({ field: { ref, ...rest }, formState }) => (
+            <CurrencyInput
+              label="Gales"
+              getInputRef={ref}
+              error={formState.errors.gales?.message}
+              {...rest}
+            />
+          )}
+        />
 
-        <label className="flex flex-col gap-2">
-          <span className="text-[10px] font-medium text-white">Stop Win</span>
-          <Controller
-            control={control}
-            name="stopWin"
-            render={({ field: { ref, ...rest } }) => (
-              <NumericFormat
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="R$ "
-                decimalScale={2}
-                getInputRef={ref}
-                placeholder="R$ 00,00"
-                className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] p-4 text-xs text-white transition-opacity placeholder:text-[#abafb1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0 sm:text-sm"
-                {...rest}
-              />
-            )}
-          />
-        </label>
+        <Controller
+          control={control}
+          name="stopWin"
+          render={({ field: { ref, ...rest }, formState }) => (
+            <CurrencyInput
+              label="Stop Win"
+              getInputRef={ref}
+              error={formState.errors.stopWin?.message}
+              {...rest}
+            />
+          )}
+        />
 
-        <label className="flex flex-col gap-2">
-          <span className="text-[10px] font-medium text-white">Stop Loss</span>
-          <Controller
-            control={control}
-            name="stopLoss"
-            render={({ field: { ref, ...rest } }) => (
-              <NumericFormat
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="R$ "
-                decimalScale={2}
-                getInputRef={ref}
-                placeholder="R$ 00,00"
-                className="h-[3.25rem] w-full rounded-lg border-2 border-[#1e1e1e] bg-[#1e1e1e] p-4 text-xs text-white transition-opacity placeholder:text-[#abafb1] hover:opacity-75 focus:border-[#e51e3e] focus:ring-0 sm:text-sm"
-                {...rest}
-              />
-            )}
-          />
-        </label>
-      </div>
+        <Controller
+          control={control}
+          name="stopLoss"
+          render={({ field: { ref, ...rest }, formState }) => (
+            <CurrencyInput
+              label="Stop Loss"
+              getInputRef={ref}
+              error={formState.errors.stopLoss?.message}
+              {...rest}
+            />
+          )}
+        />
+      </form>
 
       <button type="button" onClick={handleSubmit(onSubmit)}>
         Enviar

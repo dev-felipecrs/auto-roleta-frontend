@@ -10,7 +10,7 @@ export function Switch({ children, ...rest }: SwitchProps) {
       <div className="peer h-5 w-9 rounded-full after:absolute after:start-[2px] after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-[#A6A8B1] after:transition-all after:content-[''] peer-checked:bg-[#e51e3e] peer-checked:after:translate-x-full peer-checked:after:bg-white rtl:peer-checked:after:-translate-x-full dark:bg-[#383C48]"></div>
 
       {children && (
-        <span className="ms-3 text-sm font-medium text-white">{children}</span>
+        <span className="ml-2 text-sm font-medium text-white">{children}</span>
       )}
     </label>
   )

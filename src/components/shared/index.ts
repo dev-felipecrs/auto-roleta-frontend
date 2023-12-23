@@ -1,5 +1,6 @@
 export * from './button'
 export * from './header'
+export * from './currency-input'
 export * from './input'
 export * from './sidebar'
 export * from './layout'
