@@ -3,6 +3,7 @@ import {
   Bets,
   Bot,
   Card,
+  Configurations,
   CurrentBalance,
   Score,
 } from '@/components/pages/dashboard'
@@ -62,9 +63,7 @@ export default function Dashboard() {
             />
           </Card>
 
-          <Card title="Configurações">
-            <div></div>
-          </Card>
+          <Configurations />
         </div>
       </div>
     </Layout>
