@@ -132,10 +132,6 @@ export function Configurations() {
           )}
         />
       </form>
-
-      <button type="button" onClick={handleSubmit(onSubmit)}>
-        Enviar
-      </button>
     </Card>
   )
 }
