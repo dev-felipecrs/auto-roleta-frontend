@@ -5,5 +5,5 @@ type User = {
 
 export const mockUser: User = {
   balance: 1000,
-  plan: 'basic',
+  plan: 'premium',
 }

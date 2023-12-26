@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 
 import { formatNumber } from '@/utils'
 import { UserBalanceTrack } from '@/models'
+import { mockUser } from '@/app/user-mock'
 
 const shadowData: UserBalanceTrack[] = Array.from({ length: 50 }).map(() => {
   const generateRandomNumber = (limit: number): string => {
@@ -64,6 +65,12 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
 }
 
 export function Performance() {
+  const graphicColor: Record<typeof mockUser.plan, string> = {
+    basic: '#FFCE50',
+    premium: '#0775C7',
+    trial: '#848484',
+  }
+
   const data = shadowData.map((item) => ({
     ...item,
     time: format(item.time, 'HH:mm'),
@@ -75,11 +82,19 @@ export function Performance() {
       <AreaChart data={data} width={200} height={200}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-            <stop stop-color="#FFCE50" />
-            <stop offset="1" stop-color="#FFCE50" stop-opacity="0.1" />
+            <stop stopColor={graphicColor[mockUser.plan]} />
+            <stop
+              offset="1"
+              stopColor={graphicColor[mockUser.plan]}
+              stopOpacity="0.1"
+            />
           </linearGradient>
         </defs>
-        <Area dataKey="balance" stroke="#FFCE50" fill="url(#color)" />
+        <Area
+          dataKey="balance"
+          stroke={graphicColor[mockUser.plan]}
+          fill="url(#color)"
+        />
         <XAxis
           dataKey="time"
           axisLine={false}
