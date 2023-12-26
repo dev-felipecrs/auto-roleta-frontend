@@ -45,9 +45,17 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
     const { time, value } = payload[0].payload
 
     return (
-      <div className="flex flex-col gap-2 rounded-md bg-gray-500 p-2 text-sm shadow-md">
-        <span>Horário: {time}</span>
-        <span>Saldo: R$ {formatNumber(value)}</span>
+      <div className="flex flex-col gap-2 rounded-md bg-[#1c1d21] p-2 text-sm shadow-md">
+        <span className="text-xs text-white">
+          Horário:{' '}
+          <span className="text-xs font-medium text-white">{time}</span>
+        </span>
+        <span className="text-xs text-white">
+          Saldo:{' '}
+          <span className="text-xs font-medium text-white">
+            R$ {formatNumber(value)}
+          </span>
+        </span>
       </div>
     )
   }
