@@ -52,7 +52,10 @@ export function Header({
               height={20}
             />
             <span className="text-sm font-light text-white">
-              R$ <span className="font-semibold">{formatNumber(0)}</span>
+              R${' '}
+              <span className="font-semibold">
+                {formatNumber(mockUser.balance)}
+              </span>
             </span>
           </div>
         )}

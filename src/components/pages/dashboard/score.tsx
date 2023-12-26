@@ -1,7 +1,7 @@
 interface ScoreProps {
   wins: number
   losses: number
-  assertiveness: number
+  assertiveness: string
 }
 
 export function Score({ wins, losses, assertiveness }: ScoreProps) {
