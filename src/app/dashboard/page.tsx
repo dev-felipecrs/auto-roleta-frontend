@@ -5,6 +5,7 @@ import {
   Card,
   Configurations,
   CurrentBalance,
+  Performance,
   Score,
 } from '@/components/pages/dashboard'
 
@@ -30,7 +31,7 @@ export default function Dashboard() {
           </div>
 
           <Card title="Rendimento">
-            <div></div>
+            <Performance />
           </Card>
         </div>
 
