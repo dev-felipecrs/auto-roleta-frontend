@@ -59,6 +59,7 @@ export function Select({
             'flex h-[3.25rem] w-full items-center justify-between rounded-lg bg-[#1e1e1e] px-4 py-2 text-sm text-[#A6A8B1] focus-visible:outline-none [&:not([data-placeholder])]:text-white',
             {
               'opacity-50': isDisabled,
+              'cursor-not-allowed': isDisabled,
             },
           )}
           ref={triggerRef}
