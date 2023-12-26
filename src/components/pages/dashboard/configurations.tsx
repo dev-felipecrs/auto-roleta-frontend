@@ -17,7 +17,7 @@ const ConfigurationsSchema = z.object({
     ),
   gales: z.string({ required_error: 'Campo obrigatório' }),
   stopWin: z
-    .string()
+    .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
     ),
