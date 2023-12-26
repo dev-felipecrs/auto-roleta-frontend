@@ -14,18 +14,21 @@ const ConfigurationsSchema = z.object({
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    ),
+    )
+    .refine((value) => value > 0, { message: 'Valor inválido' }),
   gales: z.string({ required_error: 'Campo obrigatório' }),
   stopWin: z
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    ),
+    )
+    .refine((value) => value > 0, { message: 'Valor inválido' }),
   stopLoss: z
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    ),
+    )
+    .refine((value) => value > 0, { message: 'Valor inválido' }),
 })
 
 export function Configurations() {
