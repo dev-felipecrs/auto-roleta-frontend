@@ -42,7 +42,7 @@ export default function Dashboard() {
             </Card>
 
             <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
-              <Card title="Saldo atual">
+              <Card title="Ganhos">
                 <CurrentBalance balance={mockUser.balance} />
               </Card>
 
