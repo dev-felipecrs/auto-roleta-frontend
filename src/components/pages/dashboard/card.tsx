@@ -7,7 +7,7 @@ interface CardProps {
 export function Card({ children, title, headerLeftElement }: CardProps) {
   return (
     <section className="flex h-full w-full flex-col gap-8 rounded-xl bg-[#17181D] p-8">
-      <header className="flex items-center justify-between">
+      <header className="flex flex-col gap-2 xs:flex-row xs:items-center xs:justify-between">
         <strong className="whitespace-nowrap text-base font-medium text-white">
           {title}
         </strong>

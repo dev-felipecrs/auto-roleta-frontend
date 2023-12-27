@@ -65,7 +65,7 @@ export function Configurations() {
       }
     >
       <form
-        className="grid grid-cols-2 gap-4"
+        className="grid grid-cols-1 gap-4 xs:grid-cols-2"
         onSubmit={handleSubmit(onSubmit)}
         ref={formRef}
       >
@@ -80,7 +80,7 @@ export function Configurations() {
                 { label: 'Item 1', value: 'item-1' },
                 { label: 'Item 2', value: 'item-2' },
               ]}
-              containerClassname="col-span-2"
+              containerClassname="xs:col-span-2"
               error={formState.errors.strategy?.message}
               onValueChange={field.onChange}
               {...field}
