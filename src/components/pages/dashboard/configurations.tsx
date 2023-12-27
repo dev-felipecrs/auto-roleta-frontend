@@ -108,12 +108,12 @@ export function Configurations() {
           name="gales"
           render={({ field, formState }) => (
             <Select
-              label="Gales"
+              label="Proteções"
               placeholder="Escolher"
               items={[
-                { label: 'Nenhum', value: '0' },
-                { label: '1 gale', value: '1' },
-                { label: '2 gales', value: '2' },
+                { label: 'Nenhuma', value: '0' },
+                { label: '1 proteção', value: '1' },
+                { label: '2 proteções', value: '2' },
               ]}
               error={formState.errors.gales?.message}
               onValueChange={field.onChange}
