@@ -9,6 +9,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Button, Input } from '@/components/shared'
+import { mockUser } from '@/app/user-mock'
 
 const ConnectWithBrokerSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -21,6 +22,10 @@ export function ConnectWithBroker() {
   const { handleSubmit, register, formState } = useForm<
     z.infer<typeof ConnectWithBrokerSchema>
   >({
+    defaultValues: {
+      email: mockUser.credentials?.email,
+      password: mockUser.credentials?.password,
+    },
     resolver: zodResolver(ConnectWithBrokerSchema),
   })
 

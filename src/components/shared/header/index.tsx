@@ -63,7 +63,7 @@ export function Header({
 
       <div className="flex items-center gap-7">
         <Plan plan={mockUser.plan} />
-        {!mockUser.credentials && <ConnectWithBroker />}
+        <ConnectWithBroker />
       </div>
     </header>
   )
