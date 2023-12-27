@@ -30,8 +30,6 @@ const shadowData: UserBalanceTrack[] = Array.from({ length: 50 }).map(() => {
   }
 })
 
-console.log({ shadowData })
-
 export type CustomTooltipItemProps = UserBalanceTrack & {
   time: string
 }
