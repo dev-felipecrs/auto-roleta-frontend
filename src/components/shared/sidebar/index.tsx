@@ -34,7 +34,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
         </button>
 
         <div className="relative h-6 w-32">
-          <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
+          <Image src="/images/shared/logo.png" alt="Auto Roleta" fill />
         </div>
       </header>
 

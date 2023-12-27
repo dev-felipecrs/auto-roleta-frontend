@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: 'Auto Roleta',
   },
   icons: {
-    icon: '/images/shared/logo-simple.svg',
+    icon: '/images/shared/logo-simple.png',
   },
 }
 
