@@ -113,7 +113,7 @@ export function Configurations() {
               items={[
                 { label: 'Nenhum', value: '0' },
                 { label: '1 gale', value: '1' },
-                { label: '2 gale', value: '2' },
+                { label: '2 gales', value: '2' },
               ]}
               error={formState.errors.gales?.message}
               onValueChange={field.onChange}
