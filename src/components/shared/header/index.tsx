@@ -61,10 +61,12 @@ export function Header({
         )}
       </div>
 
-      <div className="flex items-center gap-7">
-        <Plan plan={mockUser.plan} />
-        <ConnectWithBroker />
-      </div>
+      {!simpleVersion && (
+        <div className="flex items-center gap-7">
+          <Plan plan={mockUser.plan} />
+          <ConnectWithBroker />
+        </div>
+      )}
     </header>
   )
 }
