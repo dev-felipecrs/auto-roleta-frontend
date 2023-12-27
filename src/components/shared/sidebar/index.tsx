@@ -78,7 +78,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
           onClick={handleLogout}
         >
           <Logout set="bold" primaryColor="#383c48" />
-          <span className="text-sm font-medium text-[#c6c6c7]">Logout</span>
+          <span className="text-sm font-medium text-[#c6c6c7]">Sair</span>
         </button>
       </footer>
     </aside>
