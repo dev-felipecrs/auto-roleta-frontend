@@ -60,7 +60,7 @@ export function Configurations() {
       title="Configurações"
       headerLeftElement={
         <Switch checked={botIsActivated} onChange={handleBotActivation}>
-          Ativar BOT
+          {botIsActivated ? 'Desativar BOT' : 'Ativar BOT'}
         </Switch>
       }
     >
