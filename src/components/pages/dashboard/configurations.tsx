@@ -77,8 +77,10 @@ export function Configurations() {
               label="Estratégia"
               placeholder="Escolher"
               items={[
-                { label: 'Item 1', value: 'item-1' },
-                { label: 'Item 2', value: 'item-2' },
+                { label: '⚫🔴⚫ -> 🔴', value: 'black-red-black' },
+                { label: '🔴⚫🔴 -> ⚫', value: 'red-black-red' },
+                { label: '⚫⚫⚫ -> 🔴', value: 'black-black-black' },
+                { label: '🔴🔴🔴 -> ⚫', value: 'red-red-red' },
               ]}
               containerClassname="xs:col-span-2"
               error={formState.errors.strategy?.message}
@@ -109,8 +111,9 @@ export function Configurations() {
               label="Gales"
               placeholder="Escolher"
               items={[
-                { label: 'Item 1', value: 'item-1' },
-                { label: 'Item 2', value: 'item-2' },
+                { label: 'Nenhum', value: '0' },
+                { label: '1 gale', value: '1' },
+                { label: '2 gale', value: '2' },
               ]}
               error={formState.errors.gales?.message}
               onValueChange={field.onChange}
