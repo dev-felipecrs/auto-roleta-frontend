@@ -99,14 +99,14 @@ export function ConnectWithBroker() {
               {...register('password')}
             />
 
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-3">
               <Button type="submit" className="mt-6">
                 Conectar
               </Button>
 
               <Link
                 href="#"
-                className="flex h-[50px] w-full items-center justify-center rounded-md text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-[50px] w-full items-center justify-center rounded-md border border-white text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Criar conta na Pixstrike
               </Link>
