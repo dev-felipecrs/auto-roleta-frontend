@@ -78,7 +78,7 @@ export function ResetPasswordForm({ email, token }: ResetPasswordFormProps) {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="relative h-[3.125rem] w-[3.125rem]">
-        <Image src="/images/shared/logo-simple.png" alt="Logo" fill />
+        <Image src="/images/shared/logo-simple.svg" alt="Logo" fill />
       </div>
 
       <strong className="mt-6 text-center text-xl font-medium text-white">

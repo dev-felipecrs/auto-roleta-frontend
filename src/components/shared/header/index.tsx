@@ -37,9 +37,9 @@ export function Header({
 
           <Link
             href="/dashboard"
-            className="relative block h-6 w-28 sm:h-12 sm:w-36"
+            className="relative block h-6 w-32 sm:h-12 sm:w-40"
           >
-            <Image src="/images/shared/logo.png" alt="Auto Roleta" fill />
+            <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
           </Link>
         </div>
 

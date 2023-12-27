@@ -47,10 +47,10 @@ export function ConnectWithBroker() {
         <Dialog.Content className="fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 animate-show-with-moviment flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
           <header className="flex flex-col items-center">
             <Image
-              src="/images/shared/logo-simple.png"
-              alt="Auto roleta"
-              width={50}
-              height={50}
+              src="/images/shared/pix-strike.png"
+              alt="Pix strike"
+              width={220}
+              height={42}
             />
 
             <strong className="mt-6 text-center text-xl font-medium text-white">
