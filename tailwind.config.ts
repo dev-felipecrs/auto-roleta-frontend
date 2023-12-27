@@ -42,6 +42,9 @@ const config: Config = {
           },
         },
       },
+      screens: {
+        xs: '375px',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
