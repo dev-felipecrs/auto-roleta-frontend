@@ -15,15 +15,16 @@ import {
 } from '@/components/pages/dashboard'
 
 interface GridProps {
-  user: User
+  user: User | null
+  isLoading?: boolean
 }
 
 const REQUEST_INTERVAL_IN_MILLISECONDS = 1000 * 5 // 5 seconds
 
-export function Grid({ user: initialUser }: GridProps) {
-  const [user, setUser] = useState<User>(initialUser)
+export function Grid({ user: initialUser, isLoading = false }: GridProps) {
+  const [user, setUser] = useState<User | null>(initialUser)
 
-  const { wins, losses } = user.bets.reduce(
+  const { wins, losses } = (user?.bets || []).reduce(
     (acc, bet) => {
       const field = bet.result ? 'wins' : 'losses'
 
@@ -38,8 +39,6 @@ export function Grid({ user: initialUser }: GridProps) {
     },
   )
   const assertiveness = ((wins / (wins + losses)) * 100).toFixed(0)
-
-  const isLoading = false
 
   // useEffect(() => {
   //   const pooling = setInterval(async () => {
@@ -72,7 +71,9 @@ export function Grid({ user: initialUser }: GridProps) {
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Card title="Ganhos">
               <CurrentBalance
-                balance={user.balance! - user.balanceTracks[0]?.value || 0}
+                balance={
+                  user ? user.balance! - user.balanceTracks?.[0]?.value || 0 : 0
+                }
                 isLoading={isLoading}
               />
             </Card>
@@ -89,11 +90,12 @@ export function Grid({ user: initialUser }: GridProps) {
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-col-reverse">
-        {user.bets.length > 0 && (
-          <Card title="Apostas">
-            <Bets bets={user.bets} isLoading={isLoading} />
-          </Card>
-        )}
+        {(user?.bets || []).length > 0 ||
+          (isLoading && (
+            <Card title="Apostas">
+              <Bets bets={user?.bets || []} isLoading={isLoading} />
+            </Card>
+          ))}
 
         <Configurations />
       </div>

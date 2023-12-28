@@ -32,7 +32,7 @@ interface CustomTooltipProps {
 }
 
 interface PerformanceProps {
-  user: User
+  user: User | null
 }
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
@@ -65,14 +65,14 @@ export function Performance({ user }: PerformanceProps) {
     trial: '#848484',
   }
 
-  const balanceTracksIsEmpty = user.balanceTracks.length === 0
+  const balanceTracksIsEmpty = (user?.balanceTracks || []).length === 0
 
-  const data = (!balanceTracksIsEmpty ? user.balanceTracks : shadowData).map(
-    (track) => ({
-      time: format(track.time, 'HH:mm'),
-      value: track.value,
-    }),
-  )
+  const data = (
+    !balanceTracksIsEmpty ? user?.balanceTracks || [] : shadowData
+  ).map((track) => ({
+    time: format(track.time, 'HH:mm'),
+    value: track.value,
+  }))
 
   return (
     <ResponsiveContainer width="100%" height="100%" minHeight="20rem">
