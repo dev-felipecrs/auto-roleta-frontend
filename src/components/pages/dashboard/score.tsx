@@ -61,7 +61,7 @@ export function Score({ wins, losses, assertiveness, isLoading }: ScoreProps) {
       />
 
       <ScoreContainer
-        value={`${assertiveness}%`}
+        value={`${Number(assertiveness) || 0}%`}
         text="Assertividade"
         color="#FFFFFF"
         isLoading={isLoading}

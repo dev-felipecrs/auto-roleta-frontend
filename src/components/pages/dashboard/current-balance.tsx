@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import { formatNumber } from '@/utils'
 import { Skeleton } from '@/components/shared'
 
@@ -18,8 +20,17 @@ export function CurrentBalance({ balance, isLoading }: CurrentBalanceProps) {
 
       {!isLoading && (
         <>
-          <strong className="whitespace-nowrap text-base font-medium text-[#04D47C]">
-            + R$ {formatNumber(balance)}
+          <strong
+            className={cn('whitespace-nowrap text-base font-medium', {
+              'text-white': balance === 0,
+              'text-[#04D47C]': balance > 0,
+              'text-[#E51E3E]': balance < 0,
+            })}
+          >
+            {balance > 0 && '+ '}
+            {balance < 0 && '- '}
+            R${' '}
+            {formatNumber(balance >= 0 ? balance : balance + balance * -1 * 2)}
           </strong>
           <span className="text-xs font-semibold tracking-[1px] text-[#A6A8B1]">
             Total
