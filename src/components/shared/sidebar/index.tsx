@@ -4,12 +4,10 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Button } from '@/components/shared'
+import { Balance, Button } from '@/components/shared'
 import { mockUser } from '@/app/user-mock'
 
 import { ActiveLink } from './active-link'
-
-import { Balance } from '../balance'
 
 interface SidebarProps {
   handleSidebarVisibilityToggle?(): void
@@ -42,7 +40,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
       </header>
 
       <Balance
-        balance={3500}
+        balance={mockUser.balance}
         containerClassname="mb-6 justify-center sm:hidden"
       />
 

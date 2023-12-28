@@ -2,13 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
+import { Balance } from '@/components/shared'
 import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
 import { ConnectWithBroker } from './connect-with-broker'
-
-import { Balance } from '../balance'
 
 interface HeaderProps {
   simpleVersion?: boolean
@@ -45,7 +44,10 @@ export function Header({
         </div>
 
         {!simpleVersion && (
-          <Balance balance={3500} containerClassname="hidden sm:flex" />
+          <Balance
+            balance={mockUser.balance}
+            containerClassname="hidden sm:flex"
+          />
         )}
       </div>
 

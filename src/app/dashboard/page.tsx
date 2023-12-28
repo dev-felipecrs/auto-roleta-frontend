@@ -1,3 +1,4 @@
+'use client'
 import { Layout } from '@/components/shared'
 import {
   Bets,
@@ -28,22 +29,32 @@ export default function Dashboard() {
   )
   const assertiveness = ((wins / (wins + losses)) * 100).toFixed(0)
 
+  const isLoading = true
+
   return (
     <Layout>
       <div className="grid grid-cols-1 gap-4 px-8 pb-10 pt-6 lg:grid-cols-[1fr,minmax(308px,1fr)] xl:grid-cols-[minmax(39rem,1fr),1fr]">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             <Card title="Placar">
-              <Score wins={43} losses={6} assertiveness={'94'} />
+              <Score
+                wins={wins}
+                losses={losses}
+                assertiveness={assertiveness}
+                isLoading={isLoading}
+              />
             </Card>
 
             <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
               <Card title="Ganhos">
-                <CurrentBalance balance={1850} />
+                <CurrentBalance
+                  balance={mockUser.balance}
+                  isLoading={isLoading}
+                />
               </Card>
 
               <Card title="BOT">
-                <Bot status="online" />
+                <Bot status="online" isLoading={isLoading} />
               </Card>
             </div>
           </div>
@@ -55,7 +66,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col gap-4 lg:flex-col-reverse">
           <Card title="Apostas">
-            <Bets bets={mockUser.bets} />
+            <Bets bets={mockUser.bets} isLoading={isLoading} />
           </Card>
 
           <Configurations />
