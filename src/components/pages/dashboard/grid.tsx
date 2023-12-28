@@ -84,7 +84,7 @@ export function Grid({ user: initialUser }: GridProps) {
         </div>
 
         <Card title="Rendimento">
-          <Performance />
+          <Performance user={user} />
         </Card>
       </div>
 

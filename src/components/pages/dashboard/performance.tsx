@@ -9,34 +9,30 @@ import {
   YAxis,
 } from 'recharts'
 import { format } from 'date-fns'
+import { BalanceTrack } from '@prisma/client'
 
 import { formatNumber } from '@/utils'
-import { UserBalanceTrack } from '@/models'
+import { User } from '@/types'
 import { mockUser } from '@/app/user-mock'
 
-const shadowData: UserBalanceTrack[] = Array.from({ length: 50 }).map(() => {
-  const generateRandomNumber = (limit: number): string => {
-    return String(Math.floor(Math.random() * limit) + 1).padStart(2, '0')
-  }
+const shadowData: Array<Omit<BalanceTrack, 'userId'>> = [
+  {
+    time: new Date(new Date().setHours(0, 0, 0, 0)),
+    value: 0,
+  },
+]
 
-  const month = generateRandomNumber(12)
-  const day = generateRandomNumber(28)
-  const hour = generateRandomNumber(23)
-  const second = generateRandomNumber(59)
-
-  return {
-    time: new Date(`2023-${month}-${day}T${hour}:${second}`),
-    value: Math.floor(Math.random() * (2000 - 1000)) + 1000,
-  }
-})
-
-export type CustomTooltipItemProps = UserBalanceTrack & {
+export type CustomTooltipItemProps = Omit<BalanceTrack, 'userId'> & {
   time: string
 }
 
 interface CustomTooltipProps {
   active?: boolean
   payload?: Array<{ payload: CustomTooltipItemProps }>
+}
+
+interface PerformanceProps {
+  user: User
 }
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
@@ -62,18 +58,21 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   return <></>
 }
 
-export function Performance() {
+export function Performance({ user }: PerformanceProps) {
   const graphicColor: Record<typeof mockUser.plan, string> = {
     basic: '#FFCE50',
     premium: '#0775C7',
     trial: '#848484',
   }
 
-  const data = shadowData.map((item) => ({
-    ...item,
-    time: format(item.time, 'HH:mm'),
-    balance: item.value,
-  }))
+  const balanceTracksIsEmpty = user.balanceTracks.length === 0
+
+  const data = (!balanceTracksIsEmpty ? user.balanceTracks : shadowData).map(
+    (track) => ({
+      time: format(track.time, 'HH:mm'),
+      value: track.value,
+    }),
+  )
 
   return (
     <ResponsiveContainer width="100%" height="100%" minHeight="20rem">
@@ -89,7 +88,7 @@ export function Performance() {
           </linearGradient>
         </defs>
         <Area
-          dataKey="balance"
+          dataKey="value"
           stroke={graphicColor[mockUser.plan]}
           fill="url(#color)"
         />
@@ -102,7 +101,7 @@ export function Performance() {
           color="#A6A8B1"
         />
         <YAxis
-          dataKey="balance"
+          dataKey="value"
           axisLine={false}
           tickLine={false}
           tickCount={5}
