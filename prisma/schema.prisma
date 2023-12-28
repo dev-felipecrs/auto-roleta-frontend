@@ -11,11 +11,90 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+enum Status {
+  online
+  offline
+}
+
 model User {
-  userId               String   @id @default(uuid())
+  userId String @id @default(uuid())
+
   name                 String
-  email                String   @unique
+  email                String  @unique
   password             String
-  password_reset_token String?  @unique
-  createdAt            DateTime @default(now())
+  password_reset_token String? @unique
+
+  isActive      Boolean        @default(false)
+  credentials   Credential?
+  config        Config?
+  balance       Int?
+  status        Status?
+  bets          Bet[]
+  balanceTracks BalanceTrack[]
+
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
+
+model Credential {
+  userId String @id
+
+  email    String @unique
+  password String
+
+  user User @relation(fields: [userId], references: [userId])
+
+  @@map("credentials")
+}
+
+enum Strategy {
+  blackRedBlack
+  redBlackRed
+  blackBlackBlack
+  redRedRed
+}
+
+model Config {
+  userId String @id
+
+  strategy Strategy
+  entry    Int
+  gales    Int
+  stopWin  Int
+  stopLoss Int
+
+  user User @relation(fields: [userId], references: [userId])
+
+  @@map("configs")
+}
+
+enum Color {
+  red
+  black
+}
+
+model Bet {
+  userId String @id
+
+  color  Color
+  time   DateTime @default(now())
+  entry  Int
+  gains  Int
+  result Boolean
+
+  user User @relation(fields: [userId], references: [userId])
+
+  @@map("bets")
+}
+
+model BalanceTrack {
+  userId String @id
+
+  value Int
+  time  DateTime
+
+  user User @relation(fields: [userId], references: [userId])
+
+  @@map("BalanceTracks")
 }
