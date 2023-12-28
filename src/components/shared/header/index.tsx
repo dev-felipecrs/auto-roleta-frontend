@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
+import { User } from '@/types'
 import { Balance } from '@/components/shared'
 import { mockUser } from '@/app/user-mock'
 
@@ -10,12 +11,14 @@ import { Hamburguer } from './hamburguer'
 import { ConnectWithBroker } from './connect-with-broker'
 
 interface HeaderProps {
+  user: User | null
   simpleVersion?: boolean
   sidebarIsVisible?: boolean
   handleSidebarVisibilityToggle?(): void
 }
 
 export function Header({
+  user,
   simpleVersion = false,
   sidebarIsVisible,
   handleSidebarVisibilityToggle,
@@ -43,9 +46,9 @@ export function Header({
           </Link>
         </div>
 
-        {!simpleVersion && (
+        {!simpleVersion && user && (
           <Balance
-            balance={mockUser.balance}
+            balance={user.balance || 0}
             containerClassname="hidden sm:flex"
           />
         )}

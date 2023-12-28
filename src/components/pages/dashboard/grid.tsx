@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { Prisma } from '@prisma/client'
 
+import { User } from '@/types'
 import {
   Bets,
   Bot,
@@ -12,15 +13,6 @@ import {
   Performance,
   Score,
 } from '@/components/pages/dashboard'
-
-type User = Prisma.UserGetPayload<{
-  include: {
-    balanceTracks: true
-    bets: true
-    config: true
-    credentials: true
-  }
-}>
 
 interface GridProps {
   user: User

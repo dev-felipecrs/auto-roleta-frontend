@@ -4,16 +4,17 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { User } from '@/types'
 import { Balance, Button } from '@/components/shared'
-import { mockUser } from '@/app/user-mock'
 
 import { ActiveLink } from './active-link'
 
 interface SidebarProps {
+  user: User | null
   handleSidebarVisibilityToggle?(): void
 }
 
-export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
+export function Sidebar({ user, handleSidebarVisibilityToggle }: SidebarProps) {
   const handleLogout = async () => {
     await signOut()
   }
@@ -39,10 +40,12 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
         </div>
       </header>
 
-      <Balance
-        balance={mockUser.balance}
-        containerClassname="mb-6 justify-center sm:hidden"
-      />
+      {user && (
+        <Balance
+          balance={user.balance || 0}
+          containerClassname="mb-6 justify-center sm:hidden"
+        />
+      )}
 
       <div className="mb-[38px] px-8">
         <Link href="#">
