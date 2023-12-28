@@ -1,8 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Prisma } from '@prisma/client'
-
 import { User } from '@/types'
 import {
   Bets,
@@ -40,20 +38,22 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
   )
   const assertiveness = ((wins / (wins + losses)) * 100).toFixed(0)
 
-  // useEffect(() => {
-  //   const pooling = setInterval(async () => {
-  //     const response = await fetch(`/api/users/${initialUser.userId}`, {
-  //       next: {
-  //         revalidate: 5,
-  //       },
-  //     })
-  //     const data = await response.json()
+  useEffect(() => {
+    if (initialUser) {
+      const pooling = setInterval(async () => {
+        const response = await fetch(`/api/users/${initialUser.userId}`, {
+          next: {
+            revalidate: 5,
+          },
+        })
+        const data = await response.json()
 
-  //     setUser(data)
-  //   }, REQUEST_INTERVAL_IN_MILLISECONDS)
+        setUser(data)
+      }, REQUEST_INTERVAL_IN_MILLISECONDS)
 
-  //   return () => clearInterval(pooling)
-  // }, [user])
+      return () => clearInterval(pooling)
+    }
+  }, [user])
 
   return (
     <div className="grid grid-cols-1 gap-4 px-8 pb-10 pt-6 lg:grid-cols-[1fr,minmax(308px,1fr)] xl:grid-cols-[minmax(39rem,1fr),1fr]">
@@ -97,7 +97,7 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
             </Card>
           ))}
 
-        <Configurations />
+        <Configurations user={user} />
       </div>
     </div>
   )

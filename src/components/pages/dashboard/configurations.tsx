@@ -5,8 +5,13 @@ import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { User } from '@/types'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
+
+interface ConfigurationsProps {
+  user: User | null
+}
 
 const ConfigurationsSchema = z.object({
   strategy: z.string({ required_error: 'Campo obrigatório' }),
@@ -31,15 +36,22 @@ const ConfigurationsSchema = z.object({
     .refine((value) => value > 0, { message: 'Valor inválido' }),
 })
 
-export function Configurations() {
+export function Configurations({ user }: ConfigurationsProps) {
   const [botIsActivated, setBotIsActivated] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
 
   const { control, handleSubmit } = useForm<
     z.infer<typeof ConfigurationsSchema>
   >({
-    resolver: zodResolver(ConfigurationsSchema),
+    defaultValues: {
+      strategy: user?.config?.strategy,
+      entry: user?.config?.entry,
+      gales: user?.config?.gales ? String(user?.config?.gales) : undefined,
+      stopWin: user?.config?.stopWin,
+      stopLoss: user?.config?.stopLoss,
+    },
     disabled: botIsActivated,
+    resolver: zodResolver(ConfigurationsSchema),
   })
 
   const handleBotActivation = (event: ChangeEvent<HTMLInputElement>) => {
