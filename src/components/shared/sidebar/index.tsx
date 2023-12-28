@@ -4,7 +4,9 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { formatNumber } from '@/utils'
 import { Button } from '@/components/shared'
+import { mockUser } from '@/app/user-mock'
 
 import { ActiveLink } from './active-link'
 
@@ -37,6 +39,16 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
           <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
         </div>
       </header>
+
+      <div className="mb-6 flex items-center justify-center gap-2 sm:hidden">
+        <Image src="/icons/currency.svg" alt="Saldo" width={20} height={20} />
+        <span className="text-sm font-light text-white">
+          R${' '}
+          <span className="font-semibold">
+            {formatNumber(mockUser.balance)}
+          </span>
+        </span>
+      </div>
 
       <div className="mb-[38px] px-8">
         <Link href="#">
