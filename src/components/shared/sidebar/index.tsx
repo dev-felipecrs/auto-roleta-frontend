@@ -42,7 +42,7 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
       </header>
 
       <Balance
-        balance={mockUser.balance}
+        balance={3500}
         containerClassname="mb-6 justify-center sm:hidden"
       />
 

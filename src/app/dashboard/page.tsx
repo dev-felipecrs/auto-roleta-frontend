@@ -34,20 +34,16 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             <Card title="Placar">
-              <Score
-                wins={wins}
-                losses={losses}
-                assertiveness={assertiveness}
-              />
+              <Score wins={43} losses={6} assertiveness={'94'} />
             </Card>
 
             <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
               <Card title="Ganhos">
-                <CurrentBalance balance={mockUser.balance} />
+                <CurrentBalance balance={1850} />
               </Card>
 
               <Card title="BOT">
-                <Bot status={mockUser.status as any} />
+                <Bot status="online" />
               </Card>
             </div>
           </div>

@@ -45,10 +45,7 @@ export function Header({
         </div>
 
         {!simpleVersion && (
-          <Balance
-            balance={mockUser.balance}
-            containerClassname="hidden sm:flex"
-          />
+          <Balance balance={3500} containerClassname="hidden sm:flex" />
         )}
       </div>
 
