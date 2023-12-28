@@ -2,12 +2,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
-import { formatNumber } from '@/utils'
 import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
 import { ConnectWithBroker } from './connect-with-broker'
+
+import { Balance } from '../balance'
 
 interface HeaderProps {
   simpleVersion?: boolean
@@ -44,20 +45,10 @@ export function Header({
         </div>
 
         {!simpleVersion && (
-          <div className="hidden items-center gap-2 sm:flex">
-            <Image
-              src="/icons/currency.svg"
-              alt="Saldo"
-              width={20}
-              height={20}
-            />
-            <span className="text-sm font-light text-white">
-              R${' '}
-              <span className="font-semibold">
-                {formatNumber(mockUser.balance)}
-              </span>
-            </span>
-          </div>
+          <Balance
+            balance={mockUser.balance}
+            containerClassname="hidden sm:flex"
+          />
         )}
       </div>
 

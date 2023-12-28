@@ -4,11 +4,12 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { formatNumber } from '@/utils'
 import { Button } from '@/components/shared'
 import { mockUser } from '@/app/user-mock'
 
 import { ActiveLink } from './active-link'
+
+import { Balance } from '../balance'
 
 interface SidebarProps {
   handleSidebarVisibilityToggle?(): void
@@ -40,15 +41,10 @@ export function Sidebar({ handleSidebarVisibilityToggle }: SidebarProps) {
         </div>
       </header>
 
-      <div className="mb-6 flex items-center justify-center gap-2 sm:hidden">
-        <Image src="/icons/currency.svg" alt="Saldo" width={20} height={20} />
-        <span className="text-sm font-light text-white">
-          R${' '}
-          <span className="font-semibold">
-            {formatNumber(mockUser.balance)}
-          </span>
-        </span>
-      </div>
+      <Balance
+        balance={mockUser.balance}
+        containerClassname="mb-6 justify-center sm:hidden"
+      />
 
       <div className="mb-[38px] px-8">
         <Link href="#">
