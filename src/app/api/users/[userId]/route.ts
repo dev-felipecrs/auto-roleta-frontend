@@ -118,8 +118,6 @@ export async function PATCH(request: Request, { params }: Params) {
       },
     })
 
-    console.log({ userId: params.userId, userExists })
-
     if (!userExists) {
       return Response.json('Usuário não encontrado!', {
         status: 404,
