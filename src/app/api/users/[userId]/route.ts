@@ -83,7 +83,7 @@ const UpdateUserSchema = z.object({
     .array(
       z.object({
         color: z.enum(['red', 'black']),
-        time: z.date(),
+        time: z.string().transform((value) => new Date(value)),
         entry: z.number(),
         gains: z.number(),
         result: z.boolean(),
@@ -95,7 +95,7 @@ const UpdateUserSchema = z.object({
     .array(
       z.object({
         value: z.number(),
-        time: z.date(),
+        time: z.string().transform((value) => new Date(value)),
       }),
     )
     .nullable()
@@ -139,78 +139,110 @@ export async function PATCH(request: Request, { params }: Params) {
       status: data.data.status,
     }
 
-    if (data.data.credentials) {
-      dataToUpdate = {
-        ...dataToUpdate,
-        credentials: {
-          upsert: {
-            where: { userId: params.userId },
-            create: {
-              email: data.data.credentials.email,
-              password: data.data.credentials.email,
-            },
-            update: {
-              email: data.data.credentials.email,
-              password: data.data.credentials.email,
+    if (data.data.credentials || data.data.credentials === null) {
+      if (data.data.credentials === null) {
+        await prisma.credential.delete({
+          where: {
+            userId: params.userId,
+          },
+        })
+      } else {
+        dataToUpdate = {
+          ...dataToUpdate,
+          credentials: {
+            upsert: {
+              where: { userId: params.userId },
+              create: {
+                email: data.data.credentials.email,
+                password: data.data.credentials.email,
+              },
+              update: {
+                email: data.data.credentials.email,
+                password: data.data.credentials.email,
+              },
             },
           },
-        },
+        }
       }
     }
 
-    if (data.data.config) {
-      const strategy: Record<typeof data.data.config.strategy, Strategy> = {
-        'black-black-black': 'blackBlackBlack',
-        'black-red-black': 'blackRedBlack',
-        'red-black-red': 'redBlackRed',
-        'red-red-red': 'redRedRed',
-      }
+    if (data.data.config || data.data.config === null) {
+      if (data.data.config === null) {
+        await prisma.config.delete({
+          where: {
+            userId: params.userId,
+          },
+        })
+      } else {
+        const strategy: Record<typeof data.data.config.strategy, Strategy> = {
+          'black-black-black': 'blackBlackBlack',
+          'black-red-black': 'blackRedBlack',
+          'red-black-red': 'redBlackRed',
+          'red-red-red': 'redRedRed',
+        }
 
-      dataToUpdate = {
-        ...dataToUpdate,
-        config: {
-          upsert: {
-            where: { userId: params.userId },
-            create: {
-              strategy: strategy[data.data.config.strategy],
-              entry: data.data.config.entry,
-              gales: data.data.config.gales,
-              stopWin: data.data.config.stopWin,
-              stopLoss: data.data.config.stopLoss,
-            },
-            update: {
-              strategy: strategy[data.data.config.strategy],
-              entry: data.data.config.entry,
-              gales: data.data.config.gales,
-              stopWin: data.data.config.stopWin,
-              stopLoss: data.data.config.stopLoss,
+        dataToUpdate = {
+          ...dataToUpdate,
+          config: {
+            upsert: {
+              where: { userId: params.userId },
+              create: {
+                strategy: strategy[data.data.config.strategy],
+                entry: data.data.config.entry,
+                gales: data.data.config.gales,
+                stopWin: data.data.config.stopWin,
+                stopLoss: data.data.config.stopLoss,
+              },
+              update: {
+                strategy: strategy[data.data.config.strategy],
+                entry: data.data.config.entry,
+                gales: data.data.config.gales,
+                stopWin: data.data.config.stopWin,
+                stopLoss: data.data.config.stopLoss,
+              },
             },
           },
-        },
+        }
       }
     }
 
-    if (data.data.bets) {
-      await prisma.bet.createMany({
-        data: data.data.bets.map((bet) => ({
-          userId: params.userId,
-          color: bet.color,
-          time: bet.time,
-          entry: bet.entry,
-          gains: bet.gains,
-          result: bet.result,
-        })),
-      })
+    if (data.data.bets || data.data.bets === null) {
+      if (data.data.bets === null) {
+        await prisma.bet.delete({
+          where: {
+            userId: params.userId,
+          },
+        })
+      } else {
+        await prisma.bet.createMany({
+          data: data.data.bets.map((bet) => ({
+            userId: params.userId,
+            color: bet.color,
+            time: new Date(bet.time),
+            entry: bet.entry,
+            gains: bet.gains,
+            result: bet.result,
+          })),
+        })
+      }
     }
 
-    if (data.data.balanceTracks) {
-      await prisma.balanceTrack.createMany({
-        data: data.data.balanceTracks.map((balanceTrack) => ({
-          userId: params.userId,
-          value: balanceTrack.value,
-          time: balanceTrack.time,
-        })),
-      })
+    if (data.data.balanceTracks || data.data.balanceTracks === null) {
+      if (data.data.balanceTracks === null) {
+        await prisma.balanceTrack.deleteMany({
+          where: {
+            userId: params.userId,
+          },
+        })
+      } else {
+        await prisma.balanceTrack.createMany({
+          data: data.data.balanceTracks.map((balanceTrack) => ({
+            userId: params.userId,
+            value: balanceTrack.value,
+            time: new Date(balanceTrack.time),
+          })),
+        })
+      }
     }
 
     const user = await prisma.user.update({
