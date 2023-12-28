@@ -1,9 +1,11 @@
+import cn from 'classnames'
+
 import { Skeleton } from '@/components/shared'
 
 interface ScoreContainerProps {
   value: string | number
   text: string
-  color: string
+  color: 'green' | 'red' | 'white'
   isLoading: boolean
 }
 
@@ -31,7 +33,13 @@ function ScoreContainer({
 
       {!isLoading && (
         <>
-          <strong className={`text-base font-medium text-[${color}]`}>
+          <strong
+            className={cn('text-base font-medium', {
+              'text-[#04D47C]': color === 'green',
+              'text-[#E51E3E]': color === 'red',
+              'text-white': color === 'white',
+            })}
+          >
             {value}
           </strong>
           <span className="text-xs font-semibold tracking-[1px] text-[#A6A8B1]">
@@ -49,21 +57,21 @@ export function Score({ wins, losses, assertiveness, isLoading }: ScoreProps) {
       <ScoreContainer
         value={wins}
         text="Wins"
-        color="#04D47C"
+        color="green"
         isLoading={isLoading}
       />
 
       <ScoreContainer
         value={losses}
         text="Losses"
-        color="#E51E3E"
+        color="red"
         isLoading={isLoading}
       />
 
       <ScoreContainer
         value={`${Number(assertiveness) || 0}%`}
         text="Assertividade"
-        color="#FFFFFF"
+        color="white"
         isLoading={isLoading}
       />
     </div>
