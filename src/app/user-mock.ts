@@ -1,3 +1,5 @@
+import { add } from 'date-fns'
+
 type User = {
   isActive: boolean
   credentials: {
@@ -47,22 +49,28 @@ export const mockUser: User = {
       color: 'red',
       entry: 100,
       gains: 100,
-      result: false,
-      time: new Date(),
+      result: true,
+      time: add(new Date(), {
+        minutes: -1,
+      }),
     },
     {
       color: 'red',
       entry: 100,
       gains: 100,
-      result: false,
-      time: new Date(),
+      result: true,
+      time: add(new Date(), {
+        minutes: -3,
+      }),
     },
     {
       color: 'black',
       entry: 100,
-      gains: 80,
+      gains: 100,
       result: true,
-      time: new Date(),
+      time: add(new Date(), {
+        minutes: -4,
+      }),
     },
   ],
   balanceTrack: [{ time: new Date(), value: 100 }],
