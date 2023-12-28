@@ -1,9 +1,39 @@
+import { getServerSession } from 'next-auth'
+import { notFound } from 'next/navigation'
+
+import { authOptions } from '@/constants'
+import { prisma } from '@/config/prisma'
 import { Layout } from '@/components/shared'
 import { Plan } from '@/components/pages/plans'
 
+const getUserByEmail = async (email: string) => {
+  'use server'
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    include: {
+      balanceTracks: true,
+      bets: true,
+      config: true,
+      credentials: true,
+    },
+  })
+
+  return user
+}
+
 export default async function Plans() {
+  const session = await getServerSession(authOptions)
+
+  if (!session || !session.user) {
+    notFound()
+  }
+
+  const user = await getUserByEmail(session.user.email!)
+
   return (
-    <Layout>
+    <Layout user={user}>
       <div className="mb-4 mt-10 flex flex-wrap items-center justify-center gap-[3.25rem] px-12">
         <Plan
           name="Trial"

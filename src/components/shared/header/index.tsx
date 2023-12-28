@@ -33,6 +33,7 @@ export function Header({
         <div className="flex items-center gap-4 sm:gap-0">
           {!simpleVersion && (
             <Hamburguer
+              user={user}
               sidebarIsVisible={sidebarIsVisible}
               handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
             />

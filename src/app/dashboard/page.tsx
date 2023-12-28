@@ -33,7 +33,7 @@ export default async function Dashboard() {
   const user = await getUserByEmail(session.user.email!)
 
   return (
-    <Layout>
+    <Layout user={user}>
       <Grid user={user!} />
     </Layout>
   )

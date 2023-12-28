@@ -1,14 +1,17 @@
 'use client'
 import Image from 'next/image'
 
+import { User } from '@/types'
 import { Sidebar } from '@/components/shared'
 
 interface HamburguerProps {
+  user: User | null
   sidebarIsVisible?: boolean
   handleSidebarVisibilityToggle?(): void
 }
 
 export function Hamburguer({
+  user,
   sidebarIsVisible,
   handleSidebarVisibilityToggle,
 }: HamburguerProps) {
@@ -33,6 +36,7 @@ export function Hamburguer({
           onClick={handleSidebarVisibilityToggle}
         >
           <Sidebar
+            user={user}
             handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
           />
         </div>
