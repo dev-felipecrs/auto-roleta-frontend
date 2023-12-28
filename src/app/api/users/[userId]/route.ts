@@ -11,6 +11,47 @@ interface Params {
   }
 }
 
+export async function GET(request: Request, { params }: Params) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+      return Response.json('Usuário não tem permissão!', {
+        status: 401,
+      })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        userId: params.userId,
+      },
+      include: {
+        balanceTracks: true,
+        bets: true,
+        config: true,
+        credentials: true,
+      },
+    })
+
+    if (!user) {
+      return Response.json('Usuário não encontrado!', {
+        status: 404,
+      })
+    }
+
+    return Response.json(user, {
+      status: 200,
+    })
+  } catch (error) {
+    return Response.json(
+      'Um erro inesperado ocorreu, tente novamente mais tarde!',
+      {
+        status: 500,
+      },
+    )
+  }
+}
+
 const UpdateUserSchema = z.object({
   name: z.string().optional(),
   isActive: z.boolean().optional(),
