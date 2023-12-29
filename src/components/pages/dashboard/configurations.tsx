@@ -106,6 +106,7 @@ export function Configurations({ user, setUser }: ConfigurationsProps) {
   const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
     setBotIsActivated(true)
     if (user) {
+      // TO-DO: make request to /authenticate
       const response = await fetch(`/api/users/${user.userId}`, {
         method: 'PATCH',
         body: JSON.stringify({
