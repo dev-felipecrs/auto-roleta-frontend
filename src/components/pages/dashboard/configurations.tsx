@@ -82,12 +82,25 @@ export function Configurations({ user, setUser }: ConfigurationsProps) {
     resolver: zodResolver(ConfigurationsSchema),
   })
 
-  const handleBotActivation = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleBotActivation = async (event: ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked
 
     if (isChecked) return formRef.current?.requestSubmit()
 
     setBotIsActivated(false)
+
+    if (user) {
+      const response = await fetch(`/api/users/${user.userId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          isActive: false,
+          status: 'offline',
+          config: null,
+        }),
+      })
+      const updatedUser = await response.json()
+      setUser(updatedUser)
+    }
   }
 
   const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
