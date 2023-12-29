@@ -6,9 +6,11 @@ import { Lock, Message } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import Image from 'next/image'
+import { revalidatePath } from 'next/cache'
 import * as Dialog from '@radix-ui/react-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
 
 const ConnectWithBrokerSchema = z.object({
@@ -30,7 +32,21 @@ export function ConnectWithBroker() {
   }
 
   const onSubmit = async (data: z.infer<typeof ConnectWithBrokerSchema>) => {
-    console.log({ data })
+    const response = await fetch('/api/authenticate', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+    })
+    const result = await response.json()
+
+    if (response.status !== 200) {
+      toast.error(result)
+      return
+    }
+
+    revalidatePath('/dashboard')
   }
 
   return (
@@ -100,7 +116,11 @@ export function ConnectWithBroker() {
             />
 
             <div className="flex flex-col gap-3">
-              <Button type="submit" className="mt-6">
+              <Button
+                type="submit"
+                className="mt-6"
+                isLoading={formState.isSubmitting}
+              >
                 Conectar
               </Button>
 
