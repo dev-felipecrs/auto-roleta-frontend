@@ -7,6 +7,7 @@ import { Strategy } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { User } from '@/types'
+import { toast } from '@/config/toast'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
 
@@ -64,7 +65,7 @@ export function Configurations({
   const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
   const formRef = useRef<HTMLFormElement>(null)
 
-  const { control, handleSubmit } = useForm<
+  const { control, handleSubmit, setError } = useForm<
     z.infer<typeof ConfigurationsSchema>
   >({
     defaultValues: {
@@ -114,8 +115,50 @@ export function Configurations({
     setBotIsActivated(true)
     setIsFetching(true)
     if (user) {
-      // TO-DO: make request to /authenticate
-      const response = await fetch(`/api/users/${user.userId}`, {
+      const authenticateResponse = await fetch('/api/authenticate', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: user.credentials?.email,
+          password: user.credentials?.password,
+        }),
+      })
+
+      if (authenticateResponse.status !== 200) {
+        return toast.error(await authenticateResponse.json())
+      }
+
+      const { balance } = await authenticateResponse.json()
+
+      let ok = true
+
+      if (data.stopLoss > balance) {
+        ok = false
+        setError('stopLoss', {
+          message: 'O stop loss deve ser menor que seu saldo.',
+        })
+      }
+
+      if (data.entry > balance) {
+        ok = false
+        setError('entry', {
+          message: 'O valor de entrada deve ser menor que seu saldo.',
+        })
+      }
+
+      if (data.entry * (2 ** (Number(data.gales) + 1) - 1) > balance) {
+        ok = false
+        setError('gales', {
+          message: 'Essa quantidade de gales não atende ao seu saldo.',
+        })
+      }
+
+      if (!ok) {
+        setBotIsActivated(false)
+        setIsFetching(false)
+        return
+      }
+
+      const userResponse = await fetch(`/api/users/${user.userId}`, {
         method: 'PATCH',
         body: JSON.stringify({
           isActive: true,
@@ -131,7 +174,7 @@ export function Configurations({
           },
         }),
       })
-      const updatedUser = await response.json()
+      const updatedUser = await userResponse.json()
       setUser(updatedUser)
     }
     setIsFetching(false)
@@ -144,7 +187,7 @@ export function Configurations({
         <Switch
           checked={botIsActivated}
           onChange={handleBotActivation}
-          disabled={isFetching}
+          disabled={isFetching || !user?.credentials}
         >
           {botIsActivated ? 'Desativar BOT' : 'Ativar BOT'}
         </Switch>
