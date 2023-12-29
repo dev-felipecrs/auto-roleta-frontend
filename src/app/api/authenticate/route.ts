@@ -52,7 +52,12 @@ export async function POST(request: Request) {
     },
   })
 
-  return {
-    balance,
-  }
+  return Response.json(
+    {
+      balance,
+    },
+    {
+      status: 200,
+    },
+  )
 }

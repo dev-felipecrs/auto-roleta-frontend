@@ -6,12 +6,12 @@ import { Lock, Message } from 'react-iconly'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import Image from 'next/image'
-import { revalidatePath } from 'next/cache'
 import * as Dialog from '@radix-ui/react-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
+import { revalidatePage } from '@/actions'
 
 const ConnectWithBrokerSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -19,6 +19,7 @@ const ConnectWithBrokerSchema = z.object({
 })
 
 export function ConnectWithBroker() {
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
 
   const { handleSubmit, register, formState } = useForm<
@@ -46,11 +47,12 @@ export function ConnectWithBroker() {
       return
     }
 
-    revalidatePath('/dashboard')
+    await revalidatePage('/dashboard')
+    setDialogIsOpen(false)
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <Dialog.Trigger asChild>
         <Button type="button" className="h-10 w-[102px] text-xs">
           Conectar

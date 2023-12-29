@@ -2,26 +2,9 @@ import { getServerSession } from 'next-auth'
 import { notFound } from 'next/navigation'
 
 import { authOptions } from '@/constants'
-import { prisma } from '@/config/prisma'
 import { Layout } from '@/components/shared'
 import { Grid } from '@/components/pages/dashboard'
-
-const getUserByEmail = async (email: string) => {
-  'use server'
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-    include: {
-      balanceTracks: true,
-      bets: true,
-      config: true,
-      credentials: true,
-    },
-  })
-
-  return user
-}
+import { getUserByEmail } from '@/actions'
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions)
