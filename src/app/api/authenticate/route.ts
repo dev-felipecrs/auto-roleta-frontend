@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 
 import { API } from '@/server/entities'
 import { authOptions } from '@/constants'
+import { prisma } from '@/config/prisma'
 
 const AuthenticateSchema = z.object({
   email: z.string().email(),
@@ -12,7 +13,7 @@ const AuthenticateSchema = z.object({
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
 
-  if (!session) {
+  if (!session?.user?.email) {
     return Response.json('Usuário não tem permissão!', {
       status: 401,
     })
@@ -42,7 +43,14 @@ export async function POST(request: Request) {
     )
   }
 
-  console.log({ balance })
+  await prisma.user.update({
+    where: {
+      email: session.user.email,
+    },
+    data: {
+      balance,
+    },
+  })
 
   return {
     balance,
