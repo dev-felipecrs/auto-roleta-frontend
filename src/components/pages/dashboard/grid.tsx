@@ -21,6 +21,7 @@ const REQUEST_INTERVAL_IN_MILLISECONDS = 1000 * 5 // 5 seconds
 
 export function Grid({ user: initialUser, isLoading = false }: GridProps) {
   const [user, setUser] = useState<User | null>(initialUser)
+  const [isFetching, setIsFetching] = useState(isLoading)
 
   const { wins, losses } = (user?.bets || []).reduce(
     (acc, bet) => {
@@ -64,7 +65,7 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
               wins={wins}
               losses={losses}
               assertiveness={assertiveness}
-              isLoading={isLoading}
+              isLoading={isFetching}
             />
           </Card>
 
@@ -77,12 +78,12 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
                       (user.balanceTracks?.[0]?.value || user.balance || 0)
                     : 0
                 }
-                isLoading={isLoading}
+                isLoading={isFetching}
               />
             </Card>
 
             <Card title="BOT">
-              <Bot status={user?.status || 'offline'} isLoading={isLoading} />
+              <Bot status={user?.status || 'offline'} isLoading={isFetching} />
             </Card>
           </div>
         </div>
@@ -93,19 +94,24 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-col-reverse">
-        {isLoading && (
+        {isFetching && (
           <Card title="Apostas">
             <Bets bets={[]} isLoading />
           </Card>
         )}
 
-        {!isLoading && user?.bets && user.bets.length > 0 && (
+        {!isFetching && user?.bets && (
           <Card title="Apostas">
             <Bets bets={user.bets || []} isLoading={false} />
           </Card>
         )}
 
-        <Configurations user={user} setUser={setUser} />
+        <Configurations
+          user={user}
+          setUser={setUser}
+          isFetching={isFetching}
+          setIsFetching={setIsFetching}
+        />
       </div>
     </div>
   )

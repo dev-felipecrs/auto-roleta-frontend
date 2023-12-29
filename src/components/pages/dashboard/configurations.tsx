@@ -13,6 +13,8 @@ import { Card } from '@/components/pages/dashboard'
 interface ConfigurationsProps {
   user: User | null
   setUser(user: User): void
+  isFetching: boolean
+  setIsFetching(isFetching: boolean): void
 }
 
 const ConfigurationsSchema = z.object({
@@ -53,7 +55,12 @@ const STRATEGY: Record<
   redRedRed: 'red-red-red',
 }
 
-export function Configurations({ user, setUser }: ConfigurationsProps) {
+export function Configurations({
+  user,
+  setUser,
+  isFetching,
+  setIsFetching,
+}: ConfigurationsProps) {
   const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -105,6 +112,7 @@ export function Configurations({ user, setUser }: ConfigurationsProps) {
 
   const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
     setBotIsActivated(true)
+    setIsFetching(true)
     if (user) {
       // TO-DO: make request to /authenticate
       const response = await fetch(`/api/users/${user.userId}`, {
@@ -126,13 +134,18 @@ export function Configurations({ user, setUser }: ConfigurationsProps) {
       const updatedUser = await response.json()
       setUser(updatedUser)
     }
+    setIsFetching(false)
   }
 
   return (
     <Card
       title="Configurações"
       headerLeftElement={
-        <Switch checked={botIsActivated} onChange={handleBotActivation}>
+        <Switch
+          checked={botIsActivated}
+          onChange={handleBotActivation}
+          disabled={isFetching}
+        >
           {botIsActivated ? 'Desativar BOT' : 'Ativar BOT'}
         </Switch>
       }
