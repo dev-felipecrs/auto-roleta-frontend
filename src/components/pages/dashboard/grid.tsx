@@ -105,7 +105,7 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
           </Card>
         )}
 
-        <Configurations user={user} />
+        <Configurations user={user} setUser={setUser} />
       </div>
     </div>
   )

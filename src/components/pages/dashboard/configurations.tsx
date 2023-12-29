@@ -12,10 +12,16 @@ import { Card } from '@/components/pages/dashboard'
 
 interface ConfigurationsProps {
   user: User | null
+  setUser(user: User): void
 }
 
 const ConfigurationsSchema = z.object({
-  strategy: z.string({ required_error: 'Campo obrigatório' }),
+  strategy: z.enum(
+    ['black-red-black', 'red-black-red', 'black-black-black', 'red-red-red'],
+    {
+      required_error: 'Campo obrigatório',
+    },
+  ),
   entry: z
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
@@ -47,7 +53,7 @@ const STRATEGY: Record<
   redRedRed: 'red-red-red',
 }
 
-export function Configurations({ user }: ConfigurationsProps) {
+export function Configurations({ user, setUser }: ConfigurationsProps) {
   const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -58,13 +64,19 @@ export function Configurations({ user }: ConfigurationsProps) {
       strategy: user?.config?.strategy
         ? STRATEGY[user.config.strategy]
         : undefined,
-      entry: user?.config?.entry,
+      entry: user?.config?.entry
+        ? (String(user.config.entry) as unknown as number)
+        : undefined,
       gales:
         typeof user?.config?.gales === 'number'
           ? String(user.config.gales)
           : undefined,
-      stopWin: user?.config?.stopWin,
-      stopLoss: user?.config?.stopLoss,
+      stopWin: user?.config?.stopWin
+        ? (String(user.config.stopWin) as unknown as number)
+        : undefined,
+      stopLoss: user?.config?.stopLoss
+        ? (String(user.config.stopLoss) as unknown as number)
+        : undefined,
     },
     disabled: botIsActivated,
     resolver: zodResolver(ConfigurationsSchema),
@@ -78,9 +90,28 @@ export function Configurations({ user }: ConfigurationsProps) {
     setBotIsActivated(false)
   }
 
-  const onSubmit = (data: z.infer<typeof ConfigurationsSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
     setBotIsActivated(true)
-    console.log({ data })
+    if (user) {
+      const response = await fetch(`/api/users/${user.userId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          isActive: true,
+          status: 'online',
+          balanceTracks: null,
+          bets: null,
+          config: {
+            strategy: data.strategy,
+            entry: data.entry,
+            gales: Number(data.gales),
+            stopWin: data.stopWin,
+            stopLoss: data.stopLoss,
+          },
+        }),
+      })
+      const updatedUser = await response.json()
+      setUser(updatedUser)
+    }
   }
 
   return (
