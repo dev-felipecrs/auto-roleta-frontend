@@ -15,14 +15,17 @@ import { formatNumber } from '@/utils'
 import { User } from '@/types'
 import { mockUser } from '@/app/user-mock'
 
-const shadowData: Array<Omit<BalanceTrack, 'userId'>> = [
+const shadowData: Array<Omit<BalanceTrack, 'balanceTrackId' | 'userId'>> = [
   {
     time: new Date(new Date().setHours(0, 0, 0, 0)),
     value: 0,
   },
 ]
 
-export type CustomTooltipItemProps = Omit<BalanceTrack, 'userId'> & {
+export type CustomTooltipItemProps = Omit<
+  BalanceTrack,
+  'balanceTrackId' | 'userId'
+> & {
   time: string
 }
 
