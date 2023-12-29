@@ -1,9 +1,10 @@
 import cn from 'classnames'
+import { Status } from '@prisma/client'
 
 import { Skeleton } from '@/components/shared'
 
 interface BotProps {
-  status: 'online' | 'offline'
+  status: Status
   isLoading: boolean
 }
 

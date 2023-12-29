@@ -75,7 +75,8 @@ enum Color {
 }
 
 model Bet {
-  userId String @id
+  betId  String @id @default(uuid())
+  userId String
 
   color  Color
   time   DateTime @default(now())
@@ -89,7 +90,8 @@ model Bet {
 }
 
 model BalanceTrack {
-  userId String @id
+  balanceTrackId String @id @default(uuid())
+  userId         String
 
   value Int
   time  DateTime

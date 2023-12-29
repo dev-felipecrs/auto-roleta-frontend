@@ -13,13 +13,13 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions)
+    // const session = await getServerSession(authOptions)
 
-    if (!session) {
-      return Response.json('Usuário não tem permissão!', {
-        status: 401,
-      })
-    }
+    // if (!session) {
+    //   return Response.json('Usuário não tem permissão!', {
+    //     status: 401,
+    //   })
+    // }
 
     const user = await prisma.user.findUnique({
       where: {
@@ -208,22 +208,25 @@ export async function PATCH(request: Request, { params }: Params) {
 
     if (data.data.bets || data.data.bets === null) {
       if (data.data.bets === null) {
-        await prisma.bet.delete({
+        await prisma.bet.deleteMany({
           where: {
             userId: params.userId,
           },
         })
       } else {
-        await prisma.bet.createMany({
-          data: data.data.bets.map((bet) => ({
-            userId: params.userId,
-            color: bet.color,
-            time: new Date(bet.time),
-            entry: bet.entry,
-            gains: bet.gains,
-            result: bet.result,
-          })),
-        })
+        await prisma.$transaction([
+          prisma.bet.deleteMany(),
+          prisma.bet.createMany({
+            data: data.data.bets.map((bet) => ({
+              userId: params.userId,
+              color: bet.color,
+              time: new Date(bet.time),
+              entry: bet.entry,
+              gains: bet.gains,
+              result: bet.result,
+            })),
+          }),
+        ])
       }
     }
 
@@ -235,13 +238,16 @@ export async function PATCH(request: Request, { params }: Params) {
           },
         })
       } else {
-        await prisma.balanceTrack.createMany({
-          data: data.data.balanceTracks.map((balanceTrack) => ({
-            userId: params.userId,
-            value: balanceTrack.value,
-            time: new Date(balanceTrack.time),
-          })),
-        })
+        await prisma.$transaction([
+          prisma.balanceTrack.deleteMany(),
+          prisma.balanceTrack.createMany({
+            data: data.data.balanceTracks.map((balanceTrack) => ({
+              userId: params.userId,
+              value: balanceTrack.value,
+              time: new Date(balanceTrack.time),
+            })),
+          }),
+        ])
       }
     }
 

@@ -72,14 +72,17 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
             <Card title="Ganhos">
               <CurrentBalance
                 balance={
-                  user ? user.balance! - user.balanceTracks?.[0]?.value || 0 : 0
+                  user
+                    ? (user.balance || 0) -
+                      (user.balanceTracks?.[0]?.value || user.balance || 0)
+                    : 0
                 }
                 isLoading={isLoading}
               />
             </Card>
 
             <Card title="BOT">
-              <Bot status="online" isLoading={isLoading} />
+              <Bot status={user?.status || 'offline'} isLoading={isLoading} />
             </Card>
           </div>
         </div>
@@ -90,12 +93,17 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-col-reverse">
-        {(user?.bets || []).length > 0 ||
-          (isLoading && (
-            <Card title="Apostas">
-              <Bets bets={user?.bets || []} isLoading={isLoading} />
-            </Card>
-          ))}
+        {isLoading && (
+          <Card title="Apostas">
+            <Bets bets={[]} isLoading />
+          </Card>
+        )}
+
+        {!isLoading && user?.bets && user.bets.length > 0 && (
+          <Card title="Apostas">
+            <Bets bets={user.bets || []} isLoading={false} />
+          </Card>
+        )}
 
         <Configurations user={user} />
       </div>

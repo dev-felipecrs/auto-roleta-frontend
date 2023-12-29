@@ -3,6 +3,7 @@ import { ChangeEvent, useRef, useState } from 'react'
 
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
+import { Strategy } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { User } from '@/types'
@@ -36,17 +37,32 @@ const ConfigurationsSchema = z.object({
     .refine((value) => value > 0, { message: 'Valor inválido' }),
 })
 
+const STRATEGY: Record<
+  Strategy,
+  'black-red-black' | 'red-black-red' | 'black-black-black' | 'red-red-red'
+> = {
+  blackBlackBlack: 'black-black-black',
+  blackRedBlack: 'black-red-black',
+  redBlackRed: 'red-black-red',
+  redRedRed: 'red-red-red',
+}
+
 export function Configurations({ user }: ConfigurationsProps) {
-  const [botIsActivated, setBotIsActivated] = useState(false)
+  const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
   const formRef = useRef<HTMLFormElement>(null)
 
   const { control, handleSubmit } = useForm<
     z.infer<typeof ConfigurationsSchema>
   >({
     defaultValues: {
-      strategy: user?.config?.strategy,
+      strategy: user?.config?.strategy
+        ? STRATEGY[user.config.strategy]
+        : undefined,
       entry: user?.config?.entry,
-      gales: user?.config?.gales ? String(user?.config?.gales) : undefined,
+      gales:
+        typeof user?.config?.gales === 'number'
+          ? String(user.config.gales)
+          : undefined,
       stopWin: user?.config?.stopWin,
       stopLoss: user?.config?.stopLoss,
     },
