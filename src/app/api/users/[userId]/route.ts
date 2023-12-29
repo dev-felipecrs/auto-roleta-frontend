@@ -13,13 +13,13 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    // const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions)
 
-    // if (!session) {
-    //   return Response.json('Usuário não tem permissão!', {
-    //     status: 401,
-    //   })
-    // }
+    if (!session) {
+      return Response.json('Usuário não tem permissão!', {
+        status: 401,
+      })
+    }
 
     const user = await prisma.user.findUnique({
       where: {
@@ -104,13 +104,13 @@ const UpdateUserSchema = z.object({
 
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    // const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions)
 
-    // if (!session) {
-    //   return Response.json('Usuário não tem permissão!', {
-    //     status: 401,
-    //   })
-    // }
+    if (!session) {
+      return Response.json('Usuário não tem permissão!', {
+        status: 401,
+      })
+    }
 
     const userExists = await prisma.user.findUnique({
       where: {
