@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { API } from '@/server/entities'
 import { authOptions } from '@/constants'
 import { prisma } from '@/config/prisma'
+import { encrypt } from '@/actions'
 
 const AuthenticateSchema = z.object({
   email: z.string().email(),
@@ -44,27 +45,32 @@ export async function POST(request: Request) {
       )
     }
 
-    await prisma.credential.deleteMany({
-      where: {
-        user: {
-          email: session.user.email,
-        },
-      },
-    })
-    await prisma.user.update({
-      where: {
-        email: session.user.email,
-      },
-      data: {
-        balance,
-        credentials: {
-          create: {
-            email: data.data.email,
-            password: data.data.password,
+    const encryptedPassword = await encrypt(data.data.password)
+    console.log({ encryptedPassword })
+
+    await prisma.$transaction([
+      prisma.credential.deleteMany({
+        where: {
+          user: {
+            email: session.user.email,
           },
         },
-      },
-    })
+      }),
+      prisma.user.update({
+        where: {
+          email: session.user.email,
+        },
+        data: {
+          balance,
+          credentials: {
+            create: {
+              email: data.data.email,
+              password: encryptedPassword,
+            },
+          },
+        },
+      }),
+    ])
 
     return Response.json(
       {

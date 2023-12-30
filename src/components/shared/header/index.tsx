@@ -8,6 +8,7 @@ import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
+import { Disconnect } from './disconnect'
 import { ConnectWithBroker } from './connect-with-broker'
 
 interface HeaderProps {
@@ -58,7 +59,11 @@ export function Header({
       {!simpleVersion && (
         <div className="flex items-center gap-7">
           <Plan plan={mockUser.plan} />
-          <ConnectWithBroker />
+          {user?.credentials ? (
+            <Disconnect user={user} />
+          ) : (
+            <ConnectWithBroker />
+          )}
         </div>
       )}
     </header>

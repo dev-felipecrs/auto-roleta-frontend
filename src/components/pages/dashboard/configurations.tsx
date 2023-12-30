@@ -10,6 +10,7 @@ import { User } from '@/types'
 import { toast } from '@/config/toast'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
+import { decrypt } from '@/actions'
 
 interface ConfigurationsProps {
   user: User | null
@@ -114,12 +115,14 @@ export function Configurations({
   const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
     setBotIsActivated(true)
     setIsFetching(true)
-    if (user) {
+    if (user && user.credentials) {
+      const decryptedPassword = await decrypt(user.credentials.password)
+
       const authenticateResponse = await fetch('/api/authenticate', {
         method: 'POST',
         body: JSON.stringify({
           email: user.credentials?.email,
-          password: user.credentials?.password,
+          password: decryptedPassword,
         }),
       })
 
