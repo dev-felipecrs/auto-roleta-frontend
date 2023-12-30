@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { User } from '@/types'
 import { toast } from '@/config/toast'
 import { Button } from '@/components/shared'
+import { revalidatePage } from '@/actions'
 
 interface DisconnectProps {
   user: User | null
@@ -24,6 +25,7 @@ export function Disconnect({ user }: DisconnectProps) {
           }),
         })
       }
+      await revalidatePage('/dashboard')
     } catch (error) {
       toast.error('Algum erro inesperado ocorreu! Tente novamente mais tarde!')
     } finally {

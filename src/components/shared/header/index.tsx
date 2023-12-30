@@ -59,10 +59,10 @@ export function Header({
       {!simpleVersion && (
         <div className="flex items-center gap-7">
           <Plan plan={mockUser.plan} />
-          {user?.credentials ? (
-            <Disconnect user={user} />
-          ) : (
+          {!user?.credentials ? (
             <ConnectWithBroker />
+          ) : (
+            <Disconnect user={user} />
           )}
         </div>
       )}

@@ -56,6 +56,16 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
     }
   }, [user])
 
+  useEffect(() => {
+    if (user?.credentials === null) {
+      setIsFetching(true)
+    }
+
+    if (user?.credentials?.email && user.credentials.password) {
+      setIsFetching(false)
+    }
+  }, [user?.credentials])
+
   return (
     <div className="grid grid-cols-1 gap-4 px-8 pb-10 pt-6 lg:grid-cols-[1fr,minmax(308px,1fr)] xl:grid-cols-[minmax(39rem,1fr),1fr]">
       <div className="flex flex-col gap-4">
