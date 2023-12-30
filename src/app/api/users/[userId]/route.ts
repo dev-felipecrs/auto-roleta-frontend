@@ -268,7 +268,6 @@ export async function PATCH(request: Request, { params }: Params) {
       status: 200,
     })
   } catch (error) {
-    console.log(error)
     return Response.json(
       'Um erro inesperado ocorreu, tente novamente mais tarde!',
       {

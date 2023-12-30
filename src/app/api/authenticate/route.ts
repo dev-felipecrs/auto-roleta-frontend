@@ -46,7 +46,6 @@ export async function POST(request: Request) {
     }
 
     const encryptedPassword = await encrypt(data.data.password)
-    console.log({ encryptedPassword })
 
     await prisma.$transaction([
       prisma.credential.deleteMany({
