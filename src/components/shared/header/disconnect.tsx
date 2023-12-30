@@ -22,6 +22,8 @@ export function Disconnect({ user }: DisconnectProps) {
           method: 'PATCH',
           body: JSON.stringify({
             credentials: null,
+            isActive: false,
+            config: null,
           }),
         })
       }

@@ -1,5 +1,5 @@
 'use client'
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
@@ -66,7 +66,7 @@ export function Configurations({
   const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
   const formRef = useRef<HTMLFormElement>(null)
 
-  const { control, handleSubmit, setError } = useForm<
+  const { control, getValues, handleSubmit, setError, setValue } = useForm<
     z.infer<typeof ConfigurationsSchema>
   >({
     defaultValues: {
@@ -182,6 +182,16 @@ export function Configurations({
     }
     setIsFetching(false)
   }
+
+  useEffect(() => {
+    if (!user?.config) {
+      setBotIsActivated(false)
+      const fields = Object.entries(getValues()).map(
+        ([name]) => name,
+      ) as unknown as Array<keyof z.infer<typeof ConfigurationsSchema>>
+      fields.forEach((field) => setValue(field, ''))
+    }
+  }, [user?.config])
 
   return (
     <Card
