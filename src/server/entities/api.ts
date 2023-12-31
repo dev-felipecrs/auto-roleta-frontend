@@ -29,6 +29,16 @@ type AuthFailure = {
 
 type AuthResult = AuthSucess | AuthFailure
 
+const ROULETTE_EVENTS = [
+  'BETS_OPEN',
+  'BETS_CLOSING_SOON',
+  'BETS_CLOSED_ANNOUNCED',
+  'BETS_CLOSED',
+  'GAME_RESOLVED',
+] as const
+
+type RouletteEvent = (typeof ROULETTE_EVENTS)[number]
+
 type BetProps = any
 
 type BetResult = any
@@ -41,6 +51,8 @@ export class API {
   private accessToken?: string
 
   private readonly event = useEvent()
+
+  private rouletteState?: RouletteEvent
 
   public async authenticate(credentials: Credentials): Promise<AuthResult> {
     try {
@@ -205,17 +217,20 @@ export class API {
       return
     }
 
-    this.socket?.close(1000, 'Closing connection normally')
+    this.socket?.close(1000, 'Closing connection manually')
   }
 
   private onMessage(data: WebSocket.RawData): void {
-    const datum: { name: string; msg: any } = JSON.parse(data.toString('utf-8'))
+    const datum = JSON.parse(data.toString('utf-8'))
 
     if (DEBUG) {
       console.debug(datum)
     }
 
-    this.event.listen(datum.name, datum.msg)
+    if ('args' in datum && 'state' in datum.args) {
+      this.rouletteState = datum.args.state
+      this.event.listen(datum.args.state, datum.args)
+    }
   }
 
   private sendMessage(name: string, data: any): boolean {
@@ -237,8 +252,10 @@ export class API {
   }
 
   public async getRealtimeResults(callback: (result: string) => void) {
-    const result = ''
-    return callback(result)
+    this.event.addEventListener<{ state: 'GAME_RESOLVED'; result: [string] }>(
+      'GAME_RESOLVED',
+      (data) => callback(data.result[0]),
+    )
   }
 
   public async getBalance(): Promise<number> {
@@ -250,6 +267,10 @@ export class API {
       throw new Error(
         'Access token is required. Authenticate before performing bets.',
       )
+    }
+
+    if (this.rouletteState !== 'BETS_OPEN') {
+      // wait until next open round
     }
 
     return {}
