@@ -5,9 +5,16 @@ import { prisma } from '@/config/prisma'
 export async function POST(request: Request) {
   const data = await request.json()
 
-  const customer = await fetch(
+  const response = await fetch(
     `https://api-sandbox.ezypay.com/v2/billing/customers/${data.data.customerId}`,
-  ).then(async (data) => await data.json())
+    {
+      method: 'GET',
+      headers: {
+        merchant: '', // ADD MERCHANT ID
+      },
+    },
+  )
+  const customer = await response.json()
 
   const user = await prisma.user.findUnique({
     where: {
