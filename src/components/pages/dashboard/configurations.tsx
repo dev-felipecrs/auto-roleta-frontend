@@ -3,10 +3,10 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
-import { Strategy } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { User } from '@/types'
+import { STRATEGIES_NAMES } from '@/constants/strategies'
 import { toast } from '@/config/toast'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
@@ -19,13 +19,15 @@ interface ConfigurationsProps {
   setIsFetching(isFetching: boolean): void
 }
 
+const SELECT_STRATEGY_ITEMS = STRATEGIES_NAMES.map((strategy) => ({
+  label: strategy,
+  value: strategy,
+}))
+
 const ConfigurationsSchema = z.object({
-  strategy: z.enum(
-    ['black-red-black', 'red-black-red', 'black-black-black', 'red-red-red'],
-    {
-      required_error: 'Campo obrigatório',
-    },
-  ),
+  strategy: z.enum(STRATEGIES_NAMES, {
+    required_error: 'Campo obrigatório',
+  }),
   entry: z
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
@@ -47,16 +49,6 @@ const ConfigurationsSchema = z.object({
     .refine((value) => value > 0, { message: 'Valor inválido' }),
 })
 
-const STRATEGY: Record<
-  Strategy,
-  'black-red-black' | 'red-black-red' | 'black-black-black' | 'red-red-red'
-> = {
-  blackBlackBlack: 'black-black-black',
-  blackRedBlack: 'black-red-black',
-  redBlackRed: 'red-black-red',
-  redRedRed: 'red-red-red',
-}
-
 export function Configurations({
   user,
   setUser,
@@ -70,9 +62,7 @@ export function Configurations({
     z.infer<typeof ConfigurationsSchema>
   >({
     defaultValues: {
-      strategy: user?.config?.strategy
-        ? STRATEGY[user.config.strategy]
-        : undefined,
+      strategy: user?.config?.strategy,
       entry: user?.config?.entry
         ? (String(user.config.entry) as unknown as number)
         : undefined,
@@ -218,12 +208,7 @@ export function Configurations({
             <Select
               label="Estratégia"
               placeholder="Escolher"
-              items={[
-                { label: '⚫🔴⚫ -> 🔴', value: 'black-red-black' },
-                { label: '🔴⚫🔴 -> ⚫', value: 'red-black-red' },
-                { label: '⚫⚫⚫ -> 🔴', value: 'black-black-black' },
-                { label: '🔴🔴🔴 -> ⚫', value: 'red-red-red' },
-              ]}
+              items={SELECT_STRATEGY_ITEMS}
               containerClassname="xs:col-span-2"
               error={formState.errors.strategy?.message}
               onValueChange={field.onChange}

@@ -1,16 +1,9 @@
 import { format } from 'date-fns'
 import cn from 'classnames'
+import { Bet } from '@prisma/client'
 
 import { formatNumber } from '@/utils'
 import { Skeleton } from '@/components/shared'
-
-type Bet = {
-  color: 'red' | 'black'
-  entry: number
-  gains: number
-  result: boolean
-  time: Date
-}
 
 interface BetProps {
   bet: Bet

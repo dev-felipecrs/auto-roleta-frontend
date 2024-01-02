@@ -1,6 +1,12 @@
-import { Prisma } from '@prisma/client'
+import { Config, Prisma } from '@prisma/client'
 
-export type User = Prisma.UserGetPayload<{
+import { StrategyName } from '@/types'
+
+type UserConfig = Omit<Config, 'strategy'> & {
+  strategy: StrategyName
+}
+
+type PrismaUser = Prisma.UserGetPayload<{
   include: {
     balanceTracks: true
     bets: true
@@ -8,3 +14,7 @@ export type User = Prisma.UserGetPayload<{
     credentials: true
   }
 }>
+
+export type User = Omit<PrismaUser, 'config'> & {
+  config?: UserConfig
+}

@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { getServerSession } from 'next-auth'
-import { Prisma, Strategy } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
-import { authOptions } from '@/constants'
+import { authOptions, STRATEGIES_NAMES } from '@/constants'
 import { prisma } from '@/config/prisma'
 
 interface Params {
@@ -64,12 +64,7 @@ const UpdateUserSchema = z.object({
     .optional(),
   config: z
     .object({
-      strategy: z.enum([
-        'black-red-black',
-        'red-black-red',
-        'black-black-black',
-        'red-red-red',
-      ]),
+      strategy: z.enum(STRATEGIES_NAMES),
       entry: z.number(),
       gales: z.number(),
       stopWin: z.number(),
@@ -174,27 +169,20 @@ export async function PATCH(request: Request, { params }: Params) {
           },
         })
       } else {
-        const strategy: Record<typeof data.data.config.strategy, Strategy> = {
-          'black-black-black': 'blackBlackBlack',
-          'black-red-black': 'blackRedBlack',
-          'red-black-red': 'redBlackRed',
-          'red-red-red': 'redRedRed',
-        }
-
         dataToUpdate = {
           ...dataToUpdate,
           config: {
             upsert: {
               where: { userId: params.userId },
               create: {
-                strategy: strategy[data.data.config.strategy],
+                strategy: data.data.config.strategy,
                 entry: data.data.config.entry,
                 gales: data.data.config.gales,
                 stopWin: data.data.config.stopWin,
                 stopLoss: data.data.config.stopLoss,
               },
               update: {
-                strategy: strategy[data.data.config.strategy],
+                strategy: data.data.config.strategy,
                 entry: data.data.config.entry,
                 gales: data.data.config.gales,
                 stopWin: data.data.config.stopWin,
