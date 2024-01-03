@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { getServerSession } from 'next-auth'
 import { Prisma } from '@prisma/client'
 
-import { authOptions, STRATEGIES_NAMES } from '@/constants'
+import { STRATEGIES_NAMES } from '@/constants'
 import { prisma } from '@/config/prisma'
+import { getSession } from '@/actions'
 
 interface Params {
   params: {
@@ -13,7 +13,7 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions)
+    const { session } = await getSession()
 
     if (!session) {
       return Response.json('Usuário não tem permissão!', {
@@ -99,7 +99,7 @@ const UpdateUserSchema = z.object({
 
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions)
+    const { session } = await getSession()
 
     if (!session) {
       return Response.json('Usuário não tem permissão!', {

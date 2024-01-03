@@ -1,5 +1,6 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { AuthOptions } from 'next-auth'
+import { isPast } from 'date-fns'
 import { compare } from 'bcrypt'
 
 import { prisma } from '@/config/prisma'
@@ -16,30 +17,32 @@ export const authOptions = {
       async authorize(credentials) {
         const { email, password } = credentials!
 
-        try {
-          const user = await prisma.user.findUnique({
-            where: {
-              email,
-            },
-          })
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
+          },
+        })
 
-          if (!user) {
-            return null
-          }
+        if (!user) {
+          throw new Error('Verifique as suas credenciais e tente novamente')
+        }
 
-          const passwordsMatch = await compare(password, user.password)
+        if (!user.licensedUntil || isPast(new Date(user.licensedUntil))) {
+          throw new Error(
+            'Seu plano expirou! Renove-o e tente novamente mais tarde',
+          )
+        }
 
-          if (!passwordsMatch) {
-            return null
-          }
+        const passwordsMatch = await compare(password, user.password)
 
-          return {
-            id: user.userId,
-            name: user.name,
-            email: user.email,
-          }
-        } catch (error) {
-          return null
+        if (!passwordsMatch) {
+          throw new Error('Verifique as suas credenciais e tente novamente')
+        }
+
+        return {
+          id: user.userId,
+          name: user.name,
+          email: user.email,
         }
       },
     }),

@@ -1,19 +1,9 @@
-import { getServerSession } from 'next-auth'
-import { notFound } from 'next/navigation'
-
-import { authOptions } from '@/constants'
 import { Layout } from '@/components/shared'
 import { Plan } from '@/components/pages/plans'
-import { getUserByEmail } from '@/actions'
+import { getSession } from '@/actions'
 
 export default async function Plans() {
-  const session = await getServerSession(authOptions)
-
-  if (!session || !session.user) {
-    notFound()
-  }
-
-  const user = await getUserByEmail(session.user.email!)
+  const { user } = await getSession()
 
   return (
     <Layout user={user}>

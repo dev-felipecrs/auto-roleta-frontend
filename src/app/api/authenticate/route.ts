@@ -1,10 +1,8 @@
 import { z } from 'zod'
-import { getServerSession } from 'next-auth'
 
 import { API } from '@/server/entities'
-import { authOptions } from '@/constants'
 import { prisma } from '@/config/prisma'
-import { encrypt } from '@/actions'
+import { encrypt, getSession } from '@/actions'
 
 const AuthenticateSchema = z.object({
   email: z.string().email(),
@@ -13,7 +11,7 @@ const AuthenticateSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const { session } = await getSession()
 
     if (!session?.user?.email) {
       return Response.json('Usuário não tem permissão!', {

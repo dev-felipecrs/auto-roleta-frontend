@@ -40,8 +40,8 @@ export function LoginForm() {
       redirect: false,
     })
 
-    if (!response?.ok || response?.error) {
-      toast.error('Verifique as suas credenciais e tente novamente')
+    if (response?.error) {
+      toast.error(response.error)
       return
     }
 

@@ -1,7 +1,8 @@
 'use server'
+import { User } from '@/types'
 import { prisma } from '@/config/prisma'
 
-export async function getUserByEmail(email: string) {
+export async function getUserByEmail(email: string): Promise<User> {
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -14,5 +15,5 @@ export async function getUserByEmail(email: string) {
     },
   })
 
-  return user
+  return user as User
 }

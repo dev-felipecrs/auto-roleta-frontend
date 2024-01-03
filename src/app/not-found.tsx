@@ -1,10 +1,9 @@
-import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
-import { authOptions } from '@/constants'
+import { getSession } from '@/actions'
 
 export default async function NotFound() {
-  const session = await getServerSession(authOptions)
+  const { session } = await getSession()
 
   if (session) {
     redirect('/dashboard')

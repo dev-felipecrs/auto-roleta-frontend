@@ -1,9 +1,8 @@
-import { getServerSession } from 'next-auth'
 import { notFound, redirect } from 'next/navigation'
 
-import { authOptions } from '@/constants'
 import { prisma } from '@/config/prisma'
 import { ResetPasswordForm } from '@/components/pages/accounts/reset-password'
+import { getSession } from '@/actions'
 
 interface ResetPasswordProps {
   searchParams: {
@@ -14,15 +13,9 @@ interface ResetPasswordProps {
 export default async function ResetPassword({
   searchParams,
 }: ResetPasswordProps) {
-  const session = await getServerSession(authOptions)
+  const { session, user } = await getSession()
 
   if (session) redirect('/dashboard')
-
-  const user = await prisma.user.findUnique({
-    where: {
-      password_reset_token: searchParams.token,
-    },
-  })
 
   if (!user) {
     notFound()
