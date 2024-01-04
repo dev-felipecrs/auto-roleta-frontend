@@ -167,7 +167,7 @@ export default function Home() {
             </div>
 
             <span className="text-sm font-semibold leading-normal text-[#969696]">
-              More than 10.000 people have tried
+              10.000 usuários cadastrados
             </span>
           </div>
 
