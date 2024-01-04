@@ -1,8 +1,57 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { FAQ } from '@/constants'
 import { Plan } from '@/components/pages/plans'
+
+type FAQItem = {
+  title: string
+  description: string | JSX.Element
+}
+
+export const FAQ: FAQItem[] = [
+  {
+    title: 'Posso realmente testar a AutoRoleta de graça?',
+    description: (
+      <>
+        Sim. A AutoRoleta oferece a modalidade Trial aos novos assinantes. Ao
+        realizar o cadastro na AutoRoleta sua conta estará automaticamente no
+        plano gratuito (Trial).
+      </>
+    ),
+  },
+  {
+    title: 'Posso utilizar no offline?',
+    description:
+      'Sim, a Execução do robô é na nuvem. Seu celular ou computador pode ficar desligado e as entradas ficarão acontecendo.',
+  },
+  {
+    title: 'Como criar uma conta na AutoRoleta?',
+    description: (
+      <>
+        Para criar uma conta, acesse o site:{' '}
+        <Link href="/accounts/register" className="text-[#E51E3E] underline">
+          https://www.autoroleta.com/accounts/register
+        </Link>{' '}
+        ou clique no botão “Registrar” no canto superior direito da tela.
+      </>
+    ),
+  },
+  {
+    title: 'Funciona no celular?',
+    description:
+      'Sim, funciona em todos os dispositivos com acesso a internet.',
+  },
+  {
+    title: 'A plataforma é segura?',
+    description:
+      'Valorizamos a privacidade dos nossos usuários. Todas as informações são tratadas com máxima confidencialidade, garantindo uma experiência segura e tranquila ao utilizar nossa plataforma.',
+  },
+  {
+    title: 'Preciso ter experiência?',
+    description:
+      'Não, para aqueles que não têm experiência extensiva em jogos de cassino. Basta alguns cliques para começar a usufruir dos benefícios da inteligência artificial em suas apostas.',
+  },
+]
 
 export default function Home() {
   return (
@@ -247,7 +296,7 @@ export default function Home() {
               key={index}
               className="group border-b border-[#43454B] pb-8 pt-6 marker:content-['']"
             >
-              <summary className="flex items-center justify-between text-lg font-medium text-white">
+              <summary className="flex cursor-pointer items-center justify-between text-lg font-medium text-white">
                 {item.title}
                 <Image
                   src="/icons/plus-circle.svg"
