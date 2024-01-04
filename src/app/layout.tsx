@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="overflow-hidden">
+    <html lang="en" className="overflow-x-hidden">
       <body className={twMerge('bg-[#1c1d21]', poppins.className)}>
         {children}
         <Toaster position="bottom-center" richColors />
