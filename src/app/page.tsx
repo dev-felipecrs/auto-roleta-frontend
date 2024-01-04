@@ -242,8 +242,11 @@ export default function Home() {
         </p>
 
         <dl className="mt-28 w-full max-w-3xl">
-          {FAQ.map((item) => (
-            <details className="group border-b border-[#43454B] pb-8 pt-6 marker:content-['']">
+          {FAQ.map((item, index) => (
+            <details
+              key={index}
+              className="group border-b border-[#43454B] pb-8 pt-6 marker:content-['']"
+            >
               <summary className="flex items-center justify-between text-lg font-medium text-white">
                 {item.title}
                 <Image
