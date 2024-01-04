@@ -235,15 +235,15 @@ export default function Home() {
             price={0}
             period="mês"
             benefitsIncluded={[
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
+              '100% em nuvem',
+              'Análises em tempo real',
+              'Utilização Limitada',
+              'Histórico de apostas',
+              'Suporte',
             ]}
             benefitsNotIncluded={[
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
+              'Crie sua Estratégia (em breve)',
+              'Validador de Estratégias (em breve)',
             ]}
           />
 
@@ -252,14 +252,15 @@ export default function Home() {
             price={9.9}
             period="mês"
             benefitsIncluded={[
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
+              '100% em nuvem',
+              'Análises em tempo real',
+              'Utilização ilimitada',
+              'Histórico de apostas',
+              'Suporte',
+              'Crie sua Estratégia (em breve)',
+              'Validador de Estratégias (em breve)',
             ]}
-            benefitsNotIncluded={['Lorem ipsum dolor']}
+            benefitsNotIncluded={['Suporte individual']}
             isPopular
           />
 
@@ -268,13 +269,13 @@ export default function Home() {
             price={108.9}
             period="ano"
             benefitsIncluded={[
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
-              'Lorem ipsum dolor',
+              '100% em nuvem',
+              'Análises em tempo real',
+              'Utilização ilimitada',
+              'Histórico de apostas',
+              'Suporte Individual',
+              'Crie sua Estratégia (em breve)',
+              'Validador de Estratégias (em breve)',
             ]}
             benefitsNotIncluded={[]}
           />

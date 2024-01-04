@@ -46,7 +46,7 @@ export function Plan({
       </header>
 
       <ul className="mt-10 flex flex-col gap-6">
-        {benefitsIncluded.map((_, index) => (
+        {benefitsIncluded.map((text, index) => (
           <li key={index} className="flex items-center gap-3">
             <Image
               src="/icons/check.svg"
@@ -56,12 +56,12 @@ export function Plan({
             />
 
             <span className="text-sm font-medium leading-5 text-white">
-              Lorem ipsum dolor
+              {text}
             </span>
           </li>
         ))}
 
-        {benefitsNotIncluded.map((_, index) => (
+        {benefitsNotIncluded.map((text, index) => (
           <li key={index} className="flex items-center gap-3">
             <Image
               src="/icons/uncheck.svg"
@@ -71,7 +71,7 @@ export function Plan({
             />
 
             <span className="font-medium leading-5 text-[#777a85] line-through">
-              Lorem ipsum dolor
+              {text}
             </span>
           </li>
         ))}
