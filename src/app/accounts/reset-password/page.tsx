@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 
+import { prisma } from '@/config/prisma'
 import { ResetPasswordForm } from '@/components/pages/accounts/reset-password'
 import { getSession } from '@/actions'
 
