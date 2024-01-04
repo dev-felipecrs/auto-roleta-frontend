@@ -273,33 +273,20 @@ export default function Home() {
       </section>
 
       <footer className="px-32 pt-16">
-        <Image
-          src="/images/shared/logo.svg"
-          alt="Auto Roleta"
-          width={160}
-          height={35}
-        />
+        <ul className="grid grid-cols-4">
+          <li>
+            <Image
+              src="/images/shared/logo.svg"
+              alt="Auto Roleta"
+              width={160}
+              height={35}
+            />
 
-        <div className="mb-7 mt-9 grid grid-cols-4 ">
-          <ul className="flex flex-col gap-1">
-            <li>
-              <Link
-                href="#"
-                className="text-lg leading-8 text-white transition-all hover:opacity-75"
-              >
-                Item 1
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="text-lg leading-8 text-white transition-all hover:opacity-75"
-              >
-                Item 2
-              </Link>
-            </li>
-          </ul>
-        </div>
+            <span className="mt-9 block text-lg leading-8 text-white">
+              Maecenas lectus quam ullamcorper vitae
+            </span>
+          </li>
+        </ul>
 
         <div className="flex w-full items-center justify-center py-5">
           <span className="text-base leading-7 text-[#838489]">
