@@ -13,7 +13,7 @@ export default async function Dashboard() {
 
   return (
     <Layout user={user}>
-      <Grid user={user!} />
+      <Grid user={user} />
     </Layout>
   )
 }
