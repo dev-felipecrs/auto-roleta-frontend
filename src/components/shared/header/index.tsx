@@ -3,7 +3,7 @@ import Image from 'next/image'
 import cn from 'classnames'
 
 import { User } from '@/types'
-import { Balance } from '@/components/shared'
+import { Balance } from '@/components/shared/Balance'
 import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'

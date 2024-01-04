@@ -2,7 +2,8 @@
 import { useState } from 'react'
 
 import { User } from '@/types'
-import { Header, Sidebar } from '@/components/shared'
+import { Sidebar } from '@/components/shared/Sidebar'
+import { Header } from '@/components/shared/Header'
 
 interface LayoutProps {
   user: User | null

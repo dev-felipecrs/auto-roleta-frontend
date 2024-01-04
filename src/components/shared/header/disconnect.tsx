@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { User } from '@/types'
 import { toast } from '@/config/toast'
-import { Button } from '@/components/shared'
+import { Button } from '@/components/shared/Button'
 import { revalidatePage } from '@/actions'
 
 interface DisconnectProps {

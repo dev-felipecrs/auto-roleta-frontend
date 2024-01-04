@@ -5,7 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { User } from '@/types'
-import { Balance, Button } from '@/components/shared'
+import { Button } from '@/components/shared/Button'
+import { Balance } from '@/components/shared/Balance'
 
 import { ActiveLink } from './active-link'
 

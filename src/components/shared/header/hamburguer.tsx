@@ -2,7 +2,7 @@
 import Image from 'next/image'
 
 import { User } from '@/types'
-import { Sidebar } from '@/components/shared'
+import { Sidebar } from '@/components/shared/Sidebar'
 
 interface HamburguerProps {
   user: User | null

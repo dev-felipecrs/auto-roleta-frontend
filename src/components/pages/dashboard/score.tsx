@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Skeleton } from '@/components/shared'
+import { Skeleton } from '@/components/shared/Skeleton'
 
 interface ScoreContainerProps {
   value: string | number

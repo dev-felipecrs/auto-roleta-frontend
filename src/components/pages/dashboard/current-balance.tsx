@@ -1,7 +1,7 @@
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
-import { Skeleton } from '@/components/shared'
+import { Skeleton } from '@/components/shared/Skeleton'
 
 interface CurrentBalanceProps {
   balance: number

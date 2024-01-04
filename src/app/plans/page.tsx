@@ -1,4 +1,4 @@
-import { Layout } from '@/components/shared'
+import { Layout } from '@/components/shared/Layout'
 import { Plan } from '@/components/pages/plans'
 import { getSession } from '@/actions'
 

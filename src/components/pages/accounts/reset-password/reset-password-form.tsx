@@ -9,7 +9,8 @@ import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from '@/config/toast'
-import { Button, Input } from '@/components/shared'
+import { Input } from '@/components/shared/Input'
+import { Button } from '@/components/shared/Button'
 
 interface ResetPasswordFormProps {
   email: string

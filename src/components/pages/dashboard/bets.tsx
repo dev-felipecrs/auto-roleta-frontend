@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { Bet } from '@prisma/client'
 
 import { formatNumber } from '@/utils'
-import { Skeleton } from '@/components/shared'
+import { Skeleton } from '@/components/shared/Skeleton'
 
 interface BetProps {
   bet: Bet

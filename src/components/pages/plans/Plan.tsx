@@ -3,7 +3,7 @@ import Image from 'next/image'
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
-import { Button } from '@/components/shared'
+import { Button } from '@/components/shared/Button'
 
 interface PlanProps {
   name: string

@@ -1,4 +1,4 @@
-import { Header } from '@/components/shared'
+import { Header } from '@/components/shared/Header'
 
 interface AccountsLayoutProps {
   children: React.ReactNode
