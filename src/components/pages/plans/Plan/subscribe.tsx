@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 
+import { QRCodeSVG } from 'qrcode.react'
 import axios from 'axios'
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -10,11 +11,12 @@ import { Button } from '@/components/shared'
 export function PlanSubscribe() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [pixCode, setPixCode] = useState('')
 
-  const pixIsExperired = useRef(false)
+  const pixIsExpired = useRef(false)
 
   const handleCopyPIXCode = async () => {
-    await navigator.clipboard.writeText('pix code')
+    await navigator.clipboard.writeText(pixCode)
     toast.success('Código copiado com sucesso')
   }
 
@@ -28,14 +30,18 @@ export function PlanSubscribe() {
             customer: {
               name: 'name',
               email: 'email@example.com',
+              document: {
+                number: '95829934051',
+                type: 'cpf',
+              },
             },
-            amount: 50,
+            amount: 1 * 100,
             paymentMethod: 'pix',
             items: [
               {
                 tangible: false,
                 title: 'Plano',
-                unitPrice: 500,
+                unitPrice: 1 * 100,
                 quantity: 1,
               },
             ],
@@ -43,15 +49,25 @@ export function PlanSubscribe() {
           },
           {
             headers: {
-              accept: 'application/json',
-              authorization: 'Basic ZmVsaXBlOjEyMw==',
-              'content-type': 'application/json',
+              authorization:
+                'Basic ' +
+                Buffer.from(String(process.env.PAY2M_SECRET_KEY)).toString(
+                  'base64',
+                ),
             },
           },
         )
-        pixIsExperired.current = false
-        console.log({ transaction })
+
+        const code = transaction.data.pix.qrcode
+
+        if (!code) {
+          throw new Error('PIX code is missing')
+        }
+
+        pixIsExpired.current = false
+        setPixCode(code)
       } catch (error) {
+        console.log(error)
         toast.error('Algo deu errado, tente novamente mais tarde')
         setModalIsOpen(false)
       } finally {
@@ -59,7 +75,7 @@ export function PlanSubscribe() {
       }
     }
 
-    if (!modalIsOpen && !pixIsExperired.current) {
+    if (!modalIsOpen && !pixIsExpired.current) {
       createTransaction()
     }
 
@@ -103,12 +119,14 @@ export function PlanSubscribe() {
 
           {!isLoading && (
             <div className="w-full">
-              <div className="mx-auto flex aspect-square w-9/12 items-center justify-center bg-red-500 sm:h-64 sm:w-64"></div>
+              <div className="mx-auto flex aspect-square w-9/12 items-center justify-center sm:h-64 sm:w-64">
+                <QRCodeSVG value={pixCode} className="h-full w-full" />
+              </div>
 
               <div className="mt-10 flex flex-col items-center gap-6 sm:flex-row">
                 <input
                   type="text"
-                  value="pix copia e cola, código vai aqui"
+                  value={pixCode}
                   disabled
                   className="w-full border-0 border-b border-white bg-transparent px-0 text-white sm:w-64"
                 />
