@@ -79,7 +79,7 @@ export default function Home() {
               href="/accounts/register"
               className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
             >
-              Sign up
+              Registrar
             </Link>
           </div>
         </header>
@@ -173,10 +173,10 @@ export default function Home() {
 
           <footer>
             <Link
-              href="#"
+              href="/accounts/register"
               className="mt-11 inline-block rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm font-semibold leading-6 text-white transition-all hover:opacity-75"
             >
-              Try for free
+              Teste grátis
             </Link>
           </footer>
         </div>
