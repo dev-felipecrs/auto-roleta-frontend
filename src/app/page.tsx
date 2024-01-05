@@ -8,7 +8,7 @@ type FAQItem = {
   description: string | JSX.Element
 }
 
-export const FAQ: FAQItem[] = [
+const FAQ: FAQItem[] = [
   {
     title: 'Posso realmente testar a AutoRoleta de graça?',
     description: (
