@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
-import { Button } from '@/components/shared'
+
+import { PlanSubscribe } from './subscribe'
 
 interface PlanProps {
   name: string
@@ -78,9 +78,7 @@ export function Plan({
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        <Link href="#">
-          <Button className="w-56">Assinar</Button>
-        </Link>
+        <PlanSubscribe />
         <span className="max-w-[11.25rem] text-center text-xs font-medium text-[#777a85]">
           Utilize o mesmo email da sua conta durante o checkout.
         </span>
