@@ -96,29 +96,28 @@ export default function Home() {
         <footer className="mt-16 flex items-center justify-center gap-4 sm:gap-6">
           <Link
             href="/accounts/register"
-            className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-8 py-3 text-sm leading-6 text-white transition-all hover:opacity-75 sm:px-11"
+            className="whitespace-nowrap rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-8 py-3 text-sm leading-6 text-white transition-all hover:opacity-75 sm:px-11"
           >
             Teste grátis
           </Link>
 
           <Link
             href="/accounts/login"
-            className="rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
+            className="whitespace-nowrap rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
           >
             Fazer login
           </Link>
         </footer>
 
-        <div className="relative ml-10 h-[20.75rem] w-[591px] lg:ml-0 lg:h-[585px] lg:w-[1041px]">
+        <div className="relative mt-16 aspect-video w-full lg:h-[585px] lg:w-[1041px]">
           <Image
             src="/images/pages/home/hero.svg"
             alt="Auto Roleta Dashboard"
-            className="mx-auto mt-16"
             layout="fill"
           />
         </div>
 
-        <div className="absolute left-0 top-0 -z-10 h-[900px] w-screen rounded-br-[25%] bg-[#1C1D22] sm:h-[1100px]" />
+        <div className="absolute left-0 top-0 -z-10 h-[900px] w-screen bg-[#1C1D22] sm:h-[1100px] sm:rounded-br-[25%]" />
       </section>
 
       <section className="flex flex-col items-center justify-between gap-16 px-8 pt-44 sm:flex-row sm:px-[7.5rem] sm:pt-48">
