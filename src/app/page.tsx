@@ -188,7 +188,7 @@ export default function Home() {
         />
       </section>
 
-      <section className="flex flex-col items-center bg-[#1C1D21] pb-36 pt-32">
+      <section className="flex flex-col items-center bg-[#1C1D21] px-4 pb-36 pt-32">
         <h1 className="text-[2rem] font-bold text-white sm:text-[3.25rem]">
           Conquistas
         </h1>
