@@ -56,7 +56,7 @@ const FAQ: FAQItem[] = [
 export default function Home() {
   return (
     <main className="overflow-x-hidden bg-[#28292E]">
-      <section className="relative z-10 pt-10 sm:flex sm:flex-col sm:items-center">
+      <section className="relative z-10 px-6 pt-10 sm:flex sm:flex-col sm:items-center">
         <header className="flex w-full items-center justify-between px-[6.25rem]">
           <Link href="/">
             <Image
