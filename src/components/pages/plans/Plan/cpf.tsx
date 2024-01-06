@@ -14,7 +14,8 @@ interface PlanCpfStepProps {
 const CpfSchema = z.object({
   cpf: z
     .string()
-    .refine((value) => cpf.isValid(value), { message: 'CPF inválido' }),
+    .refine((value) => cpf.isValid(value), { message: 'CPF inválido' })
+    .transform((value) => value.replace(/[^\d]/g, '')),
 })
 
 const MyInput = (error: string | undefined) => {

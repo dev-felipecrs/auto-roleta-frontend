@@ -3,15 +3,23 @@ import { useEffect, useRef, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import axios from 'axios'
 
+import { User } from '@/types'
 import { toast } from '@/config/toast'
 import { Button } from '@/components/shared'
 
 interface PlanPixStepProps {
-  handleOpenModal(isOpen: boolean): void
+  user: User
+  priceInCents: number
   cpf: string
+  handleOpenModal(isOpen: boolean): void
 }
 
-export function PlanPixStep({ handleOpenModal }: PlanPixStepProps) {
+export function PlanPixStep({
+  user,
+  priceInCents,
+  cpf,
+  handleOpenModal,
+}: PlanPixStepProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [pixCode, setPixCode] = useState('')
 
@@ -30,24 +38,25 @@ export function PlanPixStep({ handleOpenModal }: PlanPixStepProps) {
           'https://api.pay2m.com.br/v1/transactions',
           {
             customer: {
-              name: 'name',
-              email: 'email@example.com',
+              name: user.name,
+              email: user.email,
               document: {
-                number: '95829934051',
+                number: cpf,
                 type: 'cpf',
               },
             },
-            amount: 1 * 100,
+            amount: priceInCents,
             paymentMethod: 'pix',
             items: [
               {
                 tangible: false,
                 title: 'Plano',
-                unitPrice: 1 * 100,
+                unitPrice: priceInCents,
                 quantity: 1,
               },
             ],
-            postbackUrl: 'https://www.autoroleta.com/api/address',
+            postbackUrl:
+              'https://auto-roleta-frontend-kss-digital.vercel.app/api/webhooks/subscribe',
           },
           {
             headers: {

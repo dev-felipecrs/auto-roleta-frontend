@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
+import { User } from '@/types'
 import { Button } from '@/components/shared'
 
 import { PlanPixStep } from './pix'
@@ -10,7 +11,11 @@ import { PlanCpfStep } from './cpf'
 
 type Step = 'cpf' | 'pix'
 
-export function PlanSubscribe() {
+interface PlanSubscribeProps {
+  user: User
+}
+
+export function PlanSubscribe({ user }: PlanSubscribeProps) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [step, setStep] = useState<Step>('cpf')
 
@@ -35,8 +40,10 @@ export function PlanSubscribe() {
 
           {step === 'pix' && (
             <PlanPixStep
-              handleOpenModal={setModalIsOpen}
+              user={user}
+              priceInCents={100}
               cpf={cpfRef.current}
+              handleOpenModal={setModalIsOpen}
             />
           )}
         </Dialog.Content>

@@ -1,7 +1,10 @@
+import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
+import { Button } from '@/components/shared'
+import { getSession } from '@/actions'
 
 import { PlanSubscribe } from './subscribe'
 
@@ -14,7 +17,7 @@ interface PlanProps {
   isPopular?: boolean
 }
 
-export function Plan({
+export async function Plan({
   name,
   price,
   period,
@@ -22,6 +25,8 @@ export function Plan({
   benefitsNotIncluded,
   isPopular = false,
 }: PlanProps) {
+  const { user } = await getSession()
+
   return (
     <section
       className={cn('flex flex-col rounded-xl bg-[#17181d] px-8 py-11', {
@@ -78,7 +83,12 @@ export function Plan({
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        <PlanSubscribe />
+        {user && <PlanSubscribe user={user} />}
+        {!user && (
+          <Link href="/accounts/register">
+            <Button className="w-56">Assinar</Button>
+          </Link>
+        )}
         <span className="max-w-[11.25rem] text-center text-xs font-medium text-[#777a85]">
           Utilize o mesmo email da sua conta durante o checkout.
         </span>
