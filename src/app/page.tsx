@@ -129,8 +129,7 @@ export default function Home() {
           <p className="mt-4 text-sm leading-6 text-[#969696] sm:text-base">
             Inspirada nas táticas dos grandes apostadores de roleta ao redor do
             mundo, nossa inteligência artificial incorpora estratégias testadas
-            e comprovadas. Isso proporciona uma abordagem sólida e consistente
-            para as apostas, independente da variabilidade do jogo.
+            e comprovadas
           </p>
 
           <div className="mt-9 flex items-center gap-3">
@@ -228,8 +227,7 @@ export default function Home() {
           Nossos planos
         </h1>
         <p className="mt-10 text-center text-sm text-[#969696]">
-          Porta arcu tristique nisl ultricies. Arcu enim parturient senectus
-          sagittis.
+          Escolha o plano ideal para o seu perfil
         </p>
 
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
@@ -287,11 +285,10 @@ export default function Home() {
 
       <section className="flex flex-col items-center bg-[#1C1D22] px-8 pb-64 pt-24 sm:px-80">
         <h1 className="text-center text-[2rem] font-bold text-white sm:text-[3.25rem]">
-          Perguntas Frequentes
+          FAQ
         </h1>
         <p className="mt-10 text-center text-sm text-[#969696]">
-          Porta arcu tristique nisl ultricies. Arcu enim parturient senectus
-          sagittis.
+          Perguntas Frequentes
         </p>
 
         <dl className="mt-16 w-full max-w-3xl sm:mt-28">
