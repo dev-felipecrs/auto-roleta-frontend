@@ -11,7 +11,7 @@ type FAQItem = {
 
 const FAQ: FAQItem[] = [
   {
-    title: 'Posso realmente testar a AutoRoleta de graça?',
+    title: 'Posso testar de graça?',
     description: (
       <>
         Sim. A AutoRoleta oferece a modalidade Trial aos novos assinantes. Ao
@@ -26,7 +26,7 @@ const FAQ: FAQItem[] = [
       'Sim, a Execução do robô é na nuvem. Seu celular ou computador pode ficar desligado e as entradas ficarão acontecendo.',
   },
   {
-    title: 'Como criar uma conta na AutoRoleta?',
+    title: 'Como criar uma conta?',
     description: (
       <>
         Para criar uma conta, acesse o site:{' '}
