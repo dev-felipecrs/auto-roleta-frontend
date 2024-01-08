@@ -75,7 +75,7 @@ export default async function Home() {
             {userIsLogged && (
               <Link
                 href="/dashboard"
-                className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
               >
                 Dashboard
               </Link>
@@ -85,14 +85,14 @@ export default async function Home() {
               <>
                 <Link
                   href="/accounts/login"
-                  className="rounded-lg border border-white px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                  className="rounded-lg border border-white px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
                 >
                   Login
                 </Link>
 
                 <Link
                   href="/accounts/register"
-                  className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                  className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
                 >
                   Registrar
                 </Link>
