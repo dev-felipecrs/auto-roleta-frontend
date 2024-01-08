@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Plan } from '@/components/pages/plans'
+import { getSession } from '@/actions'
 
 type FAQItem = {
   title: string
@@ -53,7 +54,10 @@ const FAQ: FAQItem[] = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession()
+  const userIsLogged = session.user
+
   return (
     <main className="overflow-x-hidden bg-[#28292E]">
       <section className="relative z-10 px-6 pt-10 sm:flex sm:flex-col sm:items-center">
@@ -68,19 +72,32 @@ export default function Home() {
           </Link>
 
           <div className="hidden items-center gap-3 sm:flex">
-            <Link
-              href="/accounts/login"
-              className="rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
-            >
-              Login
-            </Link>
+            {userIsLogged && (
+              <Link
+                href="/dashboard"
+                className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+              >
+                Dashboard
+              </Link>
+            )}
 
-            <Link
-              href="/accounts/register"
-              className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
-            >
-              Registrar
-            </Link>
+            {!userIsLogged && (
+              <>
+                <Link
+                  href="/accounts/login"
+                  className="rounded-lg border border-white px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  href="/accounts/register"
+                  className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                >
+                  Registrar
+                </Link>
+              </>
+            )}
           </div>
         </header>
 
@@ -173,7 +190,7 @@ export default function Home() {
               href="#"
               className="mt-11 inline-block rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm font-semibold leading-6 text-white transition-all hover:opacity-75"
             >
-              Try for free
+              Teste grátis
             </Link>
           </footer>
         </div>
@@ -207,7 +224,7 @@ export default function Home() {
             <strong className="text-[2.625rem] font-bold text-white">
               + 11.576 mil
             </strong>
-            <p className="text-base text-[#8B8D97]">Usuários ativo</p>
+            <p className="text-base text-[#8B8D97]">Usuários ativos</p>
           </article>
 
           <article className="flex flex-col items-center justify-center gap-1 rounded-xl bg-[#17181D] px-9 py-11">
@@ -332,7 +349,8 @@ export default function Home() {
             />
 
             <span className="mt-9 block text-lg leading-8 text-white">
-              Maecenas lectus quam ullamcorper vitae
+              Automatizando lucros <br />
+              na roleta
             </span>
           </li>
         </ul>

@@ -26,7 +26,14 @@ const SELECT_STRATEGY_ITEMS = STRATEGIES_NAMES.map((strategy) => ({
 
 const ConfigurationsSchema = z.object({
   strategy: z.enum(STRATEGIES_NAMES, {
-    required_error: 'Campo obrigatório',
+    errorMap: (issue) => {
+      const issues: Partial<Record<typeof issue.code, { message: string }>> = {
+        invalid_type: { message: 'Campo inválido' },
+        invalid_enum_value: { message: 'Campo inválido' },
+      }
+
+      return issues[issue.code] || { message: 'Campo inválido' }
+    },
   }),
   entry: z
     .string({ required_error: 'Campo obrigatório' })

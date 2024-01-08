@@ -72,20 +72,20 @@ export function Sidebar({ user, handleSidebarVisibilityToggle }: SidebarProps) {
         </ActiveLink>
 
         <ActiveLink
-          href="/plans"
-          className="flex h-[52px] items-center gap-4 pl-[26px]"
-        >
-          <Discount set="bold" primaryColor="#383c48" />
-          <span className="text-sm font-medium text-[#c6c6c7]">Planos</span>
-        </ActiveLink>
-
-        <ActiveLink
-          href="/analysis"
+          href="/ranking"
           className="flex h-[52px] items-center gap-4 pl-[26px]"
           disabled
         >
           <Chart set="bold" primaryColor="#383c48" />
           <span className="text-sm font-medium text-[#c6c6c7]">Ranking</span>
+        </ActiveLink>
+
+        <ActiveLink
+          href="/plans"
+          className="flex h-[52px] items-center gap-4 pl-[26px]"
+        >
+          <Discount set="bold" primaryColor="#383c48" />
+          <span className="text-sm font-medium text-[#c6c6c7]">Planos</span>
         </ActiveLink>
       </nav>
 
