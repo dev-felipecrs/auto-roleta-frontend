@@ -78,6 +78,15 @@ export function Sidebar({ user, handleSidebarVisibilityToggle }: SidebarProps) {
           <Discount set="bold" primaryColor="#383c48" />
           <span className="text-sm font-medium text-[#c6c6c7]">Planos</span>
         </ActiveLink>
+
+        <ActiveLink
+          href="/analysis"
+          className="flex h-[52px] items-center gap-4 pl-[26px]"
+          disabled
+        >
+          <Chart set="bold" primaryColor="#383c48" />
+          <span className="text-sm font-medium text-[#c6c6c7]">Ranking</span>
+        </ActiveLink>
       </nav>
 
       <footer className="mb-5">

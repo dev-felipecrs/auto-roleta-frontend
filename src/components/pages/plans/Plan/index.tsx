@@ -89,9 +89,6 @@ export async function Plan({
             <Button className="w-56">Assinar</Button>
           </Link>
         )}
-        <span className="max-w-[11.25rem] text-center text-xs font-medium text-[#777a85]">
-          Utilize o mesmo email da sua conta durante o checkout.
-        </span>
       </footer>
     </section>
   )

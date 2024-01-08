@@ -9,7 +9,7 @@ export default async function Plans() {
     <Layout user={user}>
       <div className="mb-4 mt-10 flex flex-wrap items-center justify-center gap-[3.25rem] px-12">
         <Plan
-          name="Trial"
+          name="Free"
           price={0}
           period="mês"
           benefitsIncluded={[

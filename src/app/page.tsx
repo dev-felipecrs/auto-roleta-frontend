@@ -79,7 +79,7 @@ export default function Home() {
               href="/accounts/register"
               className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
             >
-              Sign up
+              Registrar
             </Link>
           </div>
         </header>
@@ -164,7 +164,7 @@ export default function Home() {
             </div>
 
             <span className="text-sm font-semibold leading-normal text-[#969696]">
-              10.000 usuários cadastrados
+              +10.000 usuários cadastrados
             </span>
           </div>
 
@@ -231,7 +231,7 @@ export default function Home() {
 
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
           <Plan
-            name="Trial"
+            name="Free"
             price={0}
             period="mês"
             benefitsIncluded={[
