@@ -1,48 +1,57 @@
+import { z } from 'zod'
 import { add } from 'date-fns'
 
 import { prisma } from '@/config/prisma'
 
+const SubscribeSchema = z.object({
+  data: z.object({
+    customer: z.object({
+      name: z.string(),
+      email: z.string().email(),
+      document: z.object({
+        type: z.enum(['cpf']),
+        number: z.string(),
+      }),
+    }),
+  }),
+})
+
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = SubscribeSchema.safeParse(await request.json())
 
-  // const response = await fetch(
-  //   `https://api-sandbox.ezypay.com/v2/billing/customers/${data.data.customerId}`,
-  //   {
-  //     method: 'GET',
-  //     headers: {
-  //       merchant: '', // ADD MERCHANT ID
-  //     },
-  //   },
-  // )
-  // const customer = await response.json()
+  if (!data.success) {
+    return Response.json(data.error, {
+      status: 400,
+    })
+  }
 
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: customer.email,
-  //   },
-  // })
+  const { customer } = data.data.data
 
-  // if (!user) {
-  //   return Response.json('User not found', {
-  //     status: 404,
-  //   })
-  // }
+  const user = await prisma.user.findUnique({
+    where: {
+      email: customer.email,
+    },
+  })
 
-  // await prisma.user.update({
-  //   where: {
-  //     email: customer.email,
-  //   },
-  //   data: {
-  //     license: 'premium',
-  //     licensedUntil: add(new Date(), {
-  //       months: 1,
-  //     }),
-  //   },
-  // })
+  if (!user) {
+    return Response.json('User not found', {
+      status: 404,
+    })
+  }
 
-  console.log({ data })
+  await prisma.user.update({
+    where: {
+      email: customer.email,
+    },
+    data: {
+      license: 'premium',
+      licensedUntil: add(new Date(), {
+        months: 1,
+      }),
+    },
+  })
 
-  return Response.json('', {
+  return Response.json(data, {
     status: 200,
   })
 }
