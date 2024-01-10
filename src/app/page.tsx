@@ -16,7 +16,7 @@ const FAQ: FAQItem[] = [
       <>
         Sim. A AutoRoleta oferece a modalidade Trial aos novos assinantes. Ao
         realizar o cadastro na AutoRoleta sua conta estará automaticamente no
-        plano gratuito (Trial).
+        plano gratuito (Free).
       </>
     ),
   },
