@@ -1,5 +1,4 @@
-'use client'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 import { User } from '@/types'
 import {
@@ -14,15 +13,12 @@ import {
 
 interface GridProps {
   user: User | null
-  isLoading?: boolean
+  setUser: Dispatch<SetStateAction<User | null>>
+  isFetching: boolean
+  setIsFetching: Dispatch<SetStateAction<boolean>>
 }
 
-const REQUEST_INTERVAL_IN_MILLISECONDS = 1000 * 5 // 5 seconds
-
-export function Grid({ user: initialUser, isLoading = false }: GridProps) {
-  const [user, setUser] = useState<User | null>(initialUser)
-  const [isFetching, setIsFetching] = useState(isLoading)
-
+export function Grid({ user, setUser, isFetching, setIsFetching }: GridProps) {
   const { wins, losses } = (user?.bets || []).reduce(
     (acc, bet) => {
       const field = bet.result ? 'wins' : 'losses'
@@ -38,33 +34,6 @@ export function Grid({ user: initialUser, isLoading = false }: GridProps) {
     },
   )
   const assertiveness = ((wins / (wins + losses)) * 100).toFixed(0)
-
-  useEffect(() => {
-    if (initialUser) {
-      const pooling = setInterval(async () => {
-        const response = await fetch(`/api/users/${initialUser.userId}`, {
-          next: {
-            revalidate: 5,
-          },
-        })
-        const data = await response.json()
-
-        setUser(data)
-      }, REQUEST_INTERVAL_IN_MILLISECONDS)
-
-      return () => clearInterval(pooling)
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (user?.credentials === null) {
-      setIsFetching(true)
-    }
-
-    if (user?.credentials?.email && user.credentials.password) {
-      setIsFetching(false)
-    }
-  }, [user?.credentials])
 
   return (
     <div className="grid grid-cols-1 gap-4 px-8 pb-10 pt-6 lg:grid-cols-[1fr,minmax(308px,1fr)] xl:grid-cols-[minmax(39rem,1fr),1fr]">

@@ -1,9 +1,10 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { User } from '@/types'
+import { pricing } from '@/constants/pricing'
 import { Button } from '@/components/shared'
 
 import { PlanPixStep } from './pix'
@@ -13,9 +14,10 @@ type Step = 'cpf' | 'pix'
 
 interface PlanSubscribeProps {
   user: User
+  priceInCents: number
 }
 
-export function PlanSubscribe({ user }: PlanSubscribeProps) {
+export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [step, setStep] = useState<Step>('cpf')
 
@@ -26,10 +28,26 @@ export function PlanSubscribe({ user }: PlanSubscribeProps) {
     setStep('pix')
   }
 
+  const price = pricing[priceInCents]
+
+  const trigger = useMemo(() => {
+    if (price.license === 'trial') {
+      return 'Assinar'
+    }
+
+    if (price.recurrency !== user.recurrency) {
+      return 'Mudar plano'
+    }
+
+    return 'Renovar'
+  }, [])
+
   return (
     <Dialog.Root open={modalIsOpen} onOpenChange={setModalIsOpen}>
       <Dialog.Trigger asChild>
-        <Button className="w-56">Assinar</Button>
+        <Button className="w-56" disabled={price.license === 'trial'}>
+          {trigger}
+        </Button>
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -41,7 +59,7 @@ export function PlanSubscribe({ user }: PlanSubscribeProps) {
           {step === 'pix' && (
             <PlanPixStep
               user={user}
-              priceInCents={100}
+              priceInCents={priceInCents}
               cpf={cpfRef.current}
               handleOpenModal={setModalIsOpen}
             />

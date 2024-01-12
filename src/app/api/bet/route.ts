@@ -1,23 +1,26 @@
-import { API, Bot } from '@/server/entities'
+import { Bot } from '@/server/entities'
+import { decrypt } from '@/actions'
 
 export async function POST(request: Request) {
   const data = await request.json()
 
-  const api = new API()
+  const user = data.user
+
+  user.credentials.password = await decrypt(user.credentials.password)
+
   const bot = new Bot(data.user)
 
-  await api.authenticate({
-    email: data.user.credentials.email,
-    password: data.user.credentials.password,
-  })
+  const connected = await bot.init()
 
-  await bot.init()
+  if (!connected) {
+    return Response.json('invalid credentials', { status: 200 })
+  }
 
   await bot.operate({
     color: data.bet,
   })
 
-  return Response.json('', {
+  return Response.json('bet performed successfully', {
     status: 200,
   })
 }

@@ -23,6 +23,11 @@ enum License {
   premium
 }
 
+enum Recurrency {
+  monthly
+  annually
+}
+
 model User {
   userId String @id @default(uuid())
 
@@ -30,7 +35,6 @@ model User {
   email                String  @unique
   password             String
   password_reset_token String? @unique
-  license License?
 
   isActive      Boolean        @default(false)
   credentials   Credential?
@@ -40,7 +44,11 @@ model User {
   bets          Bet[]
   balanceTracks BalanceTrack[]
 
+  license License?
+  recurrency Recurrency?
   licensedUntil DateTime?
+
+
   createdAt DateTime @default(now())
 
   @@map("users")

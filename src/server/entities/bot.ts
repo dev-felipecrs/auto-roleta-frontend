@@ -1,4 +1,4 @@
-import { BalanceTrack, Prisma, Status } from '@prisma/client'
+import { Prisma, Status } from '@prisma/client'
 
 import type { Color, User } from '@/types'
 import { prisma } from '@/config/prisma'
@@ -17,10 +17,8 @@ interface OperationResponse {
 export class Bot {
   private API: API
 
-  private async getUser(): Promise<User> {
-    const user = await getUserByEmail(this.user.email)
-
-    return user
+  public constructor(private user: User) {
+    this.API = new API()
   }
 
   private async updateUser(data: Prisma.UserUpdateInput): Promise<void> {
@@ -32,11 +30,13 @@ export class Bot {
     })
   }
 
-  public constructor(private user: User) {
-    this.API = new API()
-  }
-
   public async init(): Promise<boolean> {
+    const authentication = await this.API.authenticate(this.user.credentials!)
+
+    if (!authentication.success) {
+      return false
+    }
+
     const connected = await this.API.connect()
 
     if (!connected) {
@@ -48,12 +48,6 @@ export class Bot {
       return false
     }
 
-    console.log({
-      index: 1,
-      balance: this._balance,
-      APIBalance: this.API.balance,
-    })
-
     await this.updateUser({
       balance: this.API.balance,
     })
@@ -61,49 +55,28 @@ export class Bot {
     return true
   }
 
-  public async isActive(): Promise<boolean> {
-    const user = await this.getUser()
+  private async isActive(): Promise<boolean> {
+    const user = await getUserByEmail(this.user.email)
     return user.isActive
   }
 
-  private _balance: number = this.user.balance || 0
-
-  private changeBalance(change: number): void {
-    console.log({ called: true, change })
-
-    this._balance += change
-  }
-
-  private _balance_track: BalanceTrack[] = this.user.balanceTracks
-
-  get balanceTrack() {
-    return this._balance_track
-  }
-
-  private async addBalanceTrack(track: BalanceTrack): Promise<void> {
-    const user = await this.getUser()
-
-    const balanceTrack = user.balanceTracks
-    balanceTrack.push(track)
-
-    this._balance_track = balanceTrack
-  }
+  private balance: number = this.user.balance || 0
 
   private checkStop(): 'stop-win' | 'stop-loss' | 'no-balance' | null {
-    const balance = this._balance
+    if (!this.user.config) {
+      return null
+    }
 
-    if (this.user.config) {
-      if (balance >= this.user.config.stopWin) {
-        return 'stop-win'
-      }
+    if (this.balance >= this.user.config.stopWin) {
+      return 'stop-win'
+    }
 
-      if (balance <= this.user.config.stopLoss) {
-        return 'stop-loss'
-      }
+    if (this.balance <= this.user.config.stopLoss) {
+      return 'stop-loss'
+    }
 
-      if (balance < this.user.config.entry) {
-        return 'no-balance'
-      }
+    if (this.balance < this.user.config.entry) {
+      return 'no-balance'
     }
 
     return null
@@ -112,27 +85,12 @@ export class Bot {
   public async operate({ color }: Operation): Promise<OperationResponse> {
     const gales = this.user.config!.gales
 
+    let win = false
+
     for (let gale = 0; gale <= gales; gale++) {
-      const isActive = await this.isActive()
-
-      if (!isActive) {
-        console.log({ stoped: true, reason: 'bot is not active', isActive })
-
-        return {
-          success: false,
-        }
-      }
-
       const price = 2 ** gale * this.user.config!.entry
 
-      if (this._balance < price) {
-        console.log({
-          stoped: true,
-          reason: 'Saldo insuficiente',
-          balance: this._balance,
-          price,
-        })
-
+      if (this.balance < price) {
         await this.updateUser({
           isActive: false,
           status: 'offline',
@@ -143,62 +101,54 @@ export class Bot {
         }
       }
 
-      console.log({ balance: this._balance, price })
+      this.balance -= price
 
-      this.changeBalance(-price)
-
-      console.log({ newBalance: this._balance })
-
-      const track = await prisma.balanceTrack.create({
+      await prisma.balanceTrack.create({
         data: {
           userId: this.user.userId,
-          value: this._balance,
+          value: this.balance,
           time: new Date(),
         },
       })
 
-      await this.addBalanceTrack(track)
-
       await this.updateUser({
         status: 'operating',
-        balance: this._balance,
+        balance: this.balance,
       })
 
-      const result = await this.API.bet({
+      const { success, result } = await this.API.bet({
         color,
         amount: price,
       })
 
-      console.log({ user: this.user.email, result })
-
-      if (!result.success) {
+      if (!success) {
         return {
           success: false,
         }
       }
 
-      this.changeBalance(price)
+      if (result) {
+        win = true
 
-      if (result.result !== false) {
-        const track = await prisma.balanceTrack.create({
+        this.balance += 2 * price
+
+        await prisma.balanceTrack.create({
           data: {
             userId: this.user.userId,
-            value: this._balance,
+            value: this.balance,
             time: new Date(),
           },
         })
-
-        await this.addBalanceTrack(track)
       }
 
       const stop = this.checkStop()
-      const toStop = result.result || !!stop
+      const toStop = result || !!stop
 
       let is_active = !stop
-      let status: Status = toStop ? 'analyzing' : 'operating'
+      let status: Status = toStop ? 'online' : 'operating'
 
-      if (!result.result && gale === gales) {
-        status = 'analyzing'
+      if (!result && gale === gales) {
+        status = 'online'
       }
 
       if (!is_active) {
@@ -215,7 +165,7 @@ export class Bot {
       await this.updateUser({
         isActive: is_active,
         status,
-        balance: this._balance,
+        balance: this.balance,
       })
 
       if (toStop) {
@@ -224,6 +174,17 @@ export class Bot {
     }
 
     this.API.disconnect()
+
+    await prisma.bet.create({
+      data: {
+        userId: this.user.userId,
+        color,
+        time: new Date(),
+        entry: this.user.config!.entry,
+        gains: this.user.config!.entry,
+        result: win,
+      },
+    })
 
     return {
       success: true,

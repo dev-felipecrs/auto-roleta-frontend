@@ -9,6 +9,15 @@ interface BotProps {
 }
 
 export function Bot({ status, isLoading }: BotProps) {
+  const labels: Record<Status, string> = {
+    online: 'Online',
+    offline: 'Offline',
+    operating: 'Operando',
+    analyzing: 'Analisando',
+  }
+
+  const label = labels[status]
+
   return (
     <div className="flex flex-col gap-1">
       {isLoading && (
@@ -22,12 +31,11 @@ export function Bot({ status, isLoading }: BotProps) {
         <>
           <strong
             className={cn('whitespace-nowrap text-base font-medium', {
-              'text-[#04D47C]': status === 'online',
+              'text-[#04D47C]': status !== 'offline',
               'text-[#E51E3E]': status === 'offline',
             })}
           >
-            {status === 'online' && 'Online'}
-            {status === 'offline' && 'Offline'}
+            {label}
           </strong>
           <span className="text-xs font-semibold tracking-[1px] text-[#A6A8B1]">
             Status

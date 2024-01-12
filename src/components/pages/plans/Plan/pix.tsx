@@ -55,8 +55,7 @@ export function PlanPixStep({
                 quantity: 1,
               },
             ],
-            postbackUrl:
-              'https://auto-roleta-frontend-kss-digital.vercel.app/api/webhooks/subscribe',
+            postbackUrl: 'https://autoroleta.com/api/webhooks/subscribe',
           },
           {
             headers: {

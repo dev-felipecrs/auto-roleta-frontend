@@ -1,4 +1,4 @@
-import WebSocket from 'ws'
+// import WebSocket from 'ws'
 import axios from 'axios'
 
 import { Color } from '@/types'
@@ -245,31 +245,40 @@ export class API {
       timeoutId = setTimeout(resolve, API.TIMEOUT / 6)
     })
 
-    const connection = new Promise<void>((resolve) => {
-      this.socket = new WebSocket(url)
+    this.socket = new WebSocket(url)
 
-      this.socket.on('message', (data) => this.onMessage(data))
+    const connection = new Promise<void>((resolve, reject) => {
+      if (!this.socket) {
+        reject(new Error('Failed to create WebSocket'))
+        return
+      }
 
-      this.socket.on('close', () => {
+      this.socket.onmessage = (event) => {
+        this.onMessage(event.data)
+      }
+
+      this.socket.onclose = () => {
         if (DEBUG) {
           console.log('Connection closed at', new Date().toISOString())
         }
-      })
+      }
 
-      this.socket.on('error', (error: string | symbol) => {
+      this.socket.onerror = (event) => {
         if (DEBUG) {
-          console.error(error)
+          console.error('WebSocket error:', event)
         }
-      })
 
-      this.socket.on('open', () => {
+        reject(event)
+      }
+
+      this.socket.onopen = () => {
         if (DEBUG) {
           console.info('Connection opened at', new Date().toISOString())
         }
 
         clearTimeout(timeoutId)
         resolve()
-      })
+      }
     })
 
     await Promise.race([timeout, connection])
@@ -285,8 +294,8 @@ export class API {
     this.socket?.close(1000, 'Closing connection manually')
   }
 
-  private onMessage(data: WebSocket.RawData): void {
-    const datum = JSON.parse(data.toString('utf-8'))
+  private onMessage(data: string | ArrayBuffer): void {
+    const datum = JSON.parse(data.toString())
 
     if (DEBUG) {
       console.debug(datum)

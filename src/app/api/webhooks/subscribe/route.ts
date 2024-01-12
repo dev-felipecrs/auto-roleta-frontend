@@ -1,10 +1,13 @@
 import { z } from 'zod'
 import { add } from 'date-fns'
 
+import { pricing } from '@/constants/pricing'
 import { prisma } from '@/config/prisma'
 
+// update on oficial version
 const SubscribeSchema = z.object({
   data: z.object({
+    amount: z.union([z.literal(990), z.literal(10890)]),
     customer: z.object({
       name: z.string(),
       email: z.string().email(),
@@ -17,7 +20,11 @@ const SubscribeSchema = z.object({
 })
 
 export async function POST(request: Request) {
-  const data = SubscribeSchema.safeParse(await request.json())
+  const body = await request.json()
+
+  console.log(JSON.stringify(body))
+
+  const data = SubscribeSchema.safeParse(body)
 
   if (!data.success) {
     return Response.json(data.error, {
@@ -25,7 +32,7 @@ export async function POST(request: Request) {
     })
   }
 
-  const { customer } = data.data.data
+  const { customer, amount } = data.data.data
 
   const user = await prisma.user.findUnique({
     where: {
@@ -39,14 +46,22 @@ export async function POST(request: Request) {
     })
   }
 
+  const price = pricing[amount]
+
+  const months = {
+    monthly: 1,
+    annually: 12,
+  }[price.recurrency!]
+
   await prisma.user.update({
     where: {
       email: customer.email,
     },
     data: {
-      license: 'premium',
+      recurrency: price.recurrency,
+      license: price.license,
       licensedUntil: add(new Date(), {
-        months: 1,
+        months,
       }),
     },
   })

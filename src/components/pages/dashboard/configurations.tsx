@@ -41,7 +41,9 @@ const ConfigurationsSchema = z.object({
       Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
     )
     .refine((value) => value > 0, { message: 'Valor inválido' }),
-  gales: z.string({ required_error: 'Campo obrigatório' }),
+  gales: z
+    .string({ required_error: 'Campo obrigatório' })
+    .min(1, 'Campo obrigatório'),
   stopWin: z
     .string({ required_error: 'Campo obrigatório' })
     .transform((value) =>
@@ -78,10 +80,10 @@ export function Configurations({
           ? String(user.config.gales)
           : undefined,
       stopWin: user?.config?.stopWin
-        ? (String(user.config.stopWin) as unknown as number)
+        ? (String(user.config.stopWin - user.balance!) as unknown as number)
         : undefined,
       stopLoss: user?.config?.stopLoss
-        ? (String(user.config.stopLoss) as unknown as number)
+        ? (String(user.balance! - user.config.stopLoss) as unknown as number)
         : undefined,
     },
     disabled: botIsActivated,
@@ -93,9 +95,11 @@ export function Configurations({
 
     if (isChecked) return formRef.current?.requestSubmit()
 
-    setBotIsActivated(false)
+    setIsFetching(true)
 
     if (user) {
+      console.log('error here')
+
       const response = await fetch(`/api/users/${user.userId}`, {
         method: 'PATCH',
         body: JSON.stringify({
@@ -105,13 +109,16 @@ export function Configurations({
         }),
       })
       const updatedUser = await response.json()
+      setBotIsActivated(false)
       setUser(updatedUser)
     }
+
+    setIsFetching(false)
   }
 
   const onSubmit = async (data: z.infer<typeof ConfigurationsSchema>) => {
-    setBotIsActivated(true)
     setIsFetching(true)
+
     if (user && user.credentials) {
       const decryptedPassword = await decrypt(user.credentials.password)
 
@@ -163,20 +170,29 @@ export function Configurations({
         body: JSON.stringify({
           isActive: true,
           status: 'online',
-          balanceTracks: null,
+          balanceTracks: [
+            {
+              userId: user.userId,
+              value: balance,
+              time: new Date(),
+            },
+          ],
           bets: null,
           config: {
             strategy: data.strategy,
             entry: data.entry,
             gales: Number(data.gales),
-            stopWin: data.stopWin,
-            stopLoss: data.stopLoss,
+            stopWin: balance + data.stopWin,
+            stopLoss: balance - data.stopLoss,
           },
         }),
       })
       const updatedUser = await userResponse.json()
+      setBotIsActivated(true)
+
       setUser(updatedUser)
     }
+
     setIsFetching(false)
   }
 
