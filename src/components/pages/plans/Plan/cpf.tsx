@@ -45,6 +45,16 @@ export function PlanCpfStep({ callback }: PlanCpfStepProps) {
       onSubmit={handleSubmit(onSubmit)}
       className="mx-auto flex h-64 w-full flex-col items-center justify-center gap-4"
     >
+      <div className="mb-4 flex flex-col items-center gap-1">
+        <strong className="text-center text-xl font-medium text-white">
+          Assinatura Premium
+        </strong>
+        <p className="text-center text-sm text-[#8B8D97] sm:max-w-[24rem]">
+          Para prosseguir com a sua assinatura, preencha o número do seu CPF
+          abaixo
+        </p>
+      </div>
+
       <ReactInputMask mask="999.999.999-99" {...register('cpf')}>
         {MyInput(formState.errors.cpf?.message) as any}
       </ReactInputMask>

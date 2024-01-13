@@ -84,6 +84,7 @@ export async function Plan({
 
       <footer className="mt-6 flex flex-col items-center gap-4">
         {user && <PlanSubscribe user={user} priceInCents={price * 100} />}
+
         {!user && (
           <Link href="/accounts/register">
             <Button className="w-56">Assinar</Button>

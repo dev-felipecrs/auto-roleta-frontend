@@ -118,6 +118,15 @@ export function PlanPixStep({
 
   return (
     <div className="w-full">
+      <div className="mb-8 flex flex-col items-center gap-1">
+        <strong className="text-center text-xl font-medium text-white">
+          Assinatura Premium
+        </strong>
+        <p className="text-center text-sm text-[#8B8D97] sm:max-w-[24rem]">
+          Para finalizar, pague o PIX através do QR Code ou Copia e Cola
+        </p>
+      </div>
+
       <div className="mx-auto flex aspect-square w-9/12 items-center justify-center sm:h-64 sm:w-64">
         <QRCodeSVG value={pixCode} className="h-full w-full" />
       </div>
