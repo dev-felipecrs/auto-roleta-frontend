@@ -80,10 +80,14 @@ export function Configurations({
           ? String(user.config.gales)
           : undefined,
       stopWin: user?.config?.stopWin
-        ? (String(user.config.stopWin - user.balance!) as unknown as number)
+        ? (String(
+            user.config.stopWin - user.balanceTracks[0].value,
+          ) as unknown as number)
         : undefined,
       stopLoss: user?.config?.stopLoss
-        ? (String(user.balance! - user.config.stopLoss) as unknown as number)
+        ? (String(
+            user.balanceTracks[0].value - user.config.stopLoss,
+          ) as unknown as number)
         : undefined,
     },
     disabled: botIsActivated,
@@ -98,8 +102,6 @@ export function Configurations({
     setIsFetching(true)
 
     if (user) {
-      console.log('error here')
-
       const response = await fetch(`/api/users/${user.userId}`, {
         method: 'PATCH',
         body: JSON.stringify({
@@ -130,11 +132,18 @@ export function Configurations({
         }),
       })
 
+      const result = await authenticateResponse.json()
+
+      console.log({
+        status: authenticateResponse.status,
+        response: result,
+      })
+
       if (authenticateResponse.status !== 200) {
-        return toast.error(await authenticateResponse.json())
+        return toast.error(result)
       }
 
-      const { balance } = await authenticateResponse.json()
+      const { balance } = result
 
       let ok = true
 

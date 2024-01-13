@@ -34,6 +34,8 @@ export async function POST(request: Request) {
       password: data.data.password,
     })
 
+    console.log({ success, balance })
+
     if (!success) {
       return Response.json(
         'Não foi possível autenticar! Verifique as suas credenciais e tente novamente',

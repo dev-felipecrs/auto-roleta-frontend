@@ -117,12 +117,43 @@ export class API {
 
   public async authenticate(credentials: Credentials): Promise<AuthResult> {
     try {
-      const { data } = await axios.post<AuthResponse>(
-        `${API.BASE_URL}/auth/login`,
-        {
+      const response = await fetch(`${API.BASE_URL}/auth/login`, {
+        headers: {
+          accept: '*/*',
+          'accept-language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+          authorization: '[object Object]',
+          'content-type': 'application/json;charset=UTF-8',
+          'sec-ch-ua':
+            '"Opera GX";v="105", "Chromium";v="119", "Not?A_Brand";v="24"',
+          'sec-ch-ua-mobile': '?1',
+          'sec-ch-ua-platform': '"Android"',
+          'sec-fetch-dest': 'empty',
+          'sec-fetch-mode': 'cors',
+          'sec-fetch-site': 'same-origin',
+          'x-csrf-token': 'wfiUAghPS2XZjLgdZRfeiK6c31qhKJP26pJ9WQm2',
+          'x-requested-with': 'XMLHttpRequest',
+          'x-socket-id': 'aA9IjbPurBxVeFgFAACU',
+          'x-xsrf-token':
+            'eyJpdiI6InBJczE0WVArMVJlZ2VMWHBMUFQvU0E9PSIsInZhbHVlIjoiZHo3UnUzRW9NK3NEbEdhaklhMCt3eHJiai9POWQwcHdTcnh6RjViRXFpSXpsVjhaTU52cFBsQXVzV0JoUCt0QkFZbDdSV2RwbW42VG5hajZRWHdoVE42MVRDVVVEYzhES0wrcWJXR0lXOHVzUS9SczlGOENSYW5uZFM5bUdjN2ciLCJtYWMiOiI1NmUzYjIwNzBiMmI2YjA2M2Q1MDM3YjFlNzJiYTQyM2M2YThjYzE2MTYyZDlkYTM5NzRiNDAyYTM4MDljMWM3In0=',
+          cookie:
+            's=eyJpdiI6Ilc4L0xLK3lHR2Z4cTRGaWtqSGg3Mmc9PSIsInZhbHVlIjoiaU9YNFdqRGJ3L2tmT0JKdGU4djM3L24zS0dyblptWnR1d0g2MGFjUVVZaGpSZlVQM2RuWHlzKzVBNndrNUpvR2lzbysyTUhmN2dsdnVPOERrVUlzbEd2UTlyN0NSL1BodE40WGZaTFBTTTQ9IiwibWFjIjoiZjRkOTRkYmExNjAwMmE1MmM1MDAyZDI5NDdlMzJlOTViYmRjMWQzN2RiMjllMjU0ODQ2YTJjODViMjNkMDAwZSJ9; yoshibet_session=cMpnKPl0DZM8eGV4WZAU9DyQzDDUVkr3uruB5Osg; c=bc1q9z82prqdknpv4ku3; cometadasorte_session=FSI68ejcU6cjpjAzNGapoHcHBwyNr0QpQ7Sd2kD7; io=aA9IjbPurBxVeFgFAACU; cf_clearance=L_A.NcsUztHlHCGVa0XJxoNSmSj1usPf9gHyJVg9G8k-1705096086-1-AVBS4syBUha4EcXLehESjbiq7HNRt1/FuXes+fALzrcVo4VfvrvOqxDyWSZouoC+XSRLRNHKt3yxffQ0R8RnbBQ=; XSRF-TOKEN=eyJpdiI6InBJczE0WVArMVJlZ2VMWHBMUFQvU0E9PSIsInZhbHVlIjoiZHo3UnUzRW9NK3NEbEdhaklhMCt3eHJiai9POWQwcHdTcnh6RjViRXFpSXpsVjhaTU52cFBsQXVzV0JoUCt0QkFZbDdSV2RwbW42VG5hajZRWHdoVE42MVRDVVVEYzhES0wrcWJXR0lXOHVzUS9SczlGOENSYW5uZFM5bUdjN2ciLCJtYWMiOiI1NmUzYjIwNzBiMmI2YjA2M2Q1MDM3YjFlNzJiYTQyM2M2YThjYzE2MTYyZDlkYTM5NzRiNDAyYTM4MDljMWM3In0%3D',
+          Referer: 'https://pixstrike.com/',
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+        },
+        body: JSON.stringify({
           login: credentials.email,
           password: credentials.password,
-        },
+        }),
+        method: 'POST',
+      })
+
+      const data: AuthResponse = await response.json()
+
+      console.log(
+        JSON.stringify({
+          path: 'api',
+          data,
+        }),
       )
 
       this.accessToken = data.token
@@ -137,6 +168,8 @@ export class API {
         balance,
       }
     } catch (err) {
+      console.error(err)
+
       return {
         success: false,
         accessToken: null,
