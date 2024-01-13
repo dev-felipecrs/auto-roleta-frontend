@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
-// import { revalidatePage } from '@/actions'
+import { revalidatePage } from '@/actions'
 
 const ConnectWithBrokerSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -48,6 +48,7 @@ export function ConnectWithBroker() {
       return
     }
 
+    await revalidatePage('/dashboard')
     setDialogIsOpen(false)
   }
 
