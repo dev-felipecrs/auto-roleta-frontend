@@ -4,7 +4,6 @@ import cn from 'classnames'
 
 import { User } from '@/types'
 import { Balance } from '@/components/shared'
-import { mockUser } from '@/app/user-mock'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
@@ -55,7 +54,7 @@ export function Header({
 
       {!simpleVersion && (
         <div className="flex items-center gap-7">
-          <Plan plan={mockUser.plan} />
+          <Plan plan={user!.license!} />
           {!user?.credentials ? (
             <ConnectWithBroker />
           ) : (

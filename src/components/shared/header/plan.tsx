@@ -1,14 +1,13 @@
 import Image from 'next/image'
 import cn from 'classnames'
-
-import { mockUser } from '@/app/user-mock'
+import { License } from '@prisma/client'
 
 interface PlanProps {
-  plan: typeof mockUser.plan
+  plan: License
 }
 
 const PLANS: Record<
-  typeof mockUser.plan,
+  License,
   {
     image: string
     text: string
@@ -18,17 +17,13 @@ const PLANS: Record<
     image: '/icons/plans/trial.svg',
     text: 'Trial',
   },
-  basic: {
-    image: '/icons/plans/basic.svg',
-    text: 'Basic',
-  },
   premium: {
     image: '/icons/plans/premium.svg',
     text: 'Premium',
   },
 }
 
-export function Plan({ plan }: PlanProps) {
+export function Plan({ plan = 'trial' }: PlanProps) {
   const userPlan = PLANS[plan]
 
   if (!userPlan) return <></>
@@ -40,7 +35,6 @@ export function Plan({ plan }: PlanProps) {
       <span
         className={cn('text-xs font-medium', {
           'text-[#848484]': plan === 'trial',
-          'text-[#FFCE50]': plan === 'basic',
           'text-[#0775C7]': plan === 'premium',
         })}
       >
