@@ -1,4 +1,5 @@
 'use server'
+
 import crypto from 'node:crypto'
 
 const key = Buffer.from(process.env.CRYPTOGRAPHY_SECRET_KEY!, 'hex')

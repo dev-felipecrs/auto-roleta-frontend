@@ -33,11 +33,15 @@ export class Bot {
   public async init(): Promise<boolean> {
     const authentication = await this.API.authenticate(this.user.credentials!)
 
+    console.log({ ref: 'bot init', authentication })
+
     if (!authentication.success) {
       return false
     }
 
     const connected = await this.API.connect()
+
+    console.log({ ref: 'bot init', connected })
 
     if (!connected) {
       await this.updateUser({
@@ -120,6 +124,8 @@ export class Bot {
         color,
         amount: price,
       })
+
+      console.log({ ref: 'operate', success, result })
 
       if (!success) {
         return {
