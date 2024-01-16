@@ -39,6 +39,7 @@ export function Plan({ plan = 'trial' }: PlanProps) {
       <span
         className={cn('text-xs font-medium', {
           'text-[#848484]': plan === 'trial',
+          'text-[#FFCE50]': plan === 'vip',
           'text-[#0775C7]': plan === 'premium',
         })}
       >
