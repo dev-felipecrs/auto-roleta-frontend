@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverRuntimeConfig: {
-    staticPageGenerationTimeout: 180,
-  },
+  staticPageGenerationTimeout: 1000,
 }
 
 module.exports = nextConfig
