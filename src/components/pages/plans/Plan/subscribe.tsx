@@ -31,7 +31,7 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
   const price = pricing[priceInCents]
 
   const trigger = useMemo(() => {
-    if (price.license === 'trial') {
+    if (price && price.license === 'trial') {
       return 'Assinar'
     }
 
