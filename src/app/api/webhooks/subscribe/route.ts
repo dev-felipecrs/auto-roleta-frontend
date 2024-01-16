@@ -7,7 +7,7 @@ import { prisma } from '@/config/prisma'
 // update on oficial version
 const SubscribeSchema = z.object({
   data: z.object({
-    amount: z.union([z.literal(990), z.literal(10890)]),
+    amount: z.union([z.literal(7790), z.literal(47790)]),
     customer: z.object({
       name: z.string(),
       email: z.string().email(),

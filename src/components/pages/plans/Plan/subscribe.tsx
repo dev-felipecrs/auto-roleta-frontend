@@ -14,7 +14,7 @@ type Step = 'cpf' | 'pix'
 
 interface PlanSubscribeProps {
   user: User
-  priceInCents: number
+  priceInCents: keyof typeof pricing
 }
 
 export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
@@ -28,7 +28,9 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
     setStep('pix')
   }
 
-  const price = pricing[priceInCents]
+  const price = pricing[Number(priceInCents.toFixed(0)) as keyof typeof pricing]
+
+  console.log({ priceInCents, price })
 
   const trigger = useMemo(() => {
     if (price && price.license === 'trial') {

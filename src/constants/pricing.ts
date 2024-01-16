@@ -1,7 +1,7 @@
 import { License, Recurrency } from '@prisma/client'
 
 export const pricing: Record<
-  number,
+  0 | 7790 | 47790,
   { license: License; recurrency: Recurrency | undefined }
 > = {
   0: {
@@ -16,4 +16,4 @@ export const pricing: Record<
     license: 'vip',
     recurrency: 'annually',
   },
-}
+} as const
