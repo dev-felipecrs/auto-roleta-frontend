@@ -3,6 +3,7 @@ import Image from 'next/image'
 import cn from 'classnames'
 
 import { formatNumber } from '@/utils'
+import { pricing } from '@/constants/pricing'
 import { Button } from '@/components/shared'
 import { getSession } from '@/actions'
 
@@ -83,7 +84,12 @@ export async function Plan({
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        {user && <PlanSubscribe user={user} priceInCents={price * 100} />}
+        {user && (
+          <PlanSubscribe
+            user={user}
+            priceInCents={(price * 100) as keyof typeof pricing}
+          />
+        )}
 
         {!user && (
           <Link href="/accounts/register">
