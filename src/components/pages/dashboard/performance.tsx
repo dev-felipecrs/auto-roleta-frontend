@@ -9,11 +9,10 @@ import {
   YAxis,
 } from 'recharts'
 import { format } from 'date-fns'
-import { BalanceTrack } from '@prisma/client'
+import { BalanceTrack, License } from '@prisma/client'
 
 import { formatNumber } from '@/utils'
 import { User } from '@/types'
-import { mockUser } from '@/app/user-mock'
 
 const shadowData: Array<Omit<BalanceTrack, 'balanceTrackId' | 'userId'>> = [
   {
@@ -62,8 +61,8 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
 }
 
 export function Performance({ user }: PerformanceProps) {
-  const graphicColor: Record<typeof mockUser.plan, string> = {
-    basic: '#FFCE50',
+  const graphicColor: Record<License, string> = {
+    vip: '#FFCE50',
     premium: '#0775C7',
     trial: '#848484',
   }
@@ -82,17 +81,17 @@ export function Performance({ user }: PerformanceProps) {
       <AreaChart data={data} margin={{ left: -20 }}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-            <stop stopColor={graphicColor[mockUser.plan]} />
+            <stop stopColor={graphicColor[user?.license || 'trial']} />
             <stop
               offset="1"
-              stopColor={graphicColor[mockUser.plan]}
+              stopColor={graphicColor[user?.license || 'trial']}
               stopOpacity="0.1"
             />
           </linearGradient>
         </defs>
         <Area
           dataKey="value"
-          stroke={graphicColor[mockUser.plan]}
+          stroke={graphicColor[user?.license || 'trial']}
           fill="url(#color)"
         />
         <XAxis

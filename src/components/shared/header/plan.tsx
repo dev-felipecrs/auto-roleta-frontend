@@ -17,6 +17,10 @@ const PLANS: Record<
     image: '/icons/plans/trial.svg',
     text: 'Trial',
   },
+  vip: {
+    image: '/icons/plans/vip.svg',
+    text: 'Vip',
+  },
   premium: {
     image: '/icons/plans/premium.svg',
     text: 'Premium',

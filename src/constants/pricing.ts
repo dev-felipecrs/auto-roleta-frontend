@@ -9,11 +9,11 @@ export const pricing: Record<
     recurrency: undefined,
   },
   990: {
-    license: 'premium',
+    license: 'vip',
     recurrency: 'monthly',
   },
   10890: {
-    license: 'premium',
+    license: 'vip',
     recurrency: 'annually',
   },
 }
