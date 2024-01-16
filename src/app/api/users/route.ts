@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       password: await hash(password, 8),
       license: 'trial',
       licensedUntil: add(new Date(), {
-        days: 7,
+        days: 1,
       }),
     },
   })
