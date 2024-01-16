@@ -19,10 +19,12 @@ interface ConfigurationsProps {
   setIsFetching(isFetching: boolean): void
 }
 
-const SELECT_STRATEGY_ITEMS = STRATEGIES_NAMES.map((strategy) => ({
-  label: strategy,
-  value: strategy,
-}))
+const getStrategies = (user: User | null) =>
+  STRATEGIES_NAMES.map((strategy, index) => ({
+    label: strategy,
+    value: strategy,
+    disabled: user?.license === 'trial' ? index <= 1 : false,
+  }))
 
 const ConfigurationsSchema = z.object({
   strategy: z.enum(STRATEGIES_NAMES, {
@@ -240,7 +242,7 @@ export function Configurations({
             <Select
               label="Estratégia"
               placeholder="Escolher"
-              items={SELECT_STRATEGY_ITEMS}
+              items={getStrategies(user)}
               containerClassname="xs:col-span-2"
               error={formState.errors.strategy?.message}
               onValueChange={field.onChange}

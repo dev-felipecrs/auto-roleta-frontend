@@ -89,6 +89,7 @@ export function Select({
                   key={index}
                   value={item.value}
                   className="cursor-pointer px-6 py-4 text-white focus-visible:outline-none"
+                  disabled={item.disabled || false}
                 >
                   <RadixSelect.ItemText>{item.label}</RadixSelect.ItemText>
                 </RadixSelect.Item>
