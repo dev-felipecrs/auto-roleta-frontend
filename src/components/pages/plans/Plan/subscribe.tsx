@@ -33,7 +33,7 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
   console.log({ priceInCents, price })
 
   const trigger = useMemo(() => {
-    if (price.license === 'trial') {
+    if (price && price.license === 'trial') {
       return 'Assinar'
     }
 

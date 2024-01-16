@@ -49,6 +49,7 @@ export function ConnectWithBroker() {
     }
 
     await revalidatePage('/dashboard')
+    location.reload()
     setDialogIsOpen(false)
   }
 
