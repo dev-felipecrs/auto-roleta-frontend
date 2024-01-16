@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     if (
       userFoundByBrokerEmail &&
-      userFoundByBrokerEmail.email !== session.user.email
+      userFoundByBrokerEmail.user.email !== session.user.email
     ) {
       return Response.json('Este e-mail já está em uso!', {
         status: 400,
