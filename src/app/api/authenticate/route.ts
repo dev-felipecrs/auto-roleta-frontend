@@ -29,12 +29,24 @@ export async function POST(request: Request) {
       })
     }
 
+    const [userFoundByBrokerEmail] = await Promise.all([
+      prisma.credential.findUnique({
+        where: {
+          email: data.data.email,
+        },
+      }),
+    ])
+
+    if (userFoundByBrokerEmail) {
+      return Response.json('Este e-mail já está em uso!', {
+        status: 400,
+      })
+    }
+
     const { success, balance } = await api.authenticate({
       email: data.data.email,
       password: data.data.password,
     })
-
-    console.log({ success, balance })
 
     if (!success) {
       return Response.json(
