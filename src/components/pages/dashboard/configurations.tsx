@@ -20,10 +20,10 @@ interface ConfigurationsProps {
 }
 
 const getStrategies = (user: User | null) =>
-  STRATEGIES_NAMES.map((strategy, index) => ({
+  STRATEGIES_NAMES.map((strategy, index, self) => ({
     label: strategy,
     value: strategy,
-    disabled: user?.license === 'trial' ? index <= 1 : false,
+    disabled: user?.license === 'trial' ? self.length - index <= 1 : false,
   }))
 
 const ConfigurationsSchema = z.object({
