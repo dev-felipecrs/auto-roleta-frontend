@@ -94,9 +94,9 @@ export function Bets({ bets, isLoading }: BetsProps) {
   return (
     <ul>
       {isLoading &&
-        Array.from({ length: 3 }).map((_, index) => (
-          <Bet key={index} bet={{} as any} isLoading />
-        ))}
+        Array.from({ length: 3 })
+          .map((_, index) => <Bet key={index} bet={{} as any} isLoading />)
+          .reverse()}
 
       {!isLoading && bets.map((bet, index) => <Bet key={index} bet={bet} />)}
     </ul>

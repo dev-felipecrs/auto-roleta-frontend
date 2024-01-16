@@ -5,7 +5,7 @@ import { Color } from '@/types'
 import { useEvent } from '@/server/hooks'
 import { BETS } from '@/constants'
 
-const DEBUG = false
+const DEBUG = true
 
 interface AuthResponse {
   token: string
@@ -119,26 +119,7 @@ export class API {
     try {
       const response = await fetch(`${API.BASE_URL}/auth/login`, {
         headers: {
-          accept: '*/*',
-          'accept-language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-          authorization: '[object Object]',
           'content-type': 'application/json;charset=UTF-8',
-          'sec-ch-ua':
-            '"Opera GX";v="105", "Chromium";v="119", "Not?A_Brand";v="24"',
-          'sec-ch-ua-mobile': '?1',
-          'sec-ch-ua-platform': '"Android"',
-          'sec-fetch-dest': 'empty',
-          'sec-fetch-mode': 'cors',
-          'sec-fetch-site': 'same-origin',
-          'x-csrf-token': 'wfiUAghPS2XZjLgdZRfeiK6c31qhKJP26pJ9WQm2',
-          'x-requested-with': 'XMLHttpRequest',
-          'x-socket-id': 'aA9IjbPurBxVeFgFAACU',
-          'x-xsrf-token':
-            'eyJpdiI6InBJczE0WVArMVJlZ2VMWHBMUFQvU0E9PSIsInZhbHVlIjoiZHo3UnUzRW9NK3NEbEdhaklhMCt3eHJiai9POWQwcHdTcnh6RjViRXFpSXpsVjhaTU52cFBsQXVzV0JoUCt0QkFZbDdSV2RwbW42VG5hajZRWHdoVE42MVRDVVVEYzhES0wrcWJXR0lXOHVzUS9SczlGOENSYW5uZFM5bUdjN2ciLCJtYWMiOiI1NmUzYjIwNzBiMmI2YjA2M2Q1MDM3YjFlNzJiYTQyM2M2YThjYzE2MTYyZDlkYTM5NzRiNDAyYTM4MDljMWM3In0=',
-          cookie:
-            's=eyJpdiI6Ilc4L0xLK3lHR2Z4cTRGaWtqSGg3Mmc9PSIsInZhbHVlIjoiaU9YNFdqRGJ3L2tmT0JKdGU4djM3L24zS0dyblptWnR1d0g2MGFjUVVZaGpSZlVQM2RuWHlzKzVBNndrNUpvR2lzbysyTUhmN2dsdnVPOERrVUlzbEd2UTlyN0NSL1BodE40WGZaTFBTTTQ9IiwibWFjIjoiZjRkOTRkYmExNjAwMmE1MmM1MDAyZDI5NDdlMzJlOTViYmRjMWQzN2RiMjllMjU0ODQ2YTJjODViMjNkMDAwZSJ9; yoshibet_session=cMpnKPl0DZM8eGV4WZAU9DyQzDDUVkr3uruB5Osg; c=bc1q9z82prqdknpv4ku3; cometadasorte_session=FSI68ejcU6cjpjAzNGapoHcHBwyNr0QpQ7Sd2kD7; io=aA9IjbPurBxVeFgFAACU; cf_clearance=L_A.NcsUztHlHCGVa0XJxoNSmSj1usPf9gHyJVg9G8k-1705096086-1-AVBS4syBUha4EcXLehESjbiq7HNRt1/FuXes+fALzrcVo4VfvrvOqxDyWSZouoC+XSRLRNHKt3yxffQ0R8RnbBQ=; XSRF-TOKEN=eyJpdiI6InBJczE0WVArMVJlZ2VMWHBMUFQvU0E9PSIsInZhbHVlIjoiZHo3UnUzRW9NK3NEbEdhaklhMCt3eHJiai9POWQwcHdTcnh6RjViRXFpSXpsVjhaTU52cFBsQXVzV0JoUCt0QkFZbDdSV2RwbW42VG5hajZRWHdoVE42MVRDVVVEYzhES0wrcWJXR0lXOHVzUS9SczlGOENSYW5uZFM5bUdjN2ciLCJtYWMiOiI1NmUzYjIwNzBiMmI2YjA2M2Q1MDM3YjFlNzJiYTQyM2M2YThjYzE2MTYyZDlkYTM5NzRiNDAyYTM4MDljMWM3In0%3D',
-          Referer: 'https://pixstrike.com/',
-          'Referrer-Policy': 'strict-origin-when-cross-origin',
         },
         body: JSON.stringify({
           login: credentials.email,
@@ -149,12 +130,12 @@ export class API {
 
       const data: AuthResponse = await response.json()
 
-      console.log(
-        JSON.stringify({
-          path: 'api',
-          data,
-        }),
-      )
+      // console.log(
+      //   JSON.stringify({
+      //     path: 'api',
+      //     data,
+      //   }),
+      // )
 
       this.accessToken = data.token
 
@@ -180,17 +161,22 @@ export class API {
 
   private async getProviderEndpoint(): Promise<string | null> {
     try {
-      const { data } = await axios.get<{ url: string }>(
-        `${API.BASE_URL}/api/slots/get/8422`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + this.accessToken,
-          },
+      const response = await fetch(`${API.BASE_URL}/api/slots/get/8422`, {
+        headers: {
+          Authorization: 'Bearer ' + this.accessToken,
+          'Content-Type': 'application/json',
         },
-      )
+        method: 'GET',
+      })
+
+      const data: { url: string } = await response.json()
+
+      console.log({ ref: 'getProviderEndpoint', url: data.url })
 
       return data.url
     } catch (err) {
+      console.log({ ref: 'getProviderEndpoint', return: null, err })
+
       return null
     }
   }
@@ -268,6 +254,8 @@ export class API {
 
     const url = await this.getWebsocketEndpoint()
 
+    console.log({ ref: 'connect', url })
+
     if (!url) {
       return false
     }
@@ -275,7 +263,7 @@ export class API {
     let timeoutId: NodeJS.Timeout
 
     const timeout = new Promise<void>((resolve) => {
-      timeoutId = setTimeout(resolve, API.TIMEOUT / 6)
+      timeoutId = setTimeout(resolve, 5 * 1000)
     })
 
     this.socket = new WebSocket(url)
@@ -315,6 +303,8 @@ export class API {
     })
 
     await Promise.race([timeout, connection])
+
+    console.log({ ref: 'connect', isConnected: this.isConnected })
 
     return this.isConnected
   }
@@ -362,6 +352,21 @@ export class API {
       'GAME_RESOLVED',
       (data) => callback(data.result[0]),
     )
+  }
+
+  public async waitForBetsToOpen() {
+    if (this.rouletteState !== 'BETS_OPEN') {
+      const opened = await this.event.waitForEvent({
+        name: 'BETS_OPEN',
+        timeout: 5 * API.TIMEOUT,
+      })
+
+      if (!opened) {
+        return false
+      }
+    }
+
+    return true
   }
 
   public async bet({ color, amount }: BetProps): Promise<BetResult> {
