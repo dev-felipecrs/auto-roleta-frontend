@@ -8,11 +8,11 @@ export const pricing: Record<
     license: 'trial',
     recurrency: undefined,
   },
-  990: {
+  7790: {
     license: 'vip',
     recurrency: 'monthly',
   },
-  10890: {
+  47790: {
     license: 'vip',
     recurrency: 'annually',
   },

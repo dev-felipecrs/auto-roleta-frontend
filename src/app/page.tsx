@@ -266,7 +266,7 @@ export default async function Home() {
 
           <Plan
             name="Mensal"
-            price={9.9}
+            price={77.9}
             period="mês"
             benefitsIncluded={[
               '100% em nuvem',
@@ -283,7 +283,7 @@ export default async function Home() {
 
           <Plan
             name="Anual"
-            price={108.9}
+            price={477.9}
             period="ano"
             benefitsIncluded={[
               '100% em nuvem',
