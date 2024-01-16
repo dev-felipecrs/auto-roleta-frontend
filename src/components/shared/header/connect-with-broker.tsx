@@ -128,7 +128,7 @@ export function ConnectWithBroker() {
               </Button>
 
               <Link
-                href="#"
+                href="https://pixstrike.com?c=bc1q9z82prqdknpv4ku3"
                 className="flex h-[50px] w-full items-center justify-center rounded-md border border-white text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Criar conta na Pixstrike
