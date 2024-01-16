@@ -34,10 +34,16 @@ export async function POST(request: Request) {
         where: {
           email: data.data.email,
         },
+        include: {
+          user: true,
+        },
       }),
     ])
 
-    if (userFoundByBrokerEmail) {
+    if (
+      userFoundByBrokerEmail &&
+      userFoundByBrokerEmail.email !== session.user.email
+    ) {
       return Response.json('Este e-mail já está em uso!', {
         status: 400,
       })

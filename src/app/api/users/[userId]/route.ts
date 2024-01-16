@@ -13,13 +13,13 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    // const { session } = await getSession()
+    const { session } = await getSession()
 
-    // if (!session) {
-    //   return Response.json('Usuário não tem permissão!', {
-    //     status: 401,
-    //   })
-    // }
+    if (!session) {
+      return Response.json('Usuário não tem permissão!', {
+        status: 401,
+      })
+    }
 
     const user = await prisma.user.findUnique({
       where: {
@@ -136,7 +136,7 @@ export async function PATCH(request: Request, { params }: Params) {
 
     if (data.data.credentials || data.data.credentials === null) {
       if (data.data.credentials === null) {
-        await prisma.credential.deleteMany({
+        await prisma.credential.delete({
           where: {
             userId: params.userId,
           },
