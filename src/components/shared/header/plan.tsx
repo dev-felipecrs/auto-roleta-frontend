@@ -15,7 +15,7 @@ const PLANS: Record<
 > = {
   trial: {
     image: '/icons/plans/trial.svg',
-    text: 'Trial',
+    text: 'Free',
   },
   vip: {
     image: '/icons/plans/vip.svg',
