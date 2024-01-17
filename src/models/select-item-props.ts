@@ -1,5 +1,5 @@
 export type SelectItemProps = {
   value: string
-  label: string
+  label: string | React.ReactNode
   disabled?: boolean
 }

@@ -3,6 +3,8 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
+import Image from 'next/image'
+import { License } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { User } from '@/types'
@@ -19,14 +21,31 @@ interface ConfigurationsProps {
   setIsFetching(isFetching: boolean): void
 }
 
+const checkIfStrategyNameIsDisabled = (
+  license: License | null | undefined,
+  index: number,
+) =>
+  license === 'trial'
+    ? STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 2
+    : false
+
 const getStrategies = (user: User | null) =>
-  STRATEGIES_NAMES.map((strategy, index, self) => ({
-    label: strategy,
+  STRATEGIES_NAMES.map((strategy, index) => ({
+    label: checkIfStrategyNameIsDisabled(user?.license, index) ? (
+      <div className="flex items-center justify-between">
+        <span>{strategy}</span>
+        <Image
+          src="/icons/plans/vip.svg"
+          alt="Plano VIP"
+          width={20}
+          height={20}
+        />
+      </div>
+    ) : (
+      strategy
+    ),
     value: strategy,
-    disabled:
-      user?.license === 'trial'
-        ? self.length - index <= self.length - 2
-        : false,
+    disabled: checkIfStrategyNameIsDisabled(user?.license, index),
   }))
 
 const ConfigurationsSchema = z.object({
