@@ -248,23 +248,6 @@ export default async function Home() {
 
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
           <Plan
-            name="Free"
-            price={0}
-            period="mês"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização Limitada',
-              'Histórico de apostas',
-              'Suporte',
-            ]}
-            benefitsNotIncluded={[
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-          />
-
-          <Plan
             name="Mensal"
             price={77.9}
             period="mês"

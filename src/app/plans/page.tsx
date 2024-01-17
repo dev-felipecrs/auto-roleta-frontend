@@ -9,23 +9,6 @@ export default async function Plans() {
     <Layout user={user}>
       <div className="mb-4 mt-10 flex flex-wrap items-center justify-center gap-[3.25rem] px-12">
         <Plan
-          name="Free"
-          price={0}
-          period="mês"
-          benefitsIncluded={[
-            '100% em nuvem',
-            'Análises em tempo real',
-            'Utilização Limitada',
-            'Histórico de apostas',
-            'Suporte',
-          ]}
-          benefitsNotIncluded={[
-            'Crie sua Estratégia (em breve)',
-            'Validador de Estratégias (em breve)',
-          ]}
-        />
-
-        <Plan
           name="Mensal"
           price={77.9}
           period="mês"
