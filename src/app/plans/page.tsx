@@ -40,6 +40,21 @@ export default async function Plans() {
           ]}
           benefitsNotIncluded={[]}
         />
+
+        <Plan
+          name="Vitalício"
+          price={977}
+          benefitsIncluded={[
+            '100% em nuvem',
+            'Análises em tempo real',
+            'Utilização ilimitada',
+            'Histórico de apostas',
+            'Suporte Individual',
+            'Crie sua Estratégia (em breve)',
+            'Validador de Estratégias (em breve)',
+          ]}
+          benefitsNotIncluded={[]}
+        />
       </div>
     </Layout>
   )

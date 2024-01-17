@@ -27,6 +27,7 @@ enum License {
 enum Recurrency {
   monthly
   annually
+  lifetime
 }
 
 model User {

@@ -7,7 +7,7 @@ import { prisma } from '@/config/prisma'
 // update on oficial version
 const SubscribeSchema = z.object({
   data: z.object({
-    amount: z.union([z.literal(7790), z.literal(47790)]),
+    amount: z.union([z.literal(7790), z.literal(47790), z.literal(97700)]),
     customer: z.object({
       name: z.string(),
       email: z.string().email(),
@@ -50,7 +50,8 @@ export async function POST(request: Request) {
 
   const months = {
     monthly: 1,
-    annually: 12,
+    annually: 1 * 12,
+    lifetime: 100 * 12,
   }[price.recurrency!]
 
   await prisma.user.update({

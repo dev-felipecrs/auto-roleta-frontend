@@ -12,7 +12,7 @@ import { PlanSubscribe } from './subscribe'
 interface PlanProps {
   name: string
   price: number
-  period: string
+  period?: string
   benefitsIncluded: string[]
   benefitsNotIncluded: string[]
   isPopular?: boolean
@@ -46,8 +46,8 @@ export async function Plan({
           {name}
         </strong>
         <strong className="mt-2 block text-center text-lg font-medium text-white">
-          R$ <span className="text-[1.75rem]">{formatNumber(price)}</span>/
-          {period}
+          R$ <span className="text-[1.75rem]">{formatNumber(price)}</span>
+          {period ? `/ ${period}` : ''}
         </strong>
       </header>
 
