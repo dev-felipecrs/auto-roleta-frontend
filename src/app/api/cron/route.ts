@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import axios from 'axios'
 
 import { prisma } from '@/config/prisma'
 
@@ -14,7 +13,7 @@ import { prisma } from '@/config/prisma'
 //   password: '123456',
 // } as const
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 export async function GET() {
   // const api = new API()
