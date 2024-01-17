@@ -34,6 +34,8 @@ export async function GET() {
   // const strategy = faker.helpers.arrayElement(STRATEGIES_NAMES)
   // const strategy = 'Estratégia Rei Roleta'
 
+  console.log('cron called')
+
   const users = await prisma.user.findMany({
     include: {
       credentials: true,
@@ -53,6 +55,8 @@ export async function GET() {
 
   // api.disconnect()
 
+  console.log('users quantity: ', users.length)
+
   const bets = users.map((user) => {
     return fetch('https://www.autoroleta.com/api/bet', {
       method: 'POST',
@@ -62,6 +66,8 @@ export async function GET() {
       }),
     })
   })
+
+  console.log('bets quantity: ', bets.length)
 
   await Promise.all(bets)
 
