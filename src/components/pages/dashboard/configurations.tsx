@@ -105,12 +105,14 @@ export function Configurations({
           : undefined,
       stopWin: user?.config?.stopWin
         ? (String(
-            user.config.stopWin - user.balanceTracks[0].value,
+            user.config.stopWin -
+              (user.balanceTracks[0]?.value || user.balance || 0),
           ) as unknown as number)
         : undefined,
       stopLoss: user?.config?.stopLoss
         ? (String(
-            user.balanceTracks[0].value - user.config.stopLoss,
+            (user.balanceTracks[0]?.value || user.balance || 0) -
+              user.config.stopLoss,
           ) as unknown as number)
         : undefined,
     },
