@@ -1,7 +1,7 @@
 import { Bot } from '@/server/entities'
 import { decrypt } from '@/actions'
 
-export const maxDuration = 180
+export const maxDuration = 300
 
 export async function POST(request: Request) {
   const data = await request.json()
