@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import axios from 'axios'
 
 import { prisma } from '@/config/prisma'
 
@@ -14,7 +13,7 @@ import { prisma } from '@/config/prisma'
 //   password: '123456',
 // } as const
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 export async function GET() {
   // const api = new API()
@@ -33,6 +32,8 @@ export async function GET() {
 
   // const strategy = faker.helpers.arrayElement(STRATEGIES_NAMES)
   // const strategy = 'Estratégia Rei Roleta'
+
+  console.log('cron called')
 
   const users = await prisma.user.findMany({
     include: {
@@ -53,6 +54,8 @@ export async function GET() {
 
   // api.disconnect()
 
+  console.log('users quantity: ', users.length)
+
   const bets = users.map((user) => {
     return fetch('https://www.autoroleta.com/api/bet', {
       method: 'POST',
@@ -62,6 +65,8 @@ export async function GET() {
       }),
     })
   })
+
+  console.log('bets quantity: ', bets.length)
 
   await Promise.all(bets)
 

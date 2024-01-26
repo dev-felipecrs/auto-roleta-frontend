@@ -27,7 +27,7 @@ export default async function Plans() {
 
         <Plan
           name="Anual"
-          price={375}
+          price={477.9}
           period="ano"
           benefitsIncluded={[
             '100% em nuvem',
@@ -43,7 +43,7 @@ export default async function Plans() {
 
         <Plan
           name="Vitalício"
-          price={499}
+          price={977}
           benefitsIncluded={[
             '100% em nuvem',
             'Análises em tempo real',

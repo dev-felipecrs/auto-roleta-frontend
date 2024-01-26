@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
+import { isPast } from 'date-fns/isPast'
+
 import { User } from '@/types'
 import { Layout } from '@/components/shared'
 import { Grid } from '@/components/pages/dashboard'
@@ -13,8 +15,12 @@ interface HelperProps {
 }
 
 export function Helper({ initialUser }: HelperProps) {
+  const isLicenseExpired = initialUser
+    ? !initialUser.licensedUntil || isPast(new Date(initialUser.licensedUntil))
+    : false
+
   const [user, setUser] = useState<User | null>(initialUser)
-  const [isFetching, setIsFetching] = useState(false)
+  const [isFetching, setIsFetching] = useState(isLicenseExpired)
 
   useEffect(() => {
     if (initialUser) {
