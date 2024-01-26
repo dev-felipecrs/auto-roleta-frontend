@@ -1,4 +1,5 @@
 // import WebSocket from 'ws'
+import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 
 import { Color } from '@/types'
@@ -47,25 +48,26 @@ interface BetProps {
 }
 
 const getBetChip = (gameId: string, colorCode: string, amount: number) => {
+  const id = uuidv4()
+
   return {
+    id,
+    type: 'roulette.betAction',
     args: {
       gameId,
+      timestamp: new Date().getTime(),
       action: { type: 'PLACE', value: { [colorCode]: amount } },
-      timestamp: 1700488341819,
       betTags: {
         mwLayout: 8,
         openMwTables: 1,
-        latency: 640,
+        latency: 251,
         videoProtocol: 'fmp4',
         btTableView: 'view4',
         btVideoQuality: '_hd',
         btMiniGame: 0,
-        appVersion: 4,
         orientation: 'landscape',
       },
     },
-    id: '',
-    type: 'roulette.betAction',
   }
 }
 
@@ -130,13 +132,6 @@ export class API {
 
       const data: AuthResponse = await response.json()
 
-      // console.log(
-      //   JSON.stringify({
-      //     path: 'api',
-      //     data,
-      //   }),
-      // )
-
       this.accessToken = data.token
 
       const balance = Number(data.user.brl.$numberDecimal)
@@ -161,22 +156,26 @@ export class API {
 
   private async getProviderEndpoint(): Promise<string | null> {
     try {
-      const response = await fetch(`${API.BASE_URL}/api/slots/get/8422`, {
-        headers: {
-          Authorization: 'Bearer ' + this.accessToken,
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${API.BASE_URL}/api/user/providers/fiver/getGame`,
+        {
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            game_code: 'LightningTable01',
+            provider_code: 'evolution',
+          }),
         },
-        method: 'GET',
-      })
+      )
 
-      const data: { url: string } = await response.json()
-
-      console.log({ ref: 'getProviderEndpoint', url: data.url })
+      const data = await response.json()
 
       return data.url
     } catch (err) {
-      console.log({ ref: 'getProviderEndpoint', return: null, err })
-
+      console.error(err)
       return null
     }
   }
@@ -188,34 +187,15 @@ export class API {
       return null
     }
 
-    let currentUrl = providerEndpoint
-    let evoSessionId: string | null = null
+    const response = await axios.get(providerEndpoint, {
+      maxRedirects: 0,
+      validateStatus: (status) => status >= 200 && status < 400,
+    })
 
-    while (true) {
-      const response = await axios.get(currentUrl, {
-        maxRedirects: 0,
-        validateStatus: (status) => status >= 200 && status < 400,
-      })
+    const location = response.headers.location
 
-      const cookie = response.headers['set-cookie']
-
-      if (cookie) {
-        evoSessionId = cookie[0].split(';')[0]
-      }
-
-      if (!response.headers.location) {
-        break
-      }
-
-      if (
-        response.status === 301 ||
-        response.status === 302 ||
-        response.status === 307 ||
-        response.status === 308
-      ) {
-        currentUrl = new URL(response.headers.location, currentUrl).href
-      }
-    }
+    const pattern = /EVOSESSIONID=[^&]+/
+    const evoSessionId = location.match(pattern)[0]
 
     return evoSessionId
   }
@@ -234,9 +214,9 @@ export class API {
     }
 
     const BASE_URL =
-      'wss://timelesstech.evo-games.com/public/roulette/player/game/PorROULigh000001/socket'
+      'wss://evolution.bet4wins.net/public/roulette/player/game/PorROULigh000001/socket'
 
-    const endpoint = `${BASE_URL}?messageFormat=json&instance=""&tableConfig=q3droeoo36u5uajg&${evoSessionId}&client_version=""`
+    const endpoint = `${BASE_URL}?messageFormat=json&${evoSessionId}&client_version=6.20231217.210359.36178-ee689a66ae`
 
     return endpoint
   }

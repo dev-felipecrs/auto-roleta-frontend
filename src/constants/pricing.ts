@@ -1,22 +1,22 @@
 import { License, Recurrency } from '@prisma/client'
 
 export const pricing: Record<
-  0 | 7790 | 47790 | 97700,
+  0 | 4400 | 37500 | 49900,
   { license: License; recurrency: Recurrency | undefined }
 > = {
   0: {
     license: 'trial',
     recurrency: undefined,
   },
-  7790: {
+  4400: {
     license: 'vip',
     recurrency: 'monthly',
   },
-  47790: {
+  37500: {
     license: 'vip',
     recurrency: 'annually',
   },
-  97700: {
+  49900: {
     license: 'vip',
     recurrency: 'lifetime',
   },

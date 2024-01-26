@@ -103,16 +103,18 @@ export function Configurations({
         typeof user?.config?.gales === 'number'
           ? String(user.config.gales)
           : undefined,
-      stopWin: user?.config?.stopWin
-        ? (String(
-            user.config.stopWin - user.balanceTracks[0].value,
-          ) as unknown as number)
-        : undefined,
-      stopLoss: user?.config?.stopLoss
-        ? (String(
-            user.balanceTracks[0].value - user.config.stopLoss,
-          ) as unknown as number)
-        : undefined,
+      stopWin:
+        user?.config?.stopWin && user.balanceTracks[0]
+          ? (String(
+              user.config.stopWin - user.balanceTracks[0].value,
+            ) as unknown as number)
+          : undefined,
+      stopLoss:
+        user?.config?.stopLoss && user.balanceTracks[0]
+          ? (String(
+              user.balanceTracks[0].value - user.config.stopLoss,
+            ) as unknown as number)
+          : undefined,
     },
     disabled: botIsActivated,
     resolver: zodResolver(ConfigurationsSchema),

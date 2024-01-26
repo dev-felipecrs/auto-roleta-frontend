@@ -10,7 +10,7 @@ export default async function Plans() {
       <div className="mb-4 mt-10 flex flex-wrap items-center justify-center gap-[3.25rem] px-12">
         <Plan
           name="Mensal"
-          price={77.9}
+          price={44}
           period="mês"
           benefitsIncluded={[
             '100% em nuvem',
@@ -27,7 +27,7 @@ export default async function Plans() {
 
         <Plan
           name="Anual"
-          price={477.9}
+          price={375}
           period="ano"
           benefitsIncluded={[
             '100% em nuvem',
@@ -43,7 +43,7 @@ export default async function Plans() {
 
         <Plan
           name="Vitalício"
-          price={977}
+          price={499}
           benefitsIncluded={[
             '100% em nuvem',
             'Análises em tempo real',
