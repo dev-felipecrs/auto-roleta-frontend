@@ -18,7 +18,11 @@ const ConnectWithBrokerSchema = z.object({
   password: z.string().min(1, 'Campo obrigatório'),
 })
 
-export function ConnectWithBroker() {
+interface ConnectWithBrokerProps {
+  isDisabled: boolean
+}
+
+export function ConnectWithBroker({ isDisabled }: ConnectWithBrokerProps) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
 
@@ -56,7 +60,11 @@ export function ConnectWithBroker() {
   return (
     <Dialog.Root open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <Dialog.Trigger asChild>
-        <Button type="button" className="h-10 w-[102px] text-xs">
+        <Button
+          type="button"
+          className="h-10 w-[102px] text-xs"
+          disabled={isDisabled}
+        >
           Conectar
         </Button>
       </Dialog.Trigger>
@@ -68,7 +76,7 @@ export function ConnectWithBroker() {
           <header className="flex flex-col items-center">
             <Image
               src="/images/shared/pix-strike.png"
-              alt="Pix strike"
+              alt="Blaze Bet"
               width={220}
               height={42}
             />
@@ -77,7 +85,7 @@ export function ConnectWithBroker() {
               Vincular conta
             </strong>
             <span className="mt-2 text-center text-sm text-[#8B8D97] sm:max-w-[24rem]">
-              Para realizar apostas, vincule sua conta da Pixstrike.com com suas
+              Para realizar apostas, vincule sua conta da fireblaze.bet com suas
               credenciais.
             </span>
           </header>
@@ -129,11 +137,11 @@ export function ConnectWithBroker() {
               </Button>
 
               <Link
-                href="https://pixstrike.com?c=bc1q9z82prqdknpv4ku3"
+                href="https://fireblaze.bet/registrar?ref=JgcvWENfgMx"
                 className="flex h-[50px] w-full items-center justify-center rounded-md border border-white text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-50"
                 target="_blank"
               >
-                Criar conta na Pixstrike
+                Criar conta na Blazebet
               </Link>
             </div>
           </form>

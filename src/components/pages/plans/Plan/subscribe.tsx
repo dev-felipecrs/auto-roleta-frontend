@@ -30,8 +30,6 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
 
   const price = pricing[Number(priceInCents.toFixed(0)) as keyof typeof pricing]
 
-  console.log({ priceInCents, price })
-
   const trigger = useMemo(() => {
     if (price && price.license === 'trial') {
       return 'Assinar'

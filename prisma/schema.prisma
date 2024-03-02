@@ -16,6 +16,7 @@ enum Status {
   offline
   operating
   analyzing
+  limit
 }
 
 enum License {
@@ -26,8 +27,8 @@ enum License {
 
 enum Recurrency {
   monthly
+  quarterly
   annually
-  lifetime
 }
 
 model User {
@@ -37,6 +38,8 @@ model User {
   email                String  @unique
   password             String
   password_reset_token String? @unique
+
+  betsMade Int
 
   isActive      Boolean        @default(false)
   credentials   Credential?
@@ -49,7 +52,6 @@ model User {
   license License?
   recurrency Recurrency?
   licensedUntil DateTime?
-
 
   createdAt DateTime @default(now())
 

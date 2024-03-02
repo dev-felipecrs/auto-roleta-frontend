@@ -1,6 +1,7 @@
 // import WebSocket from 'ws'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
+import { faker } from '@faker-js/faker'
 
 import { Color } from '@/types'
 import { useEvent } from '@/server/hooks'
@@ -9,8 +10,8 @@ import { BETS } from '@/constants'
 const DEBUG = true
 
 interface AuthResponse {
-  token: string
-  user: { brl: { $numberDecimal: string } }
+  success: boolean
+  user: [{ balance: string }]
 }
 
 interface Credentials {
@@ -45,6 +46,7 @@ type RouletteEvent = (typeof ROULETTE_EVENTS)[number]
 interface BetProps {
   color: Color
   amount: number
+  result: null | boolean
 }
 
 const getBetChip = (gameId: string, colorCode: string, amount: number) => {
@@ -94,7 +96,7 @@ const getColorByNumber = (code: number) => {
 }
 
 export class API {
-  private static readonly BASE_URL = 'https://pixstrike.com'
+  private static readonly BASE_URL = 'https://fireblaze.bet'
 
   private static readonly TIMEOUT = 60 * 1000
 
@@ -104,6 +106,8 @@ export class API {
 
   private rouletteState?: RouletteEvent
   private gameId?: string
+
+  private credentials?: Credentials
 
   private _balance = 0
 
@@ -122,9 +126,10 @@ export class API {
       const response = await fetch(`${API.BASE_URL}/auth/login`, {
         headers: {
           'content-type': 'application/json;charset=UTF-8',
+          'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify({
-          login: credentials.email,
+          identifier: credentials.email,
           password: credentials.password,
         }),
         method: 'POST',
@@ -132,15 +137,23 @@ export class API {
 
       const data: AuthResponse = await response.json()
 
-      this.accessToken = data.token
+      if (!data.success) {
+        return {
+          success: false,
+          accessToken: null,
+          balance: null,
+        }
+      }
 
-      const balance = Number(data.user.brl.$numberDecimal)
+      this.credentials = credentials
 
-      this._balance = balance
+      const balance = Number(data.user[0].balance)
+
+      this.accessToken = 'data.token'
 
       return {
         success: true,
-        accessToken: data.token,
+        accessToken: 'data.token',
         balance,
       }
     } catch (err) {
@@ -349,48 +362,40 @@ export class API {
     return true
   }
 
-  public async bet({ color, amount }: BetProps): Promise<BetResult> {
-    if (!this.accessToken) {
-      throw new Error(
-        'Access token is required. Authenticate before performing bets.',
-      )
+  public async bet({ color, amount, result }: BetProps): Promise<BetResult> {
+    const value = faker.number.int({ min: 1, max: 15 })
+
+    let resultColor: Color = Color.RED
+
+    if (value >= 7 && value !== 15) {
+      resultColor = Color.BLACK
     }
 
-    if (this.rouletteState !== 'BETS_OPEN') {
-      const opened = await this.event.waitForEvent({
-        name: 'BETS_OPEN',
-        timeout: 5 * API.TIMEOUT,
-      })
-
-      if (!opened) {
-        throw new Error('Roulette game apears to be closed right now.')
-      }
+    if (value === 15) {
+      resultColor = Color.GREEN
     }
 
-    const betChip = getBetChip(this.gameId!, this.COLOR_CODES[color], amount)
+    const win = result !== null ? result : resultColor === color
 
-    this.sendMessage(betChip)
+    await new Promise((resolve) => setTimeout(resolve, 30 * 1000))
 
-    const response = await this.event.waitForEvent<{
-      state: 'GAME_RESOLVED'
-      result: [string]
-    }>({
-      name: 'GAME_RESOLVED',
-      timeout: 5 * API.TIMEOUT,
-    })
-
-    if (!response) {
-      return {
-        success: false,
-        result: null,
-      }
-    }
-
-    const resultColor = getColorByNumber(Number(response.result[0]))
+    await axios.post<AuthResponse>(
+      `https://fireblaze.bet/robo/firstsbetswin`,
+      {
+        winMoney: win ? 2 * amount : 0,
+        betMoney: amount,
+        email: this.credentials?.email,
+      },
+      {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      },
+    )
 
     return {
       success: true,
-      result: color === resultColor!,
+      result: win,
     }
   }
 }

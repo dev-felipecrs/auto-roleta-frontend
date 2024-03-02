@@ -1,38 +1,37 @@
 import { NextResponse } from 'next/server'
 
+import { Color, User } from '@/types'
+import { Bot } from '@/server/entities'
 import { prisma } from '@/config/prisma'
+import { decrypt } from '@/actions'
 
-// import { API } from '@/server/entities'
+async function bet(user: User, bet: Color) {
+  console.log({ ref: '/bet', user: user.email })
 
-// import { faker } from '@faker-js/faker'
+  user.credentials!.password = await decrypt(user.credentials!.password)
 
-// import { STRATEGIES, STRATEGIES_NAMES } from '@/constants'
+  console.log({ ref: '/ref', decrypted: user.credentials!.password })
 
-// const CREDENTIALS = {
-//   email: 'felipeteste@gmail.com',
-//   password: '123456',
-// } as const
+  const bot = new Bot(user)
+
+  const connected = await bot.init()
+
+  console.log({ ref: '/ref', connected })
+
+  if (!connected) {
+    return false
+  }
+
+  await bot.operate({
+    color: bet,
+  })
+
+  return true
+}
 
 export const maxDuration = 300
 
 export async function GET() {
-  // const api = new API()
-
-  // const authentication = await api.authenticate(CREDENTIALS)
-
-  // if (!authentication.success) {
-  //   return NextResponse.json({ ok: false })
-  // }
-
-  // const connected = await api.connect()
-
-  // if (!connected) {
-  //   return NextResponse.json({ ok: false })
-  // }
-
-  // const strategy = faker.helpers.arrayElement(STRATEGIES_NAMES)
-  // const strategy = 'Estratégia Rei Roleta'
-
   console.log('cron called')
 
   const users = await prisma.user.findMany({
@@ -44,27 +43,12 @@ export async function GET() {
     },
     where: {
       isActive: true,
-      // config: {
-      //   strategy,
-      // },
     },
   })
 
-  // await api.waitForBetsToOpen()
-
-  // api.disconnect()
-
   console.log('users quantity: ', users.length)
 
-  const bets = users.map((user) => {
-    return fetch('https://www.autoroleta.com/api/bet', {
-      method: 'POST',
-      body: JSON.stringify({
-        user,
-        bet: 'red',
-      }),
-    })
-  })
+  const bets = users.map((user) => bet(user as User, Color.RED))
 
   console.log('bets quantity: ', bets.length)
 

@@ -14,6 +14,7 @@ export function Bot({ status, isLoading }: BotProps) {
     offline: 'Offline',
     operating: 'Operando',
     analyzing: 'Analisando',
+    limit: 'Apostas encerradas. Assine já!',
   }
 
   const label = labels[status]

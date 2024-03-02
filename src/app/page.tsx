@@ -249,7 +249,7 @@ export default async function Home() {
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
           <Plan
             name="Mensal"
-            price={37}
+            price={97}
             period="mês"
             benefitsIncluded={[
               '100% em nuvem',
@@ -260,14 +260,14 @@ export default async function Home() {
               'Crie sua Estratégia (em breve)',
               'Validador de Estratégias (em breve)',
             ]}
-            benefitsNotIncluded={['Suporte individual']}
+            benefitsNotIncluded={['Suporte individual']}
             isPopular
           />
 
           <Plan
-            name="Anual"
-            price={337}
-            period="ano"
+            name="Trimestral"
+            period="trimestre"
+            price={197}
             benefitsIncluded={[
               '100% em nuvem',
               'Análises em tempo real',
@@ -281,8 +281,9 @@ export default async function Home() {
           />
 
           <Plan
-            name="Vitalício"
+            name="Anual"
             price={497}
+            period="ano"
             benefitsIncluded={[
               '100% em nuvem',
               'Análises em tempo real',

@@ -160,13 +160,12 @@ export function Configurations({
 
       const result = await authenticateResponse.json()
 
-      console.log({
-        status: authenticateResponse.status,
-        response: result,
-      })
-
       if (authenticateResponse.status !== 200) {
         return toast.error(result)
+      }
+
+      if (user.license === 'trial' && user.betsMade >= 3) {
+        return toast.error('Limite de apostas atingido! Assine já!')
       }
 
       const { balance } = result
@@ -191,6 +190,13 @@ export function Configurations({
         ok = false
         setError('gales', {
           message: 'Essa quantidade de gales não atende ao seu saldo.',
+        })
+      }
+
+      if (user.license === 'trial' && data.entry > 5) {
+        ok = false
+        setError('entry', {
+          message: 'Esse valor de aposta não atende ao seu saldo.',
         })
       }
 
@@ -295,11 +301,15 @@ export function Configurations({
             <Select
               label="Proteções"
               placeholder="Escolher"
-              items={[
-                { label: 'Nenhuma', value: '0' },
-                { label: '1 proteção', value: '1' },
-                { label: '2 proteções', value: '2' },
-              ]}
+              items={
+                user!.license === 'trial'
+                  ? [{ label: 'Nenhuma', value: '0' }]
+                  : [
+                      { label: 'Nenhuma', value: '0' },
+                      { label: '1 proteção', value: '1' },
+                      { label: '2 proteções', value: '2' },
+                    ]
+              }
               error={formState.errors.gales?.message}
               onValueChange={field.onChange}
               {...field}

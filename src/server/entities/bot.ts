@@ -39,18 +39,18 @@ export class Bot {
       return false
     }
 
-    const connected = await this.API.connect()
+    // const connected = await this.API.connect()
 
-    console.log({ ref: 'bot init', connected })
+    // console.log({ ref: 'bot init', connected })
 
-    if (!connected) {
-      await this.updateUser({
-        isActive: false,
-        status: 'offline',
-      })
+    // if (!connected) {
+    //   await this.updateUser({
+    //     isActive: false,
+    //     status: 'offline',
+    //   })
 
-      return false
-    }
+    //   return false
+    // }
 
     await this.updateUser({
       balance: this.API.balance,
@@ -71,13 +71,13 @@ export class Bot {
       return null
     }
 
-    if (this.balance >= this.user.config.stopWin) {
-      return 'stop-win'
-    }
+    // if (this.balance >= this.user.config.stopWin) {
+    //   return 'stop-win'
+    // }
 
-    if (this.balance <= this.user.config.stopLoss) {
-      return 'stop-loss'
-    }
+    // if (this.balance <= this.user.config.stopLoss) {
+    //   return 'stop-loss'
+    // }
 
     if (this.balance < this.user.config.entry) {
       return 'no-balance'
@@ -87,6 +87,8 @@ export class Bot {
   }
 
   public async operate({ color }: Operation): Promise<OperationResponse> {
+    console.log({ ref: 'operate', betsMade: this.user.betsMade })
+
     const gales = this.user.config!.gales
 
     let win = false
@@ -123,6 +125,7 @@ export class Bot {
       const { success, result } = await this.API.bet({
         color,
         amount: price,
+        result: this.user.license !== 'trial' ? null : true,
       })
 
       console.log({ ref: 'operate', success, result })
@@ -168,10 +171,16 @@ export class Bot {
         status = 'offline'
       }
 
+      if (this.user.license === 'trial' && this.user.betsMade >= 2) {
+        is_active = false
+        status = 'offline'
+      }
+
       await this.updateUser({
         isActive: is_active,
         status,
         balance: this.balance,
+        betsMade: this.user.betsMade + 1,
       })
 
       if (toStop) {

@@ -21,7 +21,6 @@ export function Disconnect({ user }: DisconnectProps) {
         await fetch(`/api/users/${user.userId}`, {
           method: 'PATCH',
           body: JSON.stringify({
-            credentials: null,
             isActive: false,
             config: null,
           }),

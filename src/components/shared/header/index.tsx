@@ -39,7 +39,10 @@ export function Header({
             />
           )}
 
-          <Link href="/" className="relative block h-6 w-32 sm:h-12 sm:w-40">
+          <Link
+            href="/dashboard"
+            className="relative block h-6 w-32 sm:h-12 sm:w-40"
+          >
             <Image src="/images/shared/logo.svg" alt="Auto Roleta" fill />
           </Link>
         </div>
@@ -55,11 +58,7 @@ export function Header({
       {!simpleVersion && (
         <div className="flex items-center gap-7">
           <Plan plan={user!.license!} />
-          {!user?.credentials ? (
-            <ConnectWithBroker />
-          ) : (
-            <Disconnect user={user} />
-          )}
+          <ConnectWithBroker isDisabled={!!user!.credentials} />
         </div>
       )}
     </header>

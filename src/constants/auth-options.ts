@@ -23,14 +23,29 @@ export const authOptions = {
         })
 
         if (!user) {
+          console.log({
+            ref: 'next-auth',
+            error: 'Verifique as suas credenciais e tente novamente',
+          })
+
           throw new Error('Verifique as suas credenciais e tente novamente')
         }
 
         const passwordsMatch = await compare(password, user.password)
 
         if (!passwordsMatch) {
+          console.log({
+            ref: 'next-auth',
+            error: 'Verifique as suas credenciais e tente novamente 2',
+          })
+
           throw new Error('Verifique as suas credenciais e tente novamente')
         }
+
+        console.log({
+          ref: 'next-auth',
+          error: 'No error',
+        })
 
         return {
           id: user.userId,

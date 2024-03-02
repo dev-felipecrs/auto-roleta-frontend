@@ -40,6 +40,12 @@ export async function POST(request: Request) {
       }),
     ])
 
+    console.log({
+      userFoundByBrokerEmail,
+      email: userFoundByBrokerEmail?.user.email,
+      session: session.user.email,
+    })
+
     if (
       userFoundByBrokerEmail &&
       userFoundByBrokerEmail.user.email !== session.user.email
