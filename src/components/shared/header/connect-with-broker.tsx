@@ -65,7 +65,7 @@ export function ConnectWithBroker({ isDisabled }: ConnectWithBrokerProps) {
           className="h-10 w-[102px] text-xs"
           disabled={isDisabled}
         >
-          Conectar
+          {isDisabled ? 'Conectado' : 'Conectar'}
         </Button>
       </Dialog.Trigger>
 
@@ -75,7 +75,7 @@ export function ConnectWithBroker({ isDisabled }: ConnectWithBrokerProps) {
         <Dialog.Content className="fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 animate-show-with-moviment flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
           <header className="flex flex-col items-center">
             <Image
-              src="/images/shared/pix-strike.png"
+              src="/images/shared/fireblaze.png"
               alt="Blaze Bet"
               width={220}
               height={42}

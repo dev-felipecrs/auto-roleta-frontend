@@ -7,7 +7,6 @@ import { Balance } from '@/components/shared'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
-import { Disconnect } from './disconnect'
 import { ConnectWithBroker } from './connect-with-broker'
 
 interface HeaderProps {

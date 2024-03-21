@@ -1,7 +1,5 @@
 'use server'
 import { getServerSession, Session } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { isPast } from 'date-fns'
 
 import { User } from '@/types'
 import { authOptions } from '@/constants'
@@ -23,10 +21,6 @@ export async function getSession(): Promise<Output> {
   }
 
   const user = await getUserByEmail(session.user.email!)
-
-  if (!user.licensedUntil || isPast(user.licensedUntil)) {
-    redirect('/accounts/logout')
-  }
 
   return { session, user }
 }

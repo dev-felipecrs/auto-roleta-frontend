@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { isPast } from 'date-fns'
 
+import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { Plan } from '@/components/pages/plans'
 import { getSession } from '@/actions'
 
@@ -57,6 +59,10 @@ const FAQ: FAQItem[] = [
 export default async function Home() {
   const session = await getSession()
   const userIsLogged = session.user
+  const trialLicenseIsExpired =
+    userIsLogged && userIsLogged.licensedUntil
+      ? isPast(userIsLogged.licensedUntil) && userIsLogged.license === 'trial'
+      : false
 
   return (
     <main className="overflow-x-hidden bg-[#28292E]">
@@ -238,7 +244,10 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="flex flex-col items-center px-8 pb-40 pt-32 sm:px-60">
+      <section
+        className="flex flex-col items-center px-8 pb-40 pt-32 sm:px-60"
+        id="plans"
+      >
         <h1 className="text-[2rem] font-bold text-white sm:text-[3.25rem]">
           Nossos planos
         </h1>
@@ -360,6 +369,8 @@ export default async function Home() {
           </span>
         </div>
       </footer>
+
+      {trialLicenseIsExpired && <TrialLicenseExpiredDialog />}
     </main>
   )
 }
