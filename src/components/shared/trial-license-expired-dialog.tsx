@@ -10,13 +10,17 @@ export function TrialLicenseExpiredDialog() {
   const [dialogIsOpen, setDialogIsOpen] = useState(true)
   const router = useRouter()
 
+  const onOpenChange = (value: boolean, shouldClose?: boolean) => {
+    shouldClose && setDialogIsOpen(value)
+  }
+
   const handleClick = () => {
-    setDialogIsOpen(false)
+    onOpenChange(false, true)
     router.push('/#plans')
   }
 
   return (
-    <Dialog.Root open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
+    <Dialog.Root open={dialogIsOpen} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 animate-show bg-black bg-opacity-50" />
 

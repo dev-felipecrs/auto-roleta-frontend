@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@/types'
 import { STRATEGIES_NAMES } from '@/constants/strategies'
 import { toast } from '@/config/toast'
+import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
 import { Card } from '@/components/pages/dashboard'
 import { decrypt } from '@/actions'
@@ -89,6 +90,7 @@ export function Configurations({
   setIsFetching,
 }: ConfigurationsProps) {
   const [botIsActivated, setBotIsActivated] = useState(user?.isActive || false)
+  const [showDialog, setShowDialog] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
 
   const { control, getValues, handleSubmit, setError, setValue } = useForm<
@@ -165,6 +167,7 @@ export function Configurations({
       }
 
       if (user.license === 'trial' && user.betsMade >= 3) {
+        setShowDialog(true)
         return toast.error('Limite de apostas atingido! Assine já!')
       }
 
@@ -343,6 +346,8 @@ export function Configurations({
           )}
         />
       </form>
+
+      {showDialog && <TrialLicenseExpiredDialog />}
     </Card>
   )
 }
