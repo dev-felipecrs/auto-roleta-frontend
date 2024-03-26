@@ -30,7 +30,7 @@ export function TrialLicenseExpiredDialog() {
               Licença gratuita expirada
             </strong>
             <span className="mt-2 text-center text-sm text-[#8B8D97] sm:max-w-[24rem]">
-              Para ver os planos, clique no botão abaixo
+              Você recebeu um desconto exclusivo, clique no botão abaixo
             </span>
           </header>
 
