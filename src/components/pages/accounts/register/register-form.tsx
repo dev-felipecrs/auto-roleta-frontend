@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from '@/config/toast'
+import { FacebookPixel } from '@/components/shared/facebook-pixel'
 import { Button, Input } from '@/components/shared'
 
 const RegisterSchema = z
@@ -234,6 +235,8 @@ export function RegisterForm() {
       <Button type="submit" isLoading={formState.isSubmitting}>
         Cadastrar-se
       </Button>
+
+      <FacebookPixel />
     </form>
   )
 }
