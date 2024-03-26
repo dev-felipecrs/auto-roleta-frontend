@@ -258,7 +258,7 @@ export default async function Home() {
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
           <Plan
             name="Mensal"
-            price={97}
+            price={19.9}
             period="mês"
             benefitsIncluded={[
               '100% em nuvem',
@@ -276,7 +276,7 @@ export default async function Home() {
           <Plan
             name="Trimestral"
             period="trimestre"
-            price={197}
+            price={39.9}
             benefitsIncluded={[
               '100% em nuvem',
               'Análises em tempo real',
@@ -291,7 +291,7 @@ export default async function Home() {
 
           <Plan
             name="Anual"
-            price={497}
+            price={97}
             period="ano"
             benefitsIncluded={[
               '100% em nuvem',
