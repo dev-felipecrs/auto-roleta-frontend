@@ -28,6 +28,8 @@ export async function Plan({
 }: PlanProps) {
   const { user } = await getSession()
 
+  const priceInCents = Number((price * 100).toFixed(0)) as keyof typeof pricing
+
   return (
     <section
       className={cn('flex flex-col rounded-xl bg-[#17181d] px-8 py-11', {
@@ -84,12 +86,7 @@ export async function Plan({
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        {user && (
-          <PlanSubscribe
-            user={user}
-            priceInCents={(price * 100) as keyof typeof pricing}
-          />
-        )}
+        {user && <PlanSubscribe user={user} priceInCents={priceInCents} />}
 
         {!user && (
           <Link href="/accounts/register">
