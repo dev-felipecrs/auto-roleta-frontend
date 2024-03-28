@@ -9,12 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       animation: {
+        'connect-button-box-shadow':
+          'connectButtonBoxShadow 1.5s ease 0s infinite normal none running',
         'fade-in-left': 'fadeInLeft 200ms ease-in-out',
         show: 'show 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         'show-with-moviment':
           'showWithMoviment 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
+        connectButtonBoxShadow: {
+          '70%': {
+            'box-shadow': '0 0 0 10px transparent',
+          },
+          '100%': {
+            'box-shadow': '0 0 transparent',
+          },
+        },
         fadeInLeft: {
           '0%': {
             transform: 'translateX(-100%)',
