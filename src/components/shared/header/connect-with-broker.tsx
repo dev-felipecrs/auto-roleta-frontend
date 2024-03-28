@@ -62,7 +62,7 @@ export function ConnectWithBroker({ isDisabled }: ConnectWithBrokerProps) {
       <Dialog.Trigger asChild>
         <Button
           type="button"
-          className="animate-connect-button-box-shadow h-10 w-[102px] text-xs"
+          className="h-10 w-[102px] animate-connect-button-box-shadow"
           style={{ boxShadow: '0 0 0 0 #D61D1F' }}
           disabled={isDisabled}
         >
