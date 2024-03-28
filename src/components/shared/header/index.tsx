@@ -56,7 +56,7 @@ export function Header({
 
       {!simpleVersion && (
         <div className="flex items-center gap-7">
-          <Plan plan={user!.license!} />
+          <Plan user={user!} />
           <ConnectWithBroker isDisabled={!!user!.credentials} />
         </div>
       )}
