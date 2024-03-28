@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { isDate } from 'date-fns'
 import cn from 'classnames'
 import { License } from '@prisma/client'
 
@@ -34,7 +35,8 @@ const PLANS: Record<
 const getDaysRemaining = (date: Date | null) => {
   const now = new Date().getTime()
   return Math.ceil(
-    Math.abs(now - (date ? date.getTime() : now)) / DAYS_IN_MILLISECONDS,
+    Math.abs(now - (isDate(date) ? date.getTime() : now)) /
+      DAYS_IN_MILLISECONDS,
   )
 }
 
