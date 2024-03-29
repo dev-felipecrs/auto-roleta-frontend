@@ -1,7 +1,5 @@
 import { License, Recurrency } from '@prisma/client'
 
-// 0 | 1990 | 3990 | 9700,
-
 export const pricing: Record<
   0 | 3699 | 6999 | 29999,
   { license: License; recurrency: Recurrency | undefined }
