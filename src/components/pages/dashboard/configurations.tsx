@@ -221,6 +221,7 @@ export function Configurations({
               time: new Date(),
             },
           ],
+          bets: null,
           config: {
             strategy: data.strategy,
             entry: data.entry,
