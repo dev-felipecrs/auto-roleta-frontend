@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { isPast } from 'date-fns'
 
+import { pricing } from '@/constants/pricing'
 import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { Plan } from '@/components/pages/plans'
 import { getSession } from '@/actions'
@@ -256,54 +257,9 @@ export default async function Home() {
         </p>
 
         <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
-          <Plan
-            name="Mensal"
-            price={36.99}
-            period="mês"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização ilimitada',
-              'Histórico de apostas',
-              'Suporte',
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-            benefitsNotIncluded={['Suporte individual']}
-            isPopular
-          />
-
-          <Plan
-            name="Trimestral"
-            period="trimestre"
-            price={69.99}
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização ilimitada',
-              'Histórico de apostas',
-              'Suporte Individual',
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-            benefitsNotIncluded={[]}
-          />
-
-          <Plan
-            name="Anual"
-            price={299.99}
-            period="ano"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização ilimitada',
-              'Histórico de apostas',
-              'Suporte Individual',
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-            benefitsNotIncluded={[]}
-          />
+          {Object.entries(pricing).map(([, plan], index) => (
+            <Plan key={index} plan={plan} />
+          ))}
         </div>
       </section>
 

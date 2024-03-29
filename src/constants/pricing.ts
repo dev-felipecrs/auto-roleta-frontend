@@ -1,23 +1,56 @@
-import { License, Recurrency } from '@prisma/client'
+import { Plan, Price } from '@/types'
 
-export const pricing: Record<
-  0 | 3699 | 6999 | 29999,
-  { license: License; recurrency: Recurrency | undefined }
-> = {
-  0: {
-    license: 'trial',
-    recurrency: undefined,
-  },
+export const pricing: Record<Price, Plan> = {
   3699: {
+    name: 'Mensal',
+    price: 3699,
+    period: 'mês',
+    benefitsIncluded: [
+      '100% em nuvem',
+      'Análises em tempo real',
+      'Utilização ilimitada',
+      'Histórico de apostas',
+      'Suporte',
+      'Crie sua Estratégia (em breve)',
+      'Validador de Estratégias (em breve)',
+    ],
+    benefitsNotIncluded: ['Suporte individual'],
+    isPopular: true,
     license: 'vip',
     recurrency: 'monthly',
   },
   6999: {
+    name: 'Trimestral',
+    period: 'trimestre',
+    price: 6999,
+    benefitsIncluded: [
+      '100% em nuvem',
+      'Análises em tempo real',
+      'Utilização ilimitada',
+      'Histórico de apostas',
+      'Suporte Individual',
+      'Crie sua Estratégia (em breve)',
+      'Validador de Estratégias (em breve)',
+    ],
+    benefitsNotIncluded: [],
     license: 'vip',
     recurrency: 'quarterly',
   },
   29999: {
+    name: 'Anual',
+    price: 29999,
+    period: 'ano',
+    benefitsIncluded: [
+      '100% em nuvem',
+      'Análises em tempo real',
+      'Utilização ilimitada',
+      'Histórico de apostas',
+      'Suporte Individual',
+      'Crie sua Estratégia (em breve)',
+      'Validador de Estratégias (em breve)',
+    ],
+    benefitsNotIncluded: [],
     license: 'vip',
     recurrency: 'annually',
   },
-} as const
+}

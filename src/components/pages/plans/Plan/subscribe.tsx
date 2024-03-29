@@ -3,8 +3,7 @@ import { useMemo, useRef, useState } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
-import { User } from '@/types'
-import { pricing } from '@/constants/pricing'
+import { Plan, User } from '@/types'
 import { Button } from '@/components/shared'
 
 import { PlanPixStep } from './pix'
@@ -14,10 +13,10 @@ type Step = 'cpf' | 'pix'
 
 interface PlanSubscribeProps {
   user: User
-  priceInCents: keyof typeof pricing
+  plan: Plan
 }
 
-export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
+export function PlanSubscribe({ user, plan }: PlanSubscribeProps) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [step, setStep] = useState<Step>('cpf')
 
@@ -28,14 +27,12 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
     setStep('pix')
   }
 
-  const price = pricing[priceInCents]
-
   const trigger = useMemo(() => {
-    if (price && price.license === 'trial') {
+    if (plan.license === 'trial') {
       return 'Assinar'
     }
 
-    if (price.recurrency !== user.recurrency) {
+    if (plan.recurrency !== user.recurrency) {
       return 'Mudar plano'
     }
 
@@ -45,7 +42,7 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
   return (
     <Dialog.Root open={modalIsOpen} onOpenChange={setModalIsOpen}>
       <Dialog.Trigger asChild>
-        <Button className="w-56" disabled={price.license === 'trial'}>
+        <Button className="w-56" disabled={plan.license === 'trial'}>
           {trigger}
         </Button>
       </Dialog.Trigger>
@@ -59,7 +56,7 @@ export function PlanSubscribe({ user, priceInCents }: PlanSubscribeProps) {
           {step === 'pix' && (
             <PlanPixStep
               user={user}
-              priceInCents={priceInCents}
+              priceInCents={plan.price}
               cpf={cpfRef.current}
               handleOpenModal={setModalIsOpen}
             />
