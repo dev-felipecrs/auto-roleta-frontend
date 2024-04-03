@@ -25,10 +25,17 @@ interface ConfigurationsProps {
 const checkIfStrategyNameIsDisabled = (
   license: License | null | undefined,
   index: number,
-) =>
-  license === 'trial'
-    ? STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 2
-    : false
+) => {
+  if (license === 'trial') {
+    return STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 3
+  }
+
+  if (license === 'vip') {
+    return STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 1
+  }
+
+  return false
+}
 
 const getStrategies = (user: User | null) =>
   STRATEGIES_NAMES.map((strategy, index) => ({

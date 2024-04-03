@@ -7,6 +7,7 @@ export const STRATEGIES_NAMES = [
   'Estratégia Polêmica',
   'Estratégia TicTac',
   'Estrátegia Vênus',
+  'Estrátegia Master',
 ] as const
 
 export const STRATEGIES: Record<StrategyName, Strategy> = {
@@ -15,4 +16,5 @@ export const STRATEGIES: Record<StrategyName, Strategy> = {
   'Estratégia Polêmica': [[Color.BLACK, Color.BLACK, Color.RED], Color.RED],
   'Estratégia TicTac': [[Color.RED, Color.RED, Color.BLACK], Color.BLACK],
   'Estrátegia Vênus': [[Color.RED, Color.BLACK, Color.BLACK], Color.RED],
+  'Estrátegia Master': [[Color.BLACK, Color.BLACK, Color.BLACK], Color.BLACK],
 } as const
