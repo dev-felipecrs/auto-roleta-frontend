@@ -4,10 +4,11 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import Image from 'next/image'
+import { License } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { User } from '@/types'
-import { STRATEGIES, STRATEGIES_NAMES } from '@/constants/strategies'
+import { STRATEGIES_NAMES } from '@/constants/strategies'
 import { toast } from '@/config/toast'
 import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { CurrencyInput, Select, Switch } from '@/components/shared'
@@ -21,42 +22,39 @@ interface ConfigurationsProps {
   setIsFetching(isFetching: boolean): void
 }
 
+const checkIfStrategyNameIsDisabled = (
+  license: License | null | undefined,
+  index: number,
+) => {
+  if (license === 'trial') {
+    return STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 3
+  }
+
+  if (license === 'vip') {
+    return STRATEGIES_NAMES.length - index <= STRATEGIES_NAMES.length - 1
+  }
+
+  return false
+}
+
 const getStrategies = (user: User | null) =>
-  STRATEGIES_NAMES.map((strategy) => {
-    const isDisabled = !STRATEGIES[strategy].licenses.includes(
-      user?.license as any,
-    )
-
-    return {
-      label: isDisabled ? (
-        <div className="flex items-center justify-between">
-          <span>{strategy}</span>
-
-          {STRATEGIES[strategy].licenses[0] === 'premium' && (
-            <Image
-              src="/icons/plans/premium.svg"
-              alt="Plano Premium"
-              width={20}
-              height={20}
-            />
-          )}
-
-          {STRATEGIES[strategy].licenses.includes('vip') && (
-            <Image
-              src="/icons/plans/vip.svg"
-              alt="Plano VIP"
-              width={20}
-              height={20}
-            />
-          )}
-        </div>
-      ) : (
-        strategy
-      ),
-      value: strategy,
-      disabled: isDisabled,
-    }
-  })
+  STRATEGIES_NAMES.map((strategy, index) => ({
+    label: checkIfStrategyNameIsDisabled(user?.license, index) ? (
+      <div className="flex items-center justify-between">
+        <span>{strategy}</span>
+        <Image
+          src="/icons/plans/vip.svg"
+          alt="Plano VIP"
+          width={20}
+          height={20}
+        />
+      </div>
+    ) : (
+      strategy
+    ),
+    value: strategy,
+    disabled: checkIfStrategyNameIsDisabled(user?.license, index),
+  }))
 
 const ConfigurationsSchema = z.object({
   strategy: z.enum(STRATEGIES_NAMES, {
