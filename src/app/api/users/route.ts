@@ -1,3 +1,4 @@
+import { add } from 'date-fns'
 import { hash } from 'bcrypt'
 
 import { prisma } from '@/config/prisma'
@@ -24,6 +25,11 @@ export async function POST(request: Request) {
       name,
       email,
       password: await hash(password, 8),
+      license: 'trial',
+      licensedUntil: add(new Date(), {
+        days: 1 * 30,
+      }),
+      betsMade: 0,
     },
   })
 

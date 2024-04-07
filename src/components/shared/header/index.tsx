@@ -2,21 +2,22 @@ import Link from 'next/link'
 import Image from 'next/image'
 import cn from 'classnames'
 
-import { mockUser } from '@/app/user-mock'
+import { User } from '@/types'
+import { Balance } from '@/components/shared'
 
 import { Plan } from './plan'
 import { Hamburguer } from './hamburguer'
 import { ConnectWithBroker } from './connect-with-broker'
 
-import { Balance } from '../balance'
-
 interface HeaderProps {
+  user: User | null
   simpleVersion?: boolean
   sidebarIsVisible?: boolean
   handleSidebarVisibilityToggle?(): void
 }
 
 export function Header({
+  user,
   simpleVersion = false,
   sidebarIsVisible,
   handleSidebarVisibilityToggle,
@@ -31,6 +32,7 @@ export function Header({
         <div className="flex items-center gap-4 sm:gap-0">
           {!simpleVersion && (
             <Hamburguer
+              user={user}
               sidebarIsVisible={sidebarIsVisible}
               handleSidebarVisibilityToggle={handleSidebarVisibilityToggle}
             />
@@ -44,15 +46,18 @@ export function Header({
           </Link>
         </div>
 
-        {!simpleVersion && (
-          <Balance balance={3500} containerClassname="hidden sm:flex" />
+        {!simpleVersion && user && (
+          <Balance
+            balance={user.balance || 0}
+            containerClassname="hidden sm:flex"
+          />
         )}
       </div>
 
       {!simpleVersion && (
         <div className="flex items-center gap-7">
-          <Plan plan={mockUser.plan} />
-          <ConnectWithBroker />
+          <Plan user={user!} />
+          <ConnectWithBroker isDisabled={!!user!.credentials} />
         </div>
       )}
     </header>

@@ -1,7 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { isPast } from 'date-fns'
 
+import { pricing } from '@/constants/pricing'
+import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { Plan } from '@/components/pages/plans'
+import { getSession } from '@/actions'
 
 type FAQItem = {
   title: string
@@ -10,12 +14,12 @@ type FAQItem = {
 
 const FAQ: FAQItem[] = [
   {
-    title: 'Posso realmente testar a AutoRoleta de graça?',
+    title: 'Posso testar de graça?',
     description: (
       <>
         Sim. A AutoRoleta oferece a modalidade Trial aos novos assinantes. Ao
         realizar o cadastro na AutoRoleta sua conta estará automaticamente no
-        plano gratuito (Trial).
+        plano gratuito (Free).
       </>
     ),
   },
@@ -25,7 +29,7 @@ const FAQ: FAQItem[] = [
       'Sim, a Execução do robô é na nuvem. Seu celular ou computador pode ficar desligado e as entradas ficarão acontecendo.',
   },
   {
-    title: 'Como criar uma conta na AutoRoleta?',
+    title: 'Como criar uma conta?',
     description: (
       <>
         Para criar uma conta, acesse o site:{' '}
@@ -53,11 +57,18 @@ const FAQ: FAQItem[] = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession()
+  const userIsLogged = session.user
+  const trialLicenseIsExpired =
+    userIsLogged && userIsLogged.licensedUntil
+      ? isPast(userIsLogged.licensedUntil) && userIsLogged.license === 'trial'
+      : false
+
   return (
-    <main className="bg-[#28292E]">
-      <section className="relative z-10 pt-10">
-        <header className="flex items-center justify-between px-[6.25rem]">
+    <main className="overflow-x-hidden bg-[#28292E]">
+      <section className="relative z-10 px-6 pt-10 sm:flex sm:flex-col sm:items-center">
+        <header className="flex w-full items-center justify-between px-[6.25rem]">
           <Link href="/">
             <Image
               src="/images/shared/logo.svg"
@@ -67,71 +78,81 @@ export default function Home() {
             />
           </Link>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/accounts/login"
-              className="rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
-            >
-              Login
-            </Link>
+          <div className="hidden items-center gap-3 sm:flex">
+            {userIsLogged && (
+              <Link
+                href="/dashboard"
+                className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+              >
+                Dashboard
+              </Link>
+            )}
 
-            <Link
-              href="/accounts/register"
-              className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
-            >
-              Registrar
-            </Link>
+            {!userIsLogged && (
+              <>
+                <Link
+                  href="/accounts/login"
+                  className="rounded-lg border border-white px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  href="/accounts/register"
+                  className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-10 py-[10px] text-sm leading-6 text-white transition-all hover:opacity-75"
+                >
+                  Registrar
+                </Link>
+              </>
+            )}
           </div>
         </header>
 
-        <h1 className="mx-auto mt-32 max-w-[57.25rem] text-center text-[4rem] font-bold leading-tight text-white">
+        <h1 className="mx-auto mt-32 text-center text-[2rem] font-bold leading-tight text-white sm:max-w-[57.25rem] sm:text-[4rem]">
           Aposte na Roleta de forma{' '}
           <span className="text-[#E51E3E]">100% automatizada</span>
         </h1>
-        <p className="mx-auto mt-8 max-w-[1000px] text-center text-lg leading-8 text-[#969696]">
+        <p className="mx-auto mt-8 text-center text-xs leading-5 text-[#969696] sm:max-w-[1000px] sm:text-lg sm:leading-8">
           A tecnologia empregada permite a análise instantânea de cada rodada,
-          adaptando-se rapidamente a mudanças nas tendências do jogo. Essa
-          capacidade de reação em tempo real garante que as estratégias sejam
-          sempre otimizadas para as condições atuais da mesa.
+          adaptando-se rapidamente a mudanças nas tendências do jogo.
         </p>
 
-        <footer className="mt-16 flex items-center justify-center gap-6">
+        <footer className="mt-16 flex items-center justify-center gap-4 sm:gap-6">
           <Link
             href="/accounts/register"
-            className="rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
+            className="whitespace-nowrap rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-8 py-3 text-sm leading-6 text-white transition-all hover:opacity-75 sm:px-11"
           >
             Teste grátis
           </Link>
 
           <Link
             href="/accounts/login"
-            className="rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
+            className="whitespace-nowrap rounded-lg border border-white px-11 py-3 text-sm leading-6 text-white transition-all hover:opacity-75"
           >
             Fazer login
           </Link>
         </footer>
 
-        <Image
-          src="/images/pages/home/hero.svg"
-          alt="Auto Roleta Dashboard"
-          width={1041}
-          height={585}
-          className="mx-auto mt-16"
-        />
+        <div className="relative mt-16 aspect-video w-full lg:h-[585px] lg:w-[1041px]">
+          <Image
+            src="/images/pages/home/hero.svg"
+            alt="Auto Roleta Dashboard"
+            layout="fill"
+          />
+        </div>
 
-        <div className="absolute left-0 top-0 -z-10 h-[1100px] w-screen rounded-br-[25%] bg-[#1C1D22]" />
+        <div className="absolute left-0 top-0 -z-10 h-[900px] w-screen bg-[#1C1D22] sm:h-[1100px] sm:rounded-br-[25%]" />
       </section>
 
-      <section className="flex items-center justify-between px-[7.5rem] pt-48">
+      <section className="flex flex-col items-center justify-between gap-16 px-8 pt-44 sm:flex-row sm:px-[7.5rem] sm:pt-48">
         <div className="max-w-[687px]">
-          <h1 className="text-5xl font-bold leading-snug text-white">
+          <h1 className="text-[2rem] font-bold leading-snug text-white sm:text-5xl">
             Venha apostar no automático com as melhores estratégias!
           </h1>
-          <p className="mt-4 leading-6 text-[#969696]">
+          <p className="mt-4 text-sm leading-6 text-[#969696] sm:text-base">
             Inspirada nas táticas dos grandes apostadores de roleta ao redor do
             mundo, nossa inteligência artificial incorpora estratégias testadas
-            e comprovadas. Isso proporciona uma abordagem sólida e consistente
-            para as apostas, independente da variabilidade do jogo.
+            e comprovadas
           </p>
 
           <div className="mt-9 flex items-center gap-3">
@@ -167,13 +188,13 @@ export default function Home() {
             </div>
 
             <span className="text-sm font-semibold leading-normal text-[#969696]">
-              10.000 usuários cadastrados
+              +10.000 usuários cadastrados
             </span>
           </div>
 
           <footer>
             <Link
-              href="/accounts/register"
+              href="#"
               className="mt-11 inline-block rounded-lg border border-[#E51E3E] bg-[#E51E3E] px-11 py-3 text-sm font-semibold leading-6 text-white transition-all hover:opacity-75"
             >
               Teste grátis
@@ -189,14 +210,16 @@ export default function Home() {
         />
       </section>
 
-      <section className="flex flex-col items-center bg-[#1C1D21] pb-36 pt-32">
-        <h1 className="text-[3.25rem] font-bold text-white">Conquistas</h1>
-        <p className="mt-10 text-sm text-[#969696]">
+      <section className="flex flex-col items-center bg-[#1C1D21] px-4 pb-36 pt-32">
+        <h1 className="text-[2rem] font-bold text-white sm:text-[3.25rem]">
+          Conquistas
+        </h1>
+        <p className="mt-10 px-8 text-center text-sm text-[#969696]">
           Com a auto roleta pessoas comuns chegam a faturar de R$ 500,00 a R$
           5.000,00 por dia utilizando apenas a conexão com a internet.
         </p>
 
-        <div className="mt-16 flex justify-center gap-8">
+        <div className="mt-16 flex flex-col justify-center gap-8 sm:flex-row">
           <article className="flex flex-col items-center justify-center gap-1 rounded-xl bg-[#17181D] px-9 py-11">
             <strong className="text-[2.625rem] font-bold text-white">
               + 1.2m
@@ -208,7 +231,7 @@ export default function Home() {
             <strong className="text-[2.625rem] font-bold text-white">
               + 11.576 mil
             </strong>
-            <p className="text-base text-[#8B8D97]">Usuários ativo</p>
+            <p className="text-base text-[#8B8D97]">Usuários ativos</p>
           </article>
 
           <article className="flex flex-col items-center justify-center gap-1 rounded-xl bg-[#17181D] px-9 py-11">
@@ -222,76 +245,33 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex flex-col items-center px-60 pb-40 pt-32">
-        <h1 className="text-[3.25rem] font-bold text-white">Nossos planos</h1>
-        <p className="mt-10 text-sm text-[#969696]">
-          Porta arcu tristique nisl ultricies. Arcu enim parturient senectus
-          sagittis.
+      <section
+        className="flex flex-col items-center px-8 pb-40 pt-32 sm:px-60"
+        id="plans"
+      >
+        <h1 className="text-[2rem] font-bold text-white sm:text-[3.25rem]">
+          Nossos planos
+        </h1>
+        <p className="mt-10 text-center text-sm text-[#969696]">
+          Escolha o plano ideal para o seu perfil
         </p>
 
-        <div className="mt-36 flex items-center gap-10">
-          <Plan
-            name="Trial"
-            price={0}
-            period="mês"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização Limitada',
-              'Histórico de apostas',
-              'Suporte',
-            ]}
-            benefitsNotIncluded={[
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-          />
-
-          <Plan
-            name="Mensal"
-            price={9.9}
-            period="mês"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização ilimitada',
-              'Histórico de apostas',
-              'Suporte',
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-            benefitsNotIncluded={['Suporte individual']}
-            isPopular
-          />
-
-          <Plan
-            name="Anual"
-            price={108.9}
-            period="ano"
-            benefitsIncluded={[
-              '100% em nuvem',
-              'Análises em tempo real',
-              'Utilização ilimitada',
-              'Histórico de apostas',
-              'Suporte Individual',
-              'Crie sua Estratégia (em breve)',
-              'Validador de Estratégias (em breve)',
-            ]}
-            benefitsNotIncluded={[]}
-          />
+        <div className="mt-36 flex flex-col items-center gap-10 px-4 sm:flex-row">
+          {Object.entries(pricing).map(([, plan], index) => (
+            <Plan key={index} plan={plan} />
+          ))}
         </div>
       </section>
 
-      <section className="flex flex-col items-center bg-[#1C1D22] px-80 pb-64 pt-24">
-        <h1 className="text-[3.25rem] font-bold text-white">
-          Perguntas Frequentes
+      <section className="flex flex-col items-center bg-[#1C1D22] px-8 pb-64 pt-24 sm:px-80">
+        <h1 className="text-center text-[2rem] font-bold text-white sm:text-[3.25rem]">
+          FAQ
         </h1>
-        <p className="mt-10 text-sm text-[#969696]">
-          Porta arcu tristique nisl ultricies. Arcu enim parturient senectus
-          sagittis.
+        <p className="mt-10 text-center text-sm text-[#969696]">
+          Perguntas Frequentes
         </p>
 
-        <dl className="mt-28 w-full max-w-3xl">
+        <dl className="mt-16 w-full max-w-3xl sm:mt-28">
           {FAQ.map((item, index) => (
             <details
               key={index}
@@ -322,8 +302,8 @@ export default function Home() {
         </dl>
       </section>
 
-      <footer className="px-32 pt-16">
-        <ul className="grid grid-cols-4">
+      <footer className="px-8 pt-16 sm:px-32">
+        <ul className="grid md:grid-cols-4">
           <li>
             <Image
               src="/images/shared/logo.svg"
@@ -333,7 +313,8 @@ export default function Home() {
             />
 
             <span className="mt-9 block text-lg leading-8 text-white">
-              Maecenas lectus quam ullamcorper vitae
+              Automatizando lucros <br />
+              na roleta
             </span>
           </li>
         </ul>
@@ -344,6 +325,8 @@ export default function Home() {
           </span>
         </div>
       </footer>
+
+      {trialLicenseIsExpired && <TrialLicenseExpiredDialog />}
     </main>
   )
 }

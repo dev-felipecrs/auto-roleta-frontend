@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { Toaster } from 'sonner'
 import { Poppins } from 'next/font/google'
+import dynamic from 'next/dynamic'
 import { Metadata } from 'next'
 
 import './globals.css'
@@ -17,13 +18,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const CrispWithNoSSR = dynamic(() => import('@/components/shared/crisp-chat'))
+
   return (
     <html lang="en" className="overflow-x-hidden">
+      <CrispWithNoSSR />
+
       <body className={twMerge('bg-[#1c1d21]', poppins.className)}>
         {children}
         <Toaster position="bottom-center" richColors />

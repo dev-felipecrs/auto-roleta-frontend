@@ -16,30 +16,41 @@ export const authOptions = {
       async authorize(credentials) {
         const { email, password } = credentials!
 
-        try {
-          const user = await prisma.user.findUnique({
-            where: {
-              email,
-            },
+        const user = await prisma.user.findUnique({
+          where: {
+            email,
+          },
+        })
+
+        if (!user) {
+          console.log({
+            ref: 'next-auth',
+            error: 'Verifique as suas credenciais e tente novamente',
           })
 
-          if (!user) {
-            return null
-          }
+          throw new Error('Verifique as suas credenciais e tente novamente')
+        }
 
-          const passwordsMatch = await compare(password, user.password)
+        const passwordsMatch = await compare(password, user.password)
 
-          if (!passwordsMatch) {
-            return null
-          }
+        if (!passwordsMatch) {
+          console.log({
+            ref: 'next-auth',
+            error: 'Verifique as suas credenciais e tente novamente 2',
+          })
 
-          return {
-            id: user.userId,
-            name: user.name,
-            email: user.email,
-          }
-        } catch (error) {
-          return null
+          throw new Error('Verifique as suas credenciais e tente novamente')
+        }
+
+        console.log({
+          ref: 'next-auth',
+          error: 'No error',
+        })
+
+        return {
+          id: user.userId,
+          name: user.name,
+          email: user.email,
         }
       },
     }),

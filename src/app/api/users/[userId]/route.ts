@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { getServerSession } from 'next-auth'
-import { Prisma, Strategy } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
-import { authOptions } from '@/constants'
+import { STRATEGIES_NAMES } from '@/constants'
 import { prisma } from '@/config/prisma'
+import { getSession } from '@/actions'
 
 interface Params {
   params: {
@@ -13,13 +13,13 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions)
+    // const { session } = await getSession()
 
-    if (!session) {
-      return Response.json('Usuário não tem permissão!', {
-        status: 401,
-      })
-    }
+    // if (!session) {
+    //   return Response.json('Usuário não tem permissão!', {
+    //     status: 401,
+    //   })
+    // }
 
     const user = await prisma.user.findUnique({
       where: {
@@ -64,12 +64,7 @@ const UpdateUserSchema = z.object({
     .optional(),
   config: z
     .object({
-      strategy: z.enum([
-        'black-red-black',
-        'red-black-red',
-        'black-black-black',
-        'red-red-red',
-      ]),
+      strategy: z.enum(STRATEGIES_NAMES),
       entry: z.number(),
       gales: z.number(),
       stopWin: z.number(),
@@ -104,7 +99,7 @@ const UpdateUserSchema = z.object({
 
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    const session = await getServerSession(authOptions)
+    const { session } = await getSession()
 
     if (!session) {
       return Response.json('Usuário não tem permissão!', {
@@ -174,27 +169,20 @@ export async function PATCH(request: Request, { params }: Params) {
           },
         })
       } else {
-        const strategy: Record<typeof data.data.config.strategy, Strategy> = {
-          'black-black-black': 'blackBlackBlack',
-          'black-red-black': 'blackRedBlack',
-          'red-black-red': 'redBlackRed',
-          'red-red-red': 'redRedRed',
-        }
-
         dataToUpdate = {
           ...dataToUpdate,
           config: {
             upsert: {
               where: { userId: params.userId },
               create: {
-                strategy: strategy[data.data.config.strategy],
+                strategy: data.data.config.strategy,
                 entry: data.data.config.entry,
                 gales: data.data.config.gales,
                 stopWin: data.data.config.stopWin,
                 stopLoss: data.data.config.stopLoss,
               },
               update: {
-                strategy: strategy[data.data.config.strategy],
+                strategy: data.data.config.strategy,
                 entry: data.data.config.entry,
                 gales: data.data.config.gales,
                 stopWin: data.data.config.stopWin,
@@ -208,22 +196,25 @@ export async function PATCH(request: Request, { params }: Params) {
 
     if (data.data.bets || data.data.bets === null) {
       if (data.data.bets === null) {
-        await prisma.bet.delete({
+        await prisma.bet.deleteMany({
           where: {
             userId: params.userId,
           },
         })
       } else {
-        await prisma.bet.createMany({
-          data: data.data.bets.map((bet) => ({
-            userId: params.userId,
-            color: bet.color,
-            time: new Date(bet.time),
-            entry: bet.entry,
-            gains: bet.gains,
-            result: bet.result,
-          })),
-        })
+        await prisma.$transaction([
+          prisma.bet.deleteMany(),
+          prisma.bet.createMany({
+            data: data.data.bets.map((bet) => ({
+              userId: params.userId,
+              color: bet.color,
+              time: new Date(bet.time),
+              entry: bet.entry,
+              gains: bet.gains,
+              result: bet.result,
+            })),
+          }),
+        ])
       }
     }
 
@@ -235,13 +226,16 @@ export async function PATCH(request: Request, { params }: Params) {
           },
         })
       } else {
-        await prisma.balanceTrack.createMany({
-          data: data.data.balanceTracks.map((balanceTrack) => ({
-            userId: params.userId,
-            value: balanceTrack.value,
-            time: new Date(balanceTrack.time),
-          })),
-        })
+        await prisma.$transaction([
+          prisma.balanceTrack.deleteMany(),
+          prisma.balanceTrack.createMany({
+            data: data.data.balanceTracks.map((balanceTrack) => ({
+              userId: params.userId,
+              value: balanceTrack.value,
+              time: new Date(balanceTrack.time),
+            })),
+          }),
+        ])
       }
     }
 

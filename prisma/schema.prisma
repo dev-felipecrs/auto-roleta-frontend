@@ -14,6 +14,21 @@ datasource db {
 enum Status {
   online
   offline
+  operating
+  analyzing
+  limit
+}
+
+enum License {
+  trial
+  vip
+  premium
+}
+
+enum Recurrency {
+  monthly
+  quarterly
+  annually
 }
 
 model User {
@@ -24,6 +39,8 @@ model User {
   password             String
   password_reset_token String? @unique
 
+  betsMade Int
+
   isActive      Boolean        @default(false)
   credentials   Credential?
   config        Config?
@@ -31,6 +48,10 @@ model User {
   status        Status?
   bets          Bet[]
   balanceTracks BalanceTrack[]
+
+  license License?
+  recurrency Recurrency?
+  licensedUntil DateTime?
 
   createdAt DateTime @default(now())
 
@@ -48,34 +69,29 @@ model Credential {
   @@map("credentials")
 }
 
-enum Strategy {
-  blackRedBlack
-  redBlackRed
-  blackBlackBlack
-  redRedRed
+enum Color {
+  red
+  black
+  green
 }
 
 model Config {
-  userId String @id
+  userId     String @id
 
-  strategy Strategy
+  strategy String
   entry    Int
   gales    Int
   stopWin  Int
   stopLoss Int
 
-  user User @relation(fields: [userId], references: [userId])
+  user     User     @relation(fields: [userId], references: [userId])
 
   @@map("configs")
 }
 
-enum Color {
-  red
-  black
-}
-
 model Bet {
-  userId String @id
+  betId  String @id @default(uuid())
+  userId String
 
   color  Color
   time   DateTime @default(now())
@@ -89,7 +105,8 @@ model Bet {
 }
 
 model BalanceTrack {
-  userId String @id
+  balanceTrackId String @id @default(uuid())
+  userId         String
 
   value Int
   time  DateTime

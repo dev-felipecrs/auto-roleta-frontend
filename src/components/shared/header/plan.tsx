@@ -1,14 +1,18 @@
 import Image from 'next/image'
+import { isDate } from 'date-fns'
 import cn from 'classnames'
+import { License } from '@prisma/client'
 
-import { mockUser } from '@/app/user-mock'
+import { User } from '@/types'
 
 interface PlanProps {
-  plan: typeof mockUser.plan
+  user: User
 }
 
+const DAYS_IN_MILLISECONDS = 1000 * 60 * 60 * 24
+
 const PLANS: Record<
-  typeof mockUser.plan,
+  License,
   {
     image: string
     text: string
@@ -16,11 +20,11 @@ const PLANS: Record<
 > = {
   trial: {
     image: '/icons/plans/trial.svg',
-    text: 'Trial',
+    text: 'Free',
   },
-  basic: {
-    image: '/icons/plans/basic.svg',
-    text: 'Basic',
+  vip: {
+    image: '/icons/plans/vip.svg',
+    text: 'Vip',
   },
   premium: {
     image: '/icons/plans/premium.svg',
@@ -28,24 +32,47 @@ const PLANS: Record<
   },
 }
 
-export function Plan({ plan }: PlanProps) {
-  const userPlan = PLANS[plan]
+const getDaysRemaining = (date: Date | null) => {
+  const now = new Date().getTime()
+  return Math.ceil(
+    Math.abs(now - (isDate(date) ? date.getTime() : now)) /
+      DAYS_IN_MILLISECONDS,
+  )
+}
 
-  if (!userPlan) return <></>
+export function Plan({ user }: PlanProps) {
+  const plan = user.license || 'trial'
+  const daysRemaining = getDaysRemaining(user.licensedUntil)
+
+  if (!PLANS[plan]) return <></>
 
   return (
-    <div className="hidden items-center gap-1 sm:flex">
-      <Image src={userPlan.image} alt={userPlan.text} width={28} height={16} />
+    <div className="hidden w-24 flex-col items-center gap-3 sm:flex">
+      <div className="flex items-center gap-1">
+        <Image
+          src={PLANS[plan].image}
+          alt={PLANS[plan].text}
+          width={28}
+          height={16}
+        />
 
-      <span
-        className={cn('text-xs font-medium', {
-          'text-[#848484]': plan === 'trial',
-          'text-[#FFCE50]': plan === 'basic',
-          'text-[#0775C7]': plan === 'premium',
-        })}
-      >
-        {userPlan.text}
-      </span>
+        <span
+          className={cn('text-xs font-medium', {
+            'text-[#848484]': plan === 'trial',
+            'text-[#FFCE50]': plan === 'vip',
+            'text-[#0775C7]': plan === 'premium',
+          })}
+        >
+          {PLANS[plan].text}
+        </span>
+      </div>
+
+      <div className="h-1 w-full rounded-full bg-gray-200 dark:bg-[#383C48]">
+        <div
+          className="h-1 rounded-full bg-[#e51e3e]"
+          style={{ width: 100 - daysRemaining + '%' }}
+        ></div>
+      </div>
     </div>
   )
 }

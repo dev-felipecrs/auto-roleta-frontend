@@ -9,34 +9,32 @@ import {
   YAxis,
 } from 'recharts'
 import { format } from 'date-fns'
+import { BalanceTrack, License } from '@prisma/client'
 
 import { formatNumber } from '@/utils'
-import { UserBalanceTrack } from '@/models'
-import { mockUser } from '@/app/user-mock'
+import { User } from '@/types'
 
-const shadowData: UserBalanceTrack[] = Array.from({ length: 50 }).map(() => {
-  const generateRandomNumber = (limit: number): string => {
-    return String(Math.floor(Math.random() * limit) + 1).padStart(2, '0')
-  }
+const shadowData: Array<Omit<BalanceTrack, 'balanceTrackId' | 'userId'>> = [
+  {
+    time: new Date(new Date().setHours(0, 0, 0, 0)),
+    value: 0,
+  },
+]
 
-  const month = generateRandomNumber(12)
-  const day = generateRandomNumber(28)
-  const hour = generateRandomNumber(23)
-  const second = generateRandomNumber(59)
-
-  return {
-    time: new Date(`2023-${month}-${day}T${hour}:${second}`),
-    value: Math.floor(Math.random() * (2000 - 1000)) + 1000,
-  }
-})
-
-export type CustomTooltipItemProps = UserBalanceTrack & {
+export type CustomTooltipItemProps = Omit<
+  BalanceTrack,
+  'balanceTrackId' | 'userId'
+> & {
   time: string
 }
 
 interface CustomTooltipProps {
   active?: boolean
   payload?: Array<{ payload: CustomTooltipItemProps }>
+}
+
+interface PerformanceProps {
+  user: User | null
 }
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
@@ -62,17 +60,20 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   return <></>
 }
 
-export function Performance() {
-  const graphicColor: Record<typeof mockUser.plan, string> = {
-    basic: '#FFCE50',
+export function Performance({ user }: PerformanceProps) {
+  const graphicColor: Record<License, string> = {
+    vip: '#FFCE50',
     premium: '#0775C7',
     trial: '#848484',
   }
 
-  const data = shadowData.map((item) => ({
-    ...item,
-    time: format(item.time, 'HH:mm'),
-    balance: item.value,
+  const balanceTracksIsEmpty = (user?.balanceTracks || []).length === 0
+
+  const data = (
+    !balanceTracksIsEmpty ? user?.balanceTracks || [] : shadowData
+  ).map((track) => ({
+    time: format(track.time, 'HH:mm'),
+    value: track.value,
   }))
 
   return (
@@ -80,17 +81,17 @@ export function Performance() {
       <AreaChart data={data} margin={{ left: -20 }}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-            <stop stopColor={graphicColor[mockUser.plan]} />
+            <stop stopColor={graphicColor[user?.license || 'trial']} />
             <stop
               offset="1"
-              stopColor={graphicColor[mockUser.plan]}
+              stopColor={graphicColor[user?.license || 'trial']}
               stopOpacity="0.1"
             />
           </linearGradient>
         </defs>
         <Area
-          dataKey="balance"
-          stroke={graphicColor[mockUser.plan]}
+          dataKey="value"
+          stroke={graphicColor[user?.license || 'trial']}
           fill="url(#color)"
         />
         <XAxis
@@ -102,7 +103,7 @@ export function Performance() {
           color="#A6A8B1"
         />
         <YAxis
-          dataKey="balance"
+          dataKey="value"
           axisLine={false}
           tickLine={false}
           tickCount={5}

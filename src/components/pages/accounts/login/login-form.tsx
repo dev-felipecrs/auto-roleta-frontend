@@ -8,10 +8,13 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { isPast } from 'date-fns'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { toast } from '@/config/toast'
+import { TrialLicenseExpiredDialog } from '@/components/shared/trial-license-expired-dialog'
 import { Button, Input } from '@/components/shared'
+import { getUserByEmail } from '@/actions'
 
 const LoginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
@@ -20,6 +23,7 @@ const LoginSchema = z.object({
 
 export function LoginForm() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
+  const [showDialog, setShowDialog] = useState(false)
 
   const router = useRouter()
 
@@ -40,8 +44,18 @@ export function LoginForm() {
       redirect: false,
     })
 
-    if (!response?.ok || response?.error) {
-      toast.error('Verifique as suas credenciais e tente novamente')
+    if (response?.error) {
+      toast.error(response.error)
+      return
+    }
+
+    const user = await getUserByEmail(data.email)
+    const trialLicenseIsExpired = user.licensedUntil
+      ? isPast(user.licensedUntil) && user.license === 'trial'
+      : false
+
+    if (trialLicenseIsExpired) {
+      setShowDialog(true)
       return
     }
 
@@ -117,6 +131,8 @@ export function LoginForm() {
       <Button type="submit" isLoading={formState.isSubmitting}>
         Entrar
       </Button>
+
+      {showDialog && <TrialLicenseExpiredDialog />}
     </form>
   )
 }

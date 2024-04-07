@@ -9,14 +9,21 @@ import Image from 'next/image'
 import * as Dialog from '@radix-ui/react-dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 
+import { toast } from '@/config/toast'
 import { Button, Input } from '@/components/shared'
+import { revalidatePage } from '@/actions'
 
 const ConnectWithBrokerSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z.string().min(1, 'Campo obrigatório'),
 })
 
-export function ConnectWithBroker() {
+interface ConnectWithBrokerProps {
+  isDisabled: boolean
+}
+
+export function ConnectWithBroker({ isDisabled }: ConnectWithBrokerProps) {
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
   const [passwordIsVisible, setPasswordIsVisible] = useState(false)
 
   const { handleSubmit, register, formState } = useForm<
@@ -30,14 +37,36 @@ export function ConnectWithBroker() {
   }
 
   const onSubmit = async (data: z.infer<typeof ConnectWithBrokerSchema>) => {
-    console.log({ data })
+    const response = await fetch('/api/authenticate', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
+    })
+
+    const result = await response.json()
+
+    if (response.status !== 200) {
+      toast.error(result)
+      return
+    }
+
+    await revalidatePage('/dashboard')
+    location.reload()
+    setDialogIsOpen(false)
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <Dialog.Trigger asChild>
-        <Button type="button" className="h-10 w-[102px] text-xs">
-          Conectar
+        <Button
+          type="button"
+          className="h-10 w-[102px] animate-connect-button-box-shadow"
+          style={{ boxShadow: '0 0 0 0 #D61D1F' }}
+          disabled={isDisabled}
+        >
+          {isDisabled ? 'Conectado' : 'Conectar'}
         </Button>
       </Dialog.Trigger>
 
@@ -47,8 +76,8 @@ export function ConnectWithBroker() {
         <Dialog.Content className="fixed left-1/2 top-1/2 flex w-[90dvw] -translate-x-1/2 -translate-y-1/2 animate-show-with-moviment flex-col rounded-xl bg-[#27282D] px-4 py-11 sm:w-auto sm:px-8">
           <header className="flex flex-col items-center">
             <Image
-              src="/images/shared/pix-strike.png"
-              alt="Pix strike"
+              src="/images/shared/fireblaze.png"
+              alt="Blaze Bet"
               width={220}
               height={42}
             />
@@ -57,7 +86,7 @@ export function ConnectWithBroker() {
               Vincular conta
             </strong>
             <span className="mt-2 text-center text-sm text-[#8B8D97] sm:max-w-[24rem]">
-              Para realizar apostas, vincule sua conta da Pixstrike.com com suas
+              Para realizar apostas, vincule sua conta da fireblaze.bet com suas
               credenciais.
             </span>
           </header>
@@ -100,15 +129,20 @@ export function ConnectWithBroker() {
             />
 
             <div className="flex flex-col gap-3">
-              <Button type="submit" className="mt-6">
+              <Button
+                type="submit"
+                className="mt-6"
+                isLoading={formState.isSubmitting}
+              >
                 Conectar
               </Button>
 
               <Link
-                href="#"
+                href="https://fireblaze.bet/registrar?ref=JgcvWENfgMx"
                 className="flex h-[50px] w-full items-center justify-center rounded-md border border-white text-base font-semibold text-white transition-all hover:opacity-75 active:brightness-90 disabled:cursor-not-allowed disabled:opacity-50"
+                target="_blank"
               >
-                Criar conta na Pixstrike
+                Criar conta na Blazebet
               </Link>
             </div>
           </form>
