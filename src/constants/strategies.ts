@@ -39,7 +39,17 @@ export const STRATEGIES: Record<StrategyName, StrategyProps> = {
     licenses: ['vip', 'premium'],
   },
   'Estrátegia Master': {
-    strategy: [[Color.BLACK, Color.BLACK, Color.BLACK], Color.BLACK],
+    strategy: [
+      [
+        Color.BLACK,
+        Color.BLACK,
+        Color.BLACK,
+        Color.BLACK,
+        Color.BLACK,
+        Color.BLACK,
+      ],
+      Color.BLACK,
+    ],
     licenses: ['premium'],
   },
 } as const
