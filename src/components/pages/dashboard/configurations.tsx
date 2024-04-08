@@ -58,39 +58,56 @@ const getStrategies = (user: User | null) =>
     }
   })
 
-const ConfigurationsSchema = z.object({
-  strategy: z.enum(STRATEGIES_NAMES, {
-    errorMap: (issue) => {
-      const issues: Partial<Record<typeof issue.code, { message: string }>> = {
-        invalid_type: { message: 'Campo inválido' },
-        invalid_enum_value: { message: 'Campo inválido' },
+const ConfigurationsSchema = z
+  .object({
+    strategy: z.enum(STRATEGIES_NAMES, {
+      errorMap: (issue) => {
+        const issues: Partial<Record<typeof issue.code, { message: string }>> =
+          {
+            invalid_type: { message: 'Campo inválido' },
+            invalid_enum_value: { message: 'Campo inválido' },
+          }
+
+        return issues[issue.code] || { message: 'Campo inválido' }
+      },
+    }),
+    entry: z
+      .string({ required_error: 'Campo obrigatório' })
+      .transform((value) =>
+        Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
+      )
+      .refine((value) => value > 0, { message: 'Valor inválido' }),
+    gales: z
+      .string({ required_error: 'Campo obrigatório' })
+      .min(1, 'Campo obrigatório'),
+    stopWin: z
+      .string({ required_error: 'Campo obrigatório' })
+      .transform((value) =>
+        Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
+      )
+      .refine((value) => value > 0, { message: 'Valor inválido' }),
+    stopLoss: z
+      .string({ required_error: 'Campo obrigatório' })
+      .transform((value) =>
+        Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
+      )
+      .refine((value) => value > 0, { message: 'Valor inválido' }),
+  })
+  .refine(
+    (data) => {
+      const isStrategyMaster = (data.strategy as any).includes('Master')
+
+      if (isStrategyMaster) {
+        return data.entry >= 20
       }
 
-      return issues[issue.code] || { message: 'Campo inválido' }
+      return true
     },
-  }),
-  entry: z
-    .string({ required_error: 'Campo obrigatório' })
-    .transform((value) =>
-      Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    )
-    .refine((value) => value > 0, { message: 'Valor inválido' }),
-  gales: z
-    .string({ required_error: 'Campo obrigatório' })
-    .min(1, 'Campo obrigatório'),
-  stopWin: z
-    .string({ required_error: 'Campo obrigatório' })
-    .transform((value) =>
-      Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    )
-    .refine((value) => value > 0, { message: 'Valor inválido' }),
-  stopLoss: z
-    .string({ required_error: 'Campo obrigatório' })
-    .transform((value) =>
-      Number(value.replace('R$ ', '').replace('.', '').replace(',', '.')),
-    )
-    .refine((value) => value > 0, { message: 'Valor inválido' }),
-})
+    {
+      message: 'Entrada de no mínimo R$ 20',
+      path: ['entry'], // path of error
+    },
+  )
 
 export function Configurations({
   user,
