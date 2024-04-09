@@ -4,10 +4,14 @@ import { add } from 'date-fns'
 import { pricing } from '@/constants/pricing'
 import { prisma } from '@/config/prisma'
 
-// update on oficial version
 const SubscribeSchema = z.object({
   data: z.object({
-    amount: z.union([z.literal(3699), z.literal(6999), z.literal(29999)]),
+    amount: z.union([
+      z.literal(3699),
+      z.literal(6999),
+      z.literal(14900),
+      z.literal(24900),
+    ]),
     customer: z.object({
       name: z.string(),
       email: z.string().email(),

@@ -36,9 +36,9 @@ export const pricing: Record<Price, Plan> = {
     license: 'vip',
     recurrency: 'quarterly',
   },
-  29999: {
+  14900: {
     name: 'Anual',
-    price: 29999,
+    price: 14900,
     period: 'ano',
     benefitsIncluded: [
       '100% em nuvem',
@@ -53,9 +53,9 @@ export const pricing: Record<Price, Plan> = {
     license: 'vip',
     recurrency: 'annually',
   },
-  49999: {
+  24900: {
     name: 'Premium',
-    price: 49999,
+    price: 24900,
     period: 'ano',
     benefitsIncluded: [
       '100% em nuvem',
