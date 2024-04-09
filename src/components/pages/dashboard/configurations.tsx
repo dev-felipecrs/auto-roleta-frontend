@@ -29,7 +29,7 @@ const getStrategies = (user: User | null) =>
 
     return {
       label: (
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2">
           <span>{strategy}</span>
 
           {STRATEGIES[strategy].licenses[0] === 'premium' && (
