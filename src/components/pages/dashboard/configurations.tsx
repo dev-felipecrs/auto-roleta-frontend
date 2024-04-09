@@ -28,7 +28,7 @@ const getStrategies = (user: User | null) =>
     )
 
     return {
-      label: isDisabled ? (
+      label: (
         <div className="flex items-center justify-between">
           <span>{strategy}</span>
 
@@ -41,7 +41,7 @@ const getStrategies = (user: User | null) =>
             />
           )}
 
-          {STRATEGIES[strategy].licenses.includes('vip') && (
+          {STRATEGIES[strategy].licenses[0] === 'vip' && (
             <Image
               src="/icons/plans/vip.svg"
               alt="Plano VIP"
@@ -49,9 +49,16 @@ const getStrategies = (user: User | null) =>
               height={20}
             />
           )}
+
+          {STRATEGIES[strategy].licenses[0] === 'trial' && (
+            <Image
+              src="/icons/plans/trial.svg"
+              alt="Plano Trial"
+              width={20}
+              height={20}
+            />
+          )}
         </div>
-      ) : (
-        strategy
       ),
       value: strategy,
       disabled: isDisabled,
