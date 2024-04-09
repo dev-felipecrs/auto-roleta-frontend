@@ -69,7 +69,11 @@ export function Plan({ user }: PlanProps) {
 
       <div className="h-1 w-full rounded-full bg-gray-200 dark:bg-[#383C48]">
         <div
-          className="h-1 rounded-full bg-[#e51e3e]"
+          className={cn('h-1 rounded-full', {
+            'bg-[#848484]': plan === 'trial',
+            'bg-[#FFCE50]': plan === 'vip',
+            'bg-[#0775C7]': plan === 'premium',
+          })}
           style={{ width: 100 - daysRemaining + '%' }}
         ></div>
       </div>
