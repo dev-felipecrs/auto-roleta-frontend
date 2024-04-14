@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import type { Price } from "@/types/plan";
-import { getSession } from "@/actions";
+import { getUserByEmail } from "@/actions";
+import { prisma } from "@/config/prisma";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripe = new Stripe(stripeSecretKey!);
@@ -38,16 +39,24 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed":
         const { data: { object: { amount_total } } } = event;
+        const { data: { object: { customer_details } } } = event;
+
 
         if (!amount_total || !pricing[amount_total as Price]) {
           throw new Error("Invalid price or price not found");
         }
 
-        const plan = pricing[amount_total as Price]
+        const paidPlan = pricing[amount_total as Price]
 
-        // const { user } = await getSession();
+        const userExists = await getUserByEmail(customer_details?.email!)
 
-        console.log("Plan:", plan);
+        if (!userExists) {
+          throw new Error(`The user does not exist with the email: ${customer_details?.email}`);
+        }
+
+        const user = await prisma.user.update({ where: { email: customer_details?.email! }, data: { license: paidPlan.license } })
+
+        console.log("User:", JSON.stringify(user));
         break;
       default:
         throw new Error("Unhandled relevant event!");
