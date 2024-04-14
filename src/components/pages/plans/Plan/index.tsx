@@ -7,7 +7,7 @@ import { Plan } from '@/types'
 import { Button } from '@/components/shared'
 import { getSession } from '@/actions'
 
-import { PlanSubscribe } from './subscribe'
+import { SelectPayments } from './select-payments'
 
 interface PlanProps {
   plan: Plan
@@ -75,7 +75,7 @@ export async function Plan({ plan }: PlanProps) {
       </ul>
 
       <footer className="mt-6 flex flex-col items-center gap-4">
-        {user && <PlanSubscribe user={user} plan={plan} />}
+        {user && <SelectPayments user={user} plan={plan} />}
 
         {!user && (
           <Link href="/accounts/register">
