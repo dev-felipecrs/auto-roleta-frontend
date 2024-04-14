@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/shared";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { set } from "date-fns";
+
 import { PlanSubscribe } from "./subscribe";
 
 interface SelectPaymentsProps {
