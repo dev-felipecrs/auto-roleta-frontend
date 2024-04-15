@@ -1,10 +1,12 @@
-import { pricing } from "@/constants/pricing";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { add } from 'date-fns'
 
-import type { Price } from "@/types/plan";
+import { pricing } from "@/constants/pricing";
 import { getUserByEmail } from "@/actions";
 import { prisma } from "@/config/prisma";
+
+import type { Price } from "@/types/plan";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripe = new Stripe(stripeSecretKey!);
@@ -54,7 +56,21 @@ export async function POST(req: NextRequest) {
           throw new Error(`The user does not exist with the email: ${customer_details?.email}`);
         }
 
-        const user = await prisma.user.update({ where: { email: customer_details?.email! }, data: { license: paidPlan.license } })
+        const months = {
+          monthly: 1,
+          quarterly: 3,
+          annually: 12,
+        }[paidPlan.recurrency!]
+
+        const user = await prisma.user.update({
+          where: { email: customer_details?.email! }, data: {
+            license: paidPlan.license, 
+            licensedUntil: add(new Date(), {
+              months,
+            }),
+            recurrency: paidPlan.recurrency,
+          }
+        })
 
         console.log("User:", JSON.stringify(user));
         break;
