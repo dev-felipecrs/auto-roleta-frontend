@@ -3,8 +3,15 @@ import { add } from 'date-fns'
 
 import { prisma } from '@/config/prisma'
 
+type RequestData = {
+  name: string
+  email: string
+  password: string
+  affiliateId?: string
+}
+
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = (await request.json()) as RequestData
 
   const [userFindedByEmail] = await Promise.all([
     prisma.user.findUnique({
@@ -20,17 +27,17 @@ export async function POST(request: Request) {
     })
   }
 
-  if (data.affilateId) {
+  if (data.affiliateId) {
     const affiliate = await prisma.affiliate.findFirst({
       where: {
-        affiliateId: data.affilateId,
+        affiliateId: data.affiliateId,
       },
     })
 
     if (!affiliate) {
       await prisma.affiliate.create({
         data: {
-          affiliateId: data.affilateId,
+          affiliateId: data.affiliateId,
           balance: 0,
         },
       })

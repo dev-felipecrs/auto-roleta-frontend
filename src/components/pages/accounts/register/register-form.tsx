@@ -59,7 +59,7 @@ export function RegisterForm() {
         name: data.email.split('@')[0],
         email: data.email,
         password: data.password,
-        affiliateId,
+        affiliateId: affiliateId !== null ? affiliateId : undefined,
       }
 
       const user = await fetch('/api/users', {
