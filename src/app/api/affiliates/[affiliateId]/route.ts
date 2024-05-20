@@ -13,7 +13,15 @@ export async function GET(request: Request, { params }: Params) {
         affiliateId: params.affiliateId,
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            userId: true,
+            name: true,
+            email: true,
+            license: true,
+            recurrency: true,
+          },
+        },
       },
     })
 
