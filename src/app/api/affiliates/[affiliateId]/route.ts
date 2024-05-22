@@ -52,13 +52,13 @@ const patchSchema = z.object({
 
 export async function PATCH(request: Request, { params }: Params) {
   try {
-    const data = request.json()
+    const data = await request.json()
 
     const payload = patchSchema.safeParse(data)
 
     if (!payload.success) {
       return Response.json('Os parametros não foram passados corretamentes', {
-        status: 200,
+        status: 400,
       })
     }
 
