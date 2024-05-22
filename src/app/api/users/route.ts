@@ -1,17 +1,28 @@
 import { hash } from 'bcrypt'
 import { add } from 'date-fns'
+import { z } from 'zod'
 
 import { prisma } from '@/config/prisma'
 
-type RequestData = {
-  name: string
-  email: string
-  password: string
-  affiliateId?: string
-}
+const requestSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  password: z.string(),
+  affiliateId: z.string().optional(),
+})
 
 export async function POST(request: Request) {
-  const data = (await request.json()) as RequestData
+  const body = await request.json()
+
+  const payload = requestSchema.safeParse(body)
+
+  if (!payload.success) {
+    return Response.json(payload.error, {
+      status: 400,
+    })
+  }
+
+  const { data } = payload
 
   const [userFindedByEmail] = await Promise.all([
     prisma.user.findUnique({
