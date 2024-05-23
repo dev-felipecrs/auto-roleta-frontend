@@ -47,7 +47,7 @@ export async function GET(request: Request, { params }: Params) {
 }
 
 const patchSchema = z.object({
-  amount: z.coerce.number(),
+  amount: z.coerce.number().positive(),
 })
 
 export async function PATCH(request: Request, { params }: Params) {
@@ -69,23 +69,31 @@ export async function PATCH(request: Request, { params }: Params) {
     })
 
     if (!findAffiliate) {
-      return Response.json('Não existe nenhum afilado com este ID', {
+      return Response.json('Não existe nenhum afiliado com este ID', {
         status: 200,
       })
     }
 
     const { amount } = payload.data
 
-    const updateAffiliate = await prisma.affiliate.update({
+    const balance = Number(findAffiliate.balance - amount)
+
+    if (balance < 0) {
+      return Response.json('O saldo não pode ser menor que o saque', {
+        status: 400,
+      })
+    }
+
+    await prisma.affiliate.update({
       where: {
         affiliateId: params.affiliateId,
       },
       data: {
-        balance: Number(findAffiliate.balance - amount),
+        balance,
       },
     })
 
-    return Response.json(updateAffiliate, {
+    return Response.json({
       status: 204,
     })
   } catch (error) {
