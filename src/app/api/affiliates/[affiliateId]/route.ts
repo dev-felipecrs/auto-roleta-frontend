@@ -29,12 +29,12 @@ export async function GET(request: Request, { params }: Params) {
 
     if (!affiliate) {
       return Response.json('Não existe nenhum afilado com este ID', {
-        status: 200,
+        status: 400,
       })
     }
 
     return Response.json(affiliate, {
-      status: 200,
+      status: 201,
     })
   } catch (error) {
     return Response.json(
