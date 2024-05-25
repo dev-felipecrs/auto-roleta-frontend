@@ -8,7 +8,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://afiliado-win.vercel.app/',
+            value: 'https://afiliado-win.vercel.app',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: 'http://localhost:3001',
           },
         ],
       },
